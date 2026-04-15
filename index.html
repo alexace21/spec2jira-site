@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec2JIRA — AI-Powered Specification Breakdown for Confluence and Jira</title>
+<meta name="description" content="Convert Confluence specifications into structured Jira work items using AI. Self-hosted, open-source model, full data sovereignty.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #97A0AF;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --accent: #8B5CF6;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a {
+    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
+  }
+  nav .links a:hover { color: var(--blue); }
+
+  .hero {
+    max-width: 1080px; margin: 0 auto; padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 48px); font-weight: 800;
+    line-height: 1.15; margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 .highlight { color: var(--blue); }
+  .hero p {
+    font-size: 18px; color: var(--slate); max-width: 640px;
+    margin: 0 auto 36px; line-height: 1.7;
+  }
+  .hero .cta {
+    display: inline-block; background: var(--blue); color: var(--white);
+    padding: 14px 36px; border-radius: var(--radius); font-size: 16px;
+    font-weight: 600; text-decoration: none; transition: background 0.2s;
+  }
+  .hero .cta:hover { background: var(--blue-light); }
+
+  .features {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;
+  }
+  .feature {
+    background: var(--white); border-radius: var(--radius);
+    padding: 36px 32px; border: 1px solid #E4E7EB;
+  }
+  .feature .icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .feature .icon.blue { background: #E9F2FF; color: var(--blue); }
+  .feature .icon.purple { background: #F0EBFF; color: var(--accent); }
+  .feature .icon.green { background: #E3FCEF; color: #006644; }
+  .feature h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .feature p { font-size: 15px; color: var(--slate); line-height: 1.6; }
+
+  .how {
+    background: var(--navy); color: var(--white); padding: 80px 24px;
+  }
+  .how .inner { max-width: 720px; margin: 0 auto; }
+  .how h2 {
+    font-size: 32px; font-weight: 800; margin-bottom: 40px;
+    text-align: center; letter-spacing: -0.3px;
+  }
+  .steps { list-style: none; counter-reset: step; }
+  .steps li {
+    counter-increment: step; padding: 16px 0 16px 56px; position: relative;
+    font-size: 17px; line-height: 1.6; color: #C1C7D0;
+    border-left: 2px solid #2A3F6B; margin-left: 16px;
+  }
+  .steps li:last-child { border-left-color: transparent; }
+  .steps li::before {
+    content: counter(step);
+    position: absolute; left: -15px; top: 14px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--blue); color: var(--white);
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .steps li strong { color: var(--white); }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 640px) {
+    nav .links a { margin-left: 20px; font-size: 14px; }
+    .features { grid-template-columns: 1fr; }
+    .hero { padding: 48px 24px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="https://marketplace.atlassian.com" target="_blank">Marketplace</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Specifications in. <span class="highlight">Structured work out.</span></h1>
+  <p>Spec2JIRA uses AI to transform your Confluence specification pages into ready-to-use Jira epics, user stories, tasks, and acceptance criteria. The model runs on your infrastructure — your data never leaves.</p>
+  <a href="https://marketplace.atlassian.com" class="cta">Get it on Marketplace</a>
+</section>
+
+<section class="features">
+  <div class="feature">
+    <div class="icon blue">&#9889;</div>
+    <h3>AI-Powered Breakdown</h3>
+    <p>Point Spec2JIRA at any Confluence specification page. It analyzes the content and generates a complete work breakdown — epics, stories, tasks, and acceptance criteria — in minutes.</p>
+  </div>
+  <div class="feature">
+    <div class="icon purple">&#128274;</div>
+    <h3>Full Data Sovereignty</h3>
+    <p>The AI model runs on a Docker container you deploy on your own hardware. Open-source model, no external API calls, no data leaves your environment. Built for teams with strict compliance requirements.</p>
+  </div>
+  <div class="feature">
+    <div class="icon green">&#9998;</div>
+    <h3>Human Review &amp; Edit</h3>
+    <p>Every generated breakdown goes through an interactive editor. Your team reviews, edits, and approves before anything is pushed to Jira. AI assists, humans decide.</p>
+  </div>
+</section>
+
+<section class="how">
+  <div class="inner">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><strong>Open a Confluence specification page</strong> and click "Generate Breakdown" in the Spec2JIRA panel.</li>
+      <li><strong>AI analyzes your spec</strong> — the pipeline extracts capabilities, groups features, and generates structured work items (~5-10 min).</li>
+      <li><strong>Review in the Breakdown Editor</strong> — edit titles, acceptance criteria, dependencies, and story structure inline.</li>
+      <li><strong>Push to Jira</strong> — approved items are created as epics, stories, and tasks in your Jira project with one click.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/docs">Documentation</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>

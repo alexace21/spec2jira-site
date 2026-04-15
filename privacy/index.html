@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Spec2JIRA</title>
+<meta name="description" content="Privacy Policy for Spec2JIRA for Confluence and Jira. Your data never leaves your infrastructure.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #97A0AF;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy); background: var(--bg); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a {
+    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
+  }
+  nav .links a:hover { color: var(--blue); }
+
+  .content {
+    max-width: 740px; margin: 0 auto; padding: 48px 24px 80px;
+  }
+  .content h1 {
+    font-size: 36px; font-weight: 800; margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .content .meta {
+    font-size: 14px; color: var(--gray); margin-bottom: 40px;
+  }
+  .content h2 {
+    font-size: 22px; font-weight: 700; margin: 36px 0 12px;
+    padding-top: 20px; border-top: 1px solid #E4E7EB;
+  }
+  .content h2:first-of-type { border-top: none; padding-top: 0; }
+  .content h3 {
+    font-size: 17px; font-weight: 600; margin: 24px 0 8px;
+  }
+  .content p {
+    font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7;
+  }
+  .content ul {
+    margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
+  }
+  .content ul li { margin-bottom: 6px; line-height: 1.6; }
+  .content strong { color: var(--navy); }
+  .callout {
+    background: #E9F2FF; border-left: 4px solid var(--blue);
+    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 24px 0; font-size: 15px; color: var(--navy);
+  }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 640px) {
+    nav .links a { margin-left: 20px; font-size: 14px; }
+    .content h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="https://marketplace.atlassian.com" target="_blank">Marketplace</a>
+  </div>
+</nav>
+
+<main class="content">
+
+<h1>Privacy Policy</h1>
+<p class="meta">Effective Date: April 15, 2026 &middot; Last Updated: April 15, 2026</p>
+
+<div class="callout">
+  <strong>Key principle:</strong> Spec2JIRA is designed so that your data never leaves your infrastructure. The AI processing backend runs on hardware that you own and control.
+</div>
+
+<h2>1. Overview</h2>
+<p>Spec2JIRA for Confluence and Jira ("the App") converts specification pages into structured Jira work items. This Privacy Policy describes how we handle data in connection with the App.</p>
+
+<h2>2. Architecture and Data Flow</h2>
+<p>The App consists of two components:</p>
+<ul>
+  <li><strong>Forge App (cloud component):</strong> A user interface layer hosted on the Atlassian Forge platform. It reads Confluence page content via standard Atlassian APIs and displays results within the Atlassian product interface.</li>
+  <li><strong>Self-Hosted Backend (customer component):</strong> A Docker container that you deploy on your own infrastructure. This backend performs all AI processing using an open-source language model (Qwen 2.5) running locally on your hardware.</li>
+</ul>
+<p>Data flows directly between the Atlassian Forge platform and your self-hosted backend. <strong>No data is routed through, stored on, or accessible to Spec2JIRA's servers.</strong></p>
+
+<h2>3. Data We Process</h2>
+
+<h3>3.1 Data Processed by the Forge App</h3>
+<p>The Forge app processes the following data transiently (in-memory, during a single request):</p>
+<ul>
+  <li><strong>Confluence page content:</strong> The text of the specification page you choose to process, read via Atlassian APIs and forwarded to your self-hosted backend.</li>
+  <li><strong>Jira project metadata:</strong> Project keys and issue type information, used to create work items in your Jira instance.</li>
+  <li><strong>Configuration data:</strong> Your backend URL and API key, stored in Atlassian Forge Key-Value Storage (encrypted, managed by Atlassian).</li>
+</ul>
+
+<h3>3.2 Data Processed by the Self-Hosted Backend</h3>
+<p>All AI processing occurs on your infrastructure. The backend processes Confluence page content and produces structured work item breakdowns. This data resides entirely on your hardware. We have no access to it.</p>
+
+<h3>3.3 Data We Do NOT Collect</h3>
+<p>We do not collect, store, transmit, or have access to:</p>
+<ul>
+  <li>Confluence page content or any document text</li>
+  <li>Jira issue data</li>
+  <li>User identities, email addresses, or account information</li>
+  <li>Usage analytics or telemetry</li>
+  <li>Any personally identifiable information (PII)</li>
+</ul>
+
+<h2>4. Data Storage</h2>
+<p>The Forge app stores only configuration settings (backend URL and API key) using Atlassian's Forge Key-Value Storage, encrypted and managed by Atlassian.</p>
+<p>Any data persisted by the self-hosted backend (such as pipeline logs or generated outputs) is stored on your infrastructure. You control retention, encryption, and access policies.</p>
+
+<h2>5. Third-Party Services</h2>
+<p>The App does not share data with any third-party services, sub-processors, or external APIs beyond the Atlassian platform itself.</p>
+<p>The self-hosted backend uses an open-source AI model (Qwen 2.5 by Alibaba Cloud) that runs entirely offline on your hardware. No data is sent to model providers or any external AI service.</p>
+
+<h2>6. Data Residency</h2>
+<p>Because the backend runs on your infrastructure, you have full control over where your data is processed and stored. The Forge app component operates within the Atlassian Forge platform infrastructure.</p>
+
+<h2>7. GDPR Compliance</h2>
+<p><strong>You (the customer)</strong> are the data controller for any personal data contained in your Confluence pages and Jira projects.</p>
+<p><strong>Spec2JIRA</strong> does not act as a data processor, as we do not process or store your end-user data. The Forge app acts as a pass-through interface within the Atlassian platform.</p>
+<p>Since we do not store personal data, there is no personal data held by us to access, correct, delete, or export. All data resides within your Atlassian instance and your self-hosted backend, both of which you control.</p>
+
+<h2>8. Security</h2>
+<ul>
+  <li>All communication between the Forge app and your backend is encrypted via HTTPS (TLS 1.2+) with HSTS enabled.</li>
+  <li>Backend authentication uses API key verification on every request.</li>
+  <li>The Forge app follows Atlassian's security requirements for cloud applications.</li>
+  <li>The self-hosted backend runs in an isolated Docker container on your infrastructure.</li>
+</ul>
+
+<h2>9. Children's Privacy</h2>
+<p>The App is designed for professional software development teams and is not intended for use by individuals under the age of 16.</p>
+
+<h2>10. Changes to This Policy</h2>
+<p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date. Material changes will be communicated through the Atlassian Marketplace listing.</p>
+
+<h2>11. Contact</h2>
+<p>For questions about this Privacy Policy or the App's data practices:</p>
+<ul>
+  <li><strong>Email:</strong> <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>
+  <li><strong>Website:</strong> <a href="https://spec2jira.com">spec2jira.com</a></li>
+</ul>
+
+</main>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/docs">Documentation</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>

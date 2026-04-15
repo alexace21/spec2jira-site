@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation — Spec2JIRA</title>
+<meta name="description" content="Installation and setup guide for Spec2JIRA. Deploy the self-hosted AI backend and connect it to your Confluence and Jira instance.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #97A0AF;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --accent: #8B5CF6;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy); background: var(--bg); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a {
+    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
+  }
+  nav .links a:hover { color: var(--blue); }
+
+  .page { display: flex; max-width: 1080px; margin: 0 auto; padding: 0 24px; gap: 48px; }
+
+  .sidebar {
+    width: 220px; flex-shrink: 0; padding: 32px 0; position: sticky; top: 0;
+    height: fit-content; font-size: 14px;
+  }
+  .sidebar a {
+    display: block; color: var(--slate); text-decoration: none;
+    padding: 6px 12px; border-left: 2px solid transparent;
+    margin-bottom: 2px; border-radius: 0 4px 4px 0;
+  }
+  .sidebar a:hover { color: var(--blue); background: #E9F2FF; border-left-color: var(--blue); }
+  .sidebar .section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--gray); padding: 16px 12px 6px;
+  }
+
+  .content {
+    flex: 1; min-width: 0; padding: 32px 0 80px;
+  }
+  .content h1 {
+    font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px;
+  }
+  .content .meta {
+    font-size: 14px; color: var(--gray); margin-bottom: 40px;
+  }
+  .content h2 {
+    font-size: 22px; font-weight: 700; margin: 36px 0 12px;
+    padding-top: 20px; border-top: 1px solid #E4E7EB;
+  }
+  .content h2:first-of-type { border-top: none; padding-top: 0; }
+  .content h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
+  .content p { font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7; }
+  .content ul, .content ol {
+    margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
+  }
+  .content li { margin-bottom: 6px; line-height: 1.6; }
+  .content strong { color: var(--navy); }
+  .content a { color: var(--blue); }
+
+  .callout {
+    background: #E9F2FF; border-left: 4px solid var(--blue);
+    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 24px 0; font-size: 15px; color: var(--navy);
+  }
+  .callout.warn {
+    background: #FFF7E6; border-left-color: #FF991F;
+  }
+
+  pre {
+    background: #1E2A3A; color: #E4E7EB; padding: 20px 24px;
+    border-radius: var(--radius); overflow-x: auto; margin: 16px 0 24px;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace; font-size: 14px;
+    line-height: 1.6;
+  }
+  code {
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    background: #F0F1F4; padding: 2px 6px; border-radius: 3px; font-size: 14px;
+  }
+  pre code { background: none; padding: 0; }
+  .cmd { color: var(--blue-light); }
+  .comment { color: #6B778C; }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+    font-size: 15px;
+  }
+  th { text-align: left; padding: 10px 16px; background: #F4F5F7; font-weight: 600; border: 1px solid #E4E7EB; }
+  td { padding: 10px 16px; border: 1px solid #E4E7EB; color: var(--slate); }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .page { padding: 0 24px; }
+    nav .links a { margin-left: 20px; font-size: 14px; }
+    .content h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="https://marketplace.atlassian.com" target="_blank">Marketplace</a>
+  </div>
+</nav>
+
+<div class="page">
+<aside class="sidebar">
+  <div class="section-title">Getting Started</div>
+  <a href="#prerequisites">Prerequisites</a>
+  <a href="#install-app">Install the App</a>
+  <a href="#deploy-backend">Deploy Backend</a>
+  <a href="#download-model">Download Model</a>
+  <a href="#configure">Configure</a>
+  <a href="#first-run">First Run</a>
+  <div class="section-title">Reference</div>
+  <a href="#env-vars">Environment Variables</a>
+  <a href="#gpu-compat">GPU Compatibility</a>
+  <a href="#troubleshooting">Troubleshooting</a>
+</aside>
+
+<main class="content">
+
+<h1>Documentation</h1>
+<p class="meta">Getting started with Spec2JIRA for Confluence and Jira</p>
+
+<div class="callout">
+  <strong>Setup time:</strong> ~30 minutes. You'll need a server with an NVIDIA GPU and Docker installed.
+</div>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<table>
+  <tr><th>Requirement</th><th>Details</th></tr>
+  <tr><td>Atlassian Cloud</td><td>Confluence Cloud + Jira Cloud instance</td></tr>
+  <tr><td>Server</td><td>Linux server (Ubuntu 22.04+ recommended)</td></tr>
+  <tr><td>GPU</td><td>NVIDIA GPU with 16GB+ VRAM (e.g., T4, L4, A10, RTX 4090)</td></tr>
+  <tr><td>Docker</td><td>Docker CE with NVIDIA Container Toolkit</td></tr>
+  <tr><td>Network</td><td>HTTPS endpoint reachable from Atlassian Cloud</td></tr>
+  <tr><td>Storage</td><td>~30GB free disk space (model + Docker image)</td></tr>
+</table>
+
+<h2 id="install-app">1. Install the Forge App</h2>
+<p>Install Spec2JIRA from the <a href="https://marketplace.atlassian.com">Atlassian Marketplace</a>. The app will appear as a panel on your Confluence pages and connect to your self-hosted backend.</p>
+
+<h2 id="deploy-backend">2. Deploy the Backend</h2>
+<p>Pull the Docker image and start the container:</p>
+<pre><code><span class="comment"># Pull the latest image</span>
+<span class="cmd">docker pull</span> spec2jira/backend:latest
+
+<span class="comment"># Create configuration</span>
+<span class="cmd">mkdir</span> -p spec2jira &amp;&amp; <span class="cmd">cd</span> spec2jira
+<span class="cmd">cp</span> docker-compose.yml.example docker-compose.yml
+
+<span class="comment"># Generate an API key</span>
+<span class="cmd">echo</span> "API_KEY=$(openssl rand -hex 32)" &gt; .env
+
+<span class="comment"># Start the backend</span>
+<span class="cmd">docker compose up -d</span></code></pre>
+
+<h2 id="download-model">3. Download the AI Model</h2>
+<p>The backend requires the Qwen 2.5 14B GGUF model (~9GB). Download it to your server:</p>
+
+<h3>Option A: Direct download (recommended)</h3>
+<pre><code><span class="comment"># Download model to ./models/base/</span>
+<span class="cmd">./download_model.sh</span></code></pre>
+
+<h3>Option B: Manual download (restricted networks)</h3>
+<p>On a machine with internet access, download from <a href="https://huggingface.co">HuggingFace</a>:</p>
+<pre><code><span class="comment"># On a machine with internet access</span>
+<span class="cmd">wget</span> https://huggingface.co/Qwen/Qwen2.5-14B-Instruct-GGUF/resolve/main/qwen2.5-14b-instruct-q4_k_m.gguf
+
+<span class="comment"># Copy to your server</span>
+<span class="cmd">scp</span> qwen2.5-14b-instruct-q4_k_m.gguf user@your-server:spec2jira/models/base/</code></pre>
+
+<div class="callout warn">
+  <strong>Note:</strong> Some corporate networks may restrict downloads from HuggingFace. In that case, use Option B from an unrestricted machine and transfer the file via SCP or USB.
+</div>
+
+<h2 id="configure">4. Configure the Connection</h2>
+
+<h3>4.1 Set up HTTPS</h3>
+<p>Your backend must be accessible via HTTPS. We recommend nginx with Let's Encrypt:</p>
+<pre><code><span class="comment"># Install certbot and get a certificate</span>
+<span class="cmd">sudo certbot</span> --nginx -d api.yourdomain.com</code></pre>
+
+<h3>4.2 Connect Forge App to Backend</h3>
+<ol>
+  <li>Open any Confluence page</li>
+  <li>Click the Spec2JIRA panel → <strong>Settings</strong></li>
+  <li>Enter your backend URL (e.g., <code>https://api.yourdomain.com</code>)</li>
+  <li>Enter the API key from your <code>.env</code> file</li>
+  <li>Click <strong>Test Connection</strong> to verify</li>
+</ol>
+
+<h2 id="first-run">5. First Run</h2>
+<ol>
+  <li>Navigate to a Confluence page with a specification document</li>
+  <li>Click <strong>Generate Breakdown</strong> in the Spec2JIRA panel</li>
+  <li>Wait for the AI pipeline to process (~5-10 minutes for typical documents)</li>
+  <li>Review and edit the generated breakdown in the interactive editor</li>
+  <li>Click <strong>Push to Jira</strong> to create the work items</li>
+</ol>
+
+<div class="callout">
+  <strong>First run note:</strong> The initial generation takes longer as the model loads into GPU memory. Subsequent runs are faster.
+</div>
+
+<h2 id="env-vars">Environment Variables</h2>
+
+<table>
+  <tr><th>Variable</th><th>Description</th><th>Default</th></tr>
+  <tr><td><code>API_KEY</code></td><td>Shared secret for authentication</td><td>(required)</td></tr>
+  <tr><td><code>BASE_MODEL_PATH</code></td><td>Path to GGUF model file</td><td><code>/models/base/Qwen2.5-14B-Instruct-Q4_K_M.gguf</code></td></tr>
+  <tr><td><code>PIPELINE_MODE</code></td><td><code>base</code> or <code>finetuned</code></td><td><code>base</code></td></tr>
+  <tr><td><code>FINETUNED_MODEL_PATH</code></td><td>Path to fine-tuned model (if applicable)</td><td>(optional)</td></tr>
+</table>
+
+<h2 id="gpu-compat">GPU Compatibility</h2>
+<p>The Docker image is built for CUDA 12.8. If your GPU requires a different CUDA architecture, rebuild with:</p>
+<pre><code><span class="cmd">docker compose build</span> --build-arg CUDA_ARCH=<span class="comment">&lt;your_arch&gt;</span></code></pre>
+
+<table>
+  <tr><th>GPU</th><th>VRAM</th><th>CUDA Arch</th><th>Status</th></tr>
+  <tr><td>NVIDIA T4</td><td>16 GB</td><td>sm_75</td><td>Supported</td></tr>
+  <tr><td>NVIDIA L4</td><td>24 GB</td><td>sm_89</td><td>Tested &#10003;</td></tr>
+  <tr><td>NVIDIA A10</td><td>24 GB</td><td>sm_86</td><td>Supported</td></tr>
+  <tr><td>NVIDIA A100</td><td>40/80 GB</td><td>sm_80</td><td>Supported</td></tr>
+  <tr><td>RTX 4090</td><td>24 GB</td><td>sm_89</td><td>Supported</td></tr>
+  <tr><td>RTX 3090</td><td>24 GB</td><td>sm_86</td><td>Supported</td></tr>
+</table>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>Connection test fails</h3>
+<p>Verify your backend is accessible: <code>curl -I https://api.yourdomain.com/health</code>. Check that your firewall allows inbound HTTPS (port 443) and that nginx is proxying to port 8000.</p>
+
+<h3>Generation timeout</h3>
+<p>Large specifications (10,000+ words) may take 15-20 minutes. The Forge app will poll for completion. If it consistently times out, check GPU memory with <code>nvidia-smi</code> and Docker logs with <code>docker compose logs -f</code>.</p>
+
+<h3>Out of GPU memory</h3>
+<p>The 14B Q4 model requires ~8GB VRAM at rest and peaks at ~15GB during generation. Ensure no other GPU workloads are running. If using a 16GB GPU (T4), close other CUDA processes before generating.</p>
+
+<h3>Need help?</h3>
+<p>Contact us at <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
+
+</main>
+</div>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/docs">Documentation</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>
