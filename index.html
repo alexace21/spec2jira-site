@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spec2JIRA — AI-Powered Specification Breakdown for Confluence and Jira</title>
-<meta name="description" content="Convert Confluence specifications into structured Jira work items using AI. Self-hosted, open-source model, full data sovereignty.">
+<meta name="description" content="Automatically turn Confluence specifications into structured Jira tickets with a self-hosted AI backend. Open-source model runs on your own infrastructure.">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -56,6 +56,12 @@
     font-weight: 600; text-decoration: none; transition: background 0.2s;
   }
   .hero .cta:hover { background: var(--blue-light); }
+  .hero .note {
+    font-size: 14px; color: var(--gray); max-width: 540px;
+    margin: 20px auto 0; line-height: 1.6;
+  }
+  .hero .note a { color: var(--slate); text-decoration: underline; }
+  .hero .note a:hover { color: var(--blue); }
 
   .features {
     max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px;
@@ -130,8 +136,9 @@
 
 <section class="hero">
   <h1>Specifications in. <span class="highlight">Structured work out.</span></h1>
-  <p>Spec2JIRA uses AI to transform your Confluence specification pages into ready-to-use Jira epics, user stories, tasks, and acceptance criteria. The model runs on your infrastructure — your data never leaves.</p>
+  <p>Spec2JIRA turns Confluence specification pages into ready-to-use Jira epics, user stories, tasks, and acceptance criteria — automatically. The AI runs on your own infrastructure, so your specs never leave your environment.</p>
   <a href="https://marketplace.atlassian.com" class="cta">Get it on Marketplace</a>
+  <p class="note">Free early access — <a href="/docs#step-7">contact us first</a> to get your backend whitelisted (~1 business day).</p>
 </section>
 
 <section class="features">
@@ -141,14 +148,14 @@
     <p>Point Spec2JIRA at any Confluence specification page. It analyzes the content and generates a complete work breakdown — epics, stories, tasks, and acceptance criteria — in minutes.</p>
   </div>
   <div class="feature">
-    <div class="icon purple">&#128274;</div>
-    <h3>Full Data Sovereignty</h3>
-    <p>The AI model runs on a Docker container you deploy on your own hardware. Open-source model, no external API calls, no data leaves your environment. Built for teams with strict compliance requirements.</p>
-  </div>
-  <div class="feature">
     <div class="icon green">&#9998;</div>
     <h3>Human Review &amp; Edit</h3>
     <p>Every generated breakdown goes through an interactive editor. Your team reviews, edits, and approves before anything is pushed to Jira. AI assists, humans decide.</p>
+  </div>
+  <div class="feature">
+    <div class="icon purple">&#128274;</div>
+    <h3>Your Data Stays Yours</h3>
+    <p>The AI runs on a Docker container you deploy on your own hardware using an open-source model (Qwen 2.5). No external API calls, no data leaves your environment. For teams who can't — or won't — send specifications to cloud AI services.</p>
   </div>
 </section>
 
