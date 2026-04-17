@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Documentation — Spec2JIRA</title>
-<meta name="description" content="Installation and setup guide for Spec2JIRA. Deploy the self-hosted AI backend and connect it to your Confluence and Jira instance.">
+<meta name="description" content="Installation and setup guide for Spec2JIRA / Spec2Tickets. Deploy the self-hosted AI backend on your own infrastructure and connect it to your Confluence and Jira instance.">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -71,6 +71,7 @@
     margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
   }
   .content li { margin-bottom: 6px; line-height: 1.6; }
+  .content li ul { margin-top: 6px; }
   .content strong { color: var(--navy); }
   .content a { color: var(--blue); }
 
@@ -135,142 +136,348 @@
 <div class="page">
 <aside class="sidebar">
   <div class="section-title">Getting Started</div>
-  <a href="#prerequisites">Prerequisites</a>
-  <a href="#install-app">Install the App</a>
-  <a href="#deploy-backend">Deploy Backend</a>
-  <a href="#download-model">Download Model</a>
-  <a href="#configure">Configure</a>
-  <a href="#first-run">First Run</a>
+  <a href="#overview">Overview</a>
+  <a href="#requirements">Requirements</a>
+  <a href="#cloud-gpu">Cloud GPU shortcut</a>
+
+  <div class="section-title">Installation</div>
+  <a href="#step-0">Step 0: NVIDIA drivers</a>
+  <a href="#step-1">Step 1: Docker &amp; toolkit</a>
+  <a href="#step-2">Step 2: Download backend</a>
+  <a href="#step-3">Step 3: Download models</a>
+  <a href="#step-4">Step 4: Configure</a>
+  <a href="#step-5">Step 5: Start</a>
+  <a href="#step-6">Step 6: HTTPS</a>
+  <a href="#step-7">Step 7: Request whitelist</a>
+  <a href="#step-8">Step 8: Connect Forge app</a>
+
   <div class="section-title">Reference</div>
-  <a href="#env-vars">Environment Variables</a>
-  <a href="#gpu-compat">GPU Compatibility</a>
+  <a href="#commands">Commands</a>
+  <a href="#fine-tuning">Fine-tuning</a>
   <a href="#troubleshooting">Troubleshooting</a>
+  <a href="#privacy">Data privacy</a>
 </aside>
 
 <main class="content">
 
 <h1>Documentation</h1>
-<p class="meta">Getting started with Spec2JIRA for Confluence and Jira</p>
+<p class="meta">Self-hosted install guide for Spec2Tickets</p>
 
 <div class="callout">
-  <strong>Setup time:</strong> ~30 minutes. You'll need a server with an NVIDIA GPU and Docker installed.
+  <strong>Setup time:</strong> ~30–45 minutes of active work, plus up to one business day for backend whitelist approval (<a href="#step-7">Step 7</a>). You'll need a Linux server with an NVIDIA GPU (24&nbsp;GB+ VRAM).
 </div>
 
-<h2 id="prerequisites">Prerequisites</h2>
+<h2 id="overview">Overview</h2>
+<p>The Spec2JIRA backend runs AI models that convert your Confluence specifications into structured Jira work items. It runs on <strong>your infrastructure</strong> — your data never leaves your network.</p>
+<p>The Forge app in Confluence and Jira (installed from the Atlassian Marketplace as <strong>Spec2Tickets for Confluence and Jira</strong>) connects to your self-hosted backend over HTTPS. All AI inference happens on your hardware using the open-source Qwen 2.5 model.</p>
+
+<h2 id="requirements">Requirements</h2>
 
 <table>
-  <tr><th>Requirement</th><th>Details</th></tr>
-  <tr><td>Atlassian Cloud</td><td>Confluence Cloud + Jira Cloud instance</td></tr>
-  <tr><td>Server</td><td>Linux server (Ubuntu 22.04+ recommended)</td></tr>
-  <tr><td>GPU</td><td>NVIDIA GPU with 16GB+ VRAM (e.g., T4, L4, A10, RTX 4090)</td></tr>
-  <tr><td>Docker</td><td>Docker CE with NVIDIA Container Toolkit</td></tr>
-  <tr><td>Network</td><td>HTTPS endpoint reachable from Atlassian Cloud</td></tr>
-  <tr><td>Storage</td><td>~30GB free disk space (model + Docker image)</td></tr>
+  <tr><th>Component</th><th>Requirement</th></tr>
+  <tr><td><strong>OS</strong></td><td>Ubuntu 22.04 LTS (tested on GCP Deep Learning VM with CUDA)</td></tr>
+  <tr><td><strong>Image</strong></td><td>Deep Learning VM with CUDA M132 (Ubuntu 22.04, CUDA 12.9, Python 3.12)</td></tr>
+  <tr><td><strong>GPU</strong></td><td>NVIDIA with ≥24&nbsp;GB VRAM — tested: L4, A10, A100, RTX&nbsp;4090</td></tr>
+  <tr><td><strong>RAM</strong></td><td>32&nbsp;GB system RAM (16&nbsp;GB minimum, 32&nbsp;GB recommended)</td></tr>
+  <tr><td><strong>Disk</strong></td><td>SSD, 100&nbsp;GB free (10&nbsp;GB image + 25&nbsp;GB models + Docker overhead)</td></tr>
+  <tr><td><strong>Drivers</strong></td><td>NVIDIA driver 550+</td></tr>
+  <tr><td><strong>Software</strong></td><td>Docker 24+, Docker Compose v2, NVIDIA Container Toolkit</td></tr>
+  <tr><td><strong>Network</strong></td><td>Static IP or domain with HTTPS, reachable from Atlassian Cloud</td></tr>
 </table>
-
-<h2 id="install-app">1. Install the Forge App</h2>
-<p>Install Spec2JIRA from the <a href="https://marketplace.atlassian.com">Atlassian Marketplace</a>. The app will appear as a panel on your Confluence pages and connect to your self-hosted backend.</p>
-
-<h2 id="deploy-backend">2. Deploy the Backend</h2>
-<p>Pull the Docker image and start the container:</p>
-<pre><code><span class="comment"># Pull the latest image</span>
-<span class="cmd">docker pull</span> spec2jira/backend:latest
-
-<span class="comment"># Create configuration</span>
-<span class="cmd">mkdir</span> -p spec2jira &amp;&amp; <span class="cmd">cd</span> spec2jira
-<span class="cmd">cp</span> docker-compose.yml.example docker-compose.yml
-
-<span class="comment"># Generate an API key</span>
-<span class="cmd">echo</span> "API_KEY=$(openssl rand -hex 32)" &gt; .env
-
-<span class="comment"># Start the backend</span>
-<span class="cmd">docker compose up -d</span></code></pre>
-
-<h2 id="download-model">3. Download the AI Model</h2>
-<p>The backend requires the Qwen 2.5 14B GGUF model (~9GB). Download it to your server:</p>
-
-<h3>Option A: Direct download (recommended)</h3>
-<pre><code><span class="comment"># Download model to ./models/base/</span>
-<span class="cmd">./download_model.sh</span></code></pre>
-
-<h3>Option B: Manual download (restricted networks)</h3>
-<p>On a machine with internet access, download from <a href="https://huggingface.co">HuggingFace</a>:</p>
-<pre><code><span class="comment"># On a machine with internet access</span>
-<span class="cmd">wget</span> https://huggingface.co/Qwen/Qwen2.5-14B-Instruct-GGUF/resolve/main/qwen2.5-14b-instruct-q4_k_m.gguf
-
-<span class="comment"># Copy to your server</span>
-<span class="cmd">scp</span> qwen2.5-14b-instruct-q4_k_m.gguf user@your-server:spec2jira/models/base/</code></pre>
 
 <div class="callout warn">
-  <strong>Note:</strong> Some corporate networks may restrict downloads from HuggingFace. In that case, use Option B from an unrestricted machine and transfer the file via SCP or USB.
+  <strong>VRAM note:</strong> The pipeline peaks at ~18&nbsp;GB VRAM during inference. 16&nbsp;GB GPUs (e.g., T4) are <strong>not sufficient</strong>. 24&nbsp;GB minimum is required.
 </div>
 
-<h2 id="configure">4. Configure the Connection</h2>
+<h2 id="cloud-gpu">Using a Cloud GPU VM?</h2>
+<p>If you're using a cloud GPU image (e.g., GCP Deep Learning VM, AWS Deep Learning AMI), NVIDIA drivers, Docker, and the Container Toolkit are typically <strong>pre-installed</strong>. Verify with:</p>
+<pre><code><span class="cmd">nvidia-smi</span>          <span class="comment"># Should show your GPU</span>
+<span class="cmd">docker</span> --version    <span class="comment"># Should show Docker 24+</span>
 
-<h3>4.1 Set up HTTPS</h3>
-<p>Your backend must be accessible via HTTPS. We recommend nginx with Let's Encrypt:</p>
-<pre><code><span class="comment"># Install certbot and get a certificate</span>
-<span class="cmd">sudo certbot</span> --nginx -d api.yourdomain.com</code></pre>
+<span class="comment"># If docker is missing, install it:</span>
+<span class="cmd">curl</span> -fsSL https://get.docker.com | sh
+<span class="cmd">sudo usermod</span> -aG docker $USER
+<span class="cmd">newgrp</span> docker
 
-<h3>4.2 Connect Forge App to Backend</h3>
+<span class="cmd">docker run</span> --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi</code></pre>
+<p>If all three work, <strong>skip directly to Step 2</strong>. If <code>docker</code> returns "permission denied", run <code>newgrp docker</code> or log out and back in — your user needs to be in the <code>docker</code> group.</p>
+
+<h2 id="step-0">Step 0: NVIDIA Drivers</h2>
+<p><em>Skip if <code>nvidia-smi</code> already works.</em></p>
+<pre><code><span class="comment"># Check if drivers are already installed</span>
+<span class="cmd">nvidia-smi</span>
+
+<span class="comment"># If not found, install:</span>
+<span class="cmd">sudo apt</span> update
+<span class="cmd">sudo apt</span> install -y nvidia-driver-550
+
+<span class="comment"># Reboot required after driver install</span>
+<span class="cmd">sudo reboot</span>
+
+<span class="comment"># After reboot, verify:</span>
+<span class="cmd">nvidia-smi</span>
+<span class="comment"># Should show your GPU model and driver version</span></code></pre>
+
+<h2 id="step-1">Step 1: Docker + NVIDIA Container Toolkit</h2>
+<p><em>Skip if <code>docker run --rm --gpus all ...</code> already works.</em></p>
+
+<h3>Install Docker</h3>
+<pre><code><span class="cmd">curl</span> -fsSL https://get.docker.com | sh
+<span class="cmd">sudo usermod</span> -aG docker $USER
+
+<span class="comment"># Apply group change without logging out:</span>
+<span class="cmd">newgrp</span> docker</code></pre>
+
+<h3>Install NVIDIA Container Toolkit</h3>
+<pre><code><span class="cmd">curl</span> -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | \
+  <span class="cmd">sudo gpg</span> --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+<span class="cmd">curl</span> -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  <span class="cmd">sed</span> 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  <span class="cmd">sudo tee</span> /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+<span class="cmd">sudo apt-get</span> update
+<span class="cmd">sudo apt-get</span> install -y nvidia-container-toolkit
+<span class="cmd">sudo nvidia-ctk</span> runtime configure --runtime=docker
+<span class="cmd">sudo systemctl</span> restart docker
+
+<span class="comment"># Verify GPU access in Docker:</span>
+<span class="cmd">docker run</span> --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi
+<span class="comment"># Should show the same GPU as bare-metal nvidia-smi</span></code></pre>
+
+<h2 id="step-2">Step 2: Download Spec2JIRA</h2>
+<pre><code><span class="cmd">curl</span> -fsSL https://spec2jira.com/releases/spec2jira-backend-2.0.0.tar.gz | <span class="cmd">tar</span> xz
+<span class="cmd">cd</span> spec2jira-backend</code></pre>
+<p>This gives you:</p>
+<table>
+  <tr><th>File</th><th>Purpose</th></tr>
+  <tr><td><code>docker-compose.yml</code></td><td>Container configuration (pulls from Docker Hub)</td></tr>
+  <tr><td><code>setup.sh</code></td><td>Downloads AI models from Hugging Face</td></tr>
+  <tr><td><code>.env.example</code></td><td>Configuration template</td></tr>
+  <tr><td><code>requirements-train.txt</code></td><td>Dependencies for optional fine-tuning</td></tr>
+  <tr><td><code>INSTALL.md</code></td><td>Offline copy of this guide</td></tr>
+</table>
+
+<h2 id="step-3">Step 3: Download AI Models</h2>
+<p>The backend uses two open-source Qwen 2.5 models (~25&nbsp;GB total download). This is a one-time step.</p>
+<pre><code><span class="cmd">chmod</span> +x setup.sh train.sh
+<span class="cmd">./setup.sh</span></code></pre>
+<p>The script will automatically install any missing dependencies (pip, huggingface_hub) before downloading.</p>
+<p><strong>What this downloads:</strong></p>
+<ul>
+  <li>Qwen 2.5 14B Instruct (GGUF, ~9&nbsp;GB) — used for spec extraction and classification</li>
+  <li>Qwen 2.5 7B Instruct (~15&nbsp;GB) — base for optional fine-tuning</li>
+</ul>
+<p>Models are saved to <code>./models/</code> and mounted into the Docker container.</p>
+<div class="callout">
+  <strong>Resumable:</strong> If the download is interrupted, re-run <code>./setup.sh</code> — it picks up where it left off.
+</div>
+
+<h2 id="step-4">Step 4: Configure</h2>
+<pre><code><span class="cmd">cp</span> .env.example .env
+<span class="cmd">nano</span> .env  <span class="comment"># Ctrl+O, Enter, Ctrl+X to save and exit</span></code></pre>
+
+<p><strong>Required settings:</strong></p>
+<table>
+  <tr><th>Variable</th><th>Description</th><th>Example</th></tr>
+  <tr><td><code>ATLASSIAN_SITE_URL</code></td><td>Your Atlassian site (without protocol)</td><td><code>yourcompany.atlassian.net</code></td></tr>
+  <tr><td><code>ATLASSIAN_SERVICE_ACCOUNT_EMAIL</code></td><td>Service account email</td><td><code>spec2jira-svc@yourcompany.com</code></td></tr>
+  <tr><td><code>ATLASSIAN_SERVICE_ACCOUNT_TOKEN</code></td><td>API token for the service account</td><td><code>ATATT3xF...</code></td></tr>
+  <tr><td><code>JIRA_PROJECT_KEY</code></td><td>Default Jira project for created issues</td><td><code>PROJ</code></td></tr>
+</table>
+
+<h3>Creating a service account (recommended)</h3>
 <ol>
-  <li>Open any Confluence page</li>
-  <li>Click the Spec2JIRA panel → <strong>Settings</strong></li>
-  <li>Enter your backend URL (e.g., <code>https://api.yourdomain.com</code>)</li>
-  <li>Enter the API key from your <code>.env</code> file</li>
-  <li>Click <strong>Test Connection</strong> to verify</li>
+  <li>Create a dedicated Atlassian account (e.g., <code>spec2jira-svc@yourcompany.com</code>).</li>
+  <li>Grant it <strong>read access</strong> to the Confluence spaces containing your specs.</li>
+  <li>Grant it <strong>write access</strong> to the target Jira project.</li>
+  <li>Generate an API token at <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank">id.atlassian.com/manage-profile/security/api-tokens</a>.</li>
+  <li>Use this email and token in <code>.env</code>.</li>
 </ol>
+<p>Using a dedicated service account with minimal permissions is a security best practice — it limits the backend's access to only what it needs.</p>
 
-<h2 id="first-run">5. First Run</h2>
-<ol>
-  <li>Navigate to a Confluence page with a specification document</li>
-  <li>Click <strong>Generate Breakdown</strong> in the Spec2JIRA panel</li>
-  <li>Wait for the AI pipeline to process (~5-10 minutes for typical documents)</li>
-  <li>Review and edit the generated breakdown in the interactive editor</li>
-  <li>Click <strong>Push to Jira</strong> to create the work items</li>
-</ol>
+<h2 id="step-5">Step 5: Start</h2>
+<pre><code><span class="cmd">docker compose</span> up -d
+
+<span class="comment"># Wait ~60 seconds for models to load into GPU memory, then verify:</span>
+<span class="cmd">curl</span> http://localhost:8000/health</code></pre>
+<div class="callout">
+  <strong>First startup</strong> pulls the Docker image (~11&nbsp;GB) and loads AI models into GPU memory. This can take 2–5 minutes. Subsequent starts are faster.
+</div>
+<p>Watch startup progress:</p>
+<pre><code><span class="cmd">docker compose</span> logs -f --tail=50</code></pre>
+
+<h2 id="step-6">Step 6: Expose via HTTPS</h2>
+<p>The backend must be reachable from Atlassian Cloud over HTTPS.</p>
+
+<h3>6.1 DNS record</h3>
+<p>Add an A record pointing to your VM's public IP:</p>
+<pre><code>Type:      A
+Name:      api
+Points to: &lt;your VM public IP&gt;
+TTL:       3600</code></pre>
+
+<h3>6.2 Install nginx and certbot</h3>
+<pre><code><span class="cmd">sudo apt</span> install -y nginx certbot python3-certbot-nginx</code></pre>
+
+<h3>6.3 Initial HTTP config</h3>
+<p>Create <code>/etc/nginx/sites-enabled/spec2jira</code>:</p>
+<pre><code><span class="cmd">sudo nano</span> /etc/nginx/sites-enabled/spec2jira</code></pre>
+<p>Paste:</p>
+<pre><code>server {
+    listen 80;
+    server_name api.yourcompany.com;
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+    }
+}</code></pre>
+<pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx</code></pre>
+
+<h3>6.4 Get the SSL certificate</h3>
+<pre><code><span class="cmd">sudo certbot</span> --nginx -d api.yourcompany.com</code></pre>
+<p>If certbot fails, make sure your DNS A record from 6.1 has propagated and that port 80 is reachable from the internet.</p>
+
+<h3>6.5 Final HTTPS config</h3>
+<p>Replace the contents of <code>/etc/nginx/sites-enabled/spec2jira</code> with the full HTTPS configuration (certbot writes parts of this automatically; adjust to match):</p>
+<pre><code>server {
+    listen 443 ssl;
+    server_name api.yourcompany.com;
+
+    ssl_certificate     /etc/letsencrypt/live/api.yourcompany.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.yourcompany.com/privkey.pem;
+    include             /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_read_timeout 1800s;  # Pipeline runs can take up to 25 minutes
+    }
+}
+
+server {
+    if ($host = api.yourcompany.com) {
+        return 301 https://$host$request_uri;
+    }
+    listen 80;
+    server_name api.yourcompany.com;
+    return 404;
+}</code></pre>
+<pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx
+
+<span class="comment"># Verify HTTPS works:</span>
+<span class="cmd">curl</span> https://api.yourcompany.com/health</code></pre>
+
+<h2 id="step-7">Step 7: Request Backend Whitelist Approval</h2>
+<p>During early access, each customer's backend domain is added to the Spec2Tickets Forge app allowlist. This is a one-time, ~5-minute step on our side.</p>
+
+<p><strong>Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a> with:</strong></p>
+<ul>
+  <li>Your backend domain (e.g., <code>api.yourcompany.com</code>)</li>
+  <li>Your Atlassian site URL (e.g., <code>yourcompany.atlassian.net</code>)</li>
+  <li>Your name and company</li>
+</ul>
+
+<p>We respond within one business day with a confirmation email. Once you receive confirmation, the Forge app installed on your Atlassian site can reach your backend.</p>
 
 <div class="callout">
-  <strong>First run note:</strong> The initial generation takes longer as the model loads into GPU memory. Subsequent runs are faster.
+  <strong>Tip:</strong> You can send this email as soon as you've chosen your backend domain — no need to wait for HTTPS setup to complete. Running this in parallel with Step 6 reduces total wait time.
 </div>
 
-<h2 id="env-vars">Environment Variables</h2>
+<div class="callout warn">
+  <strong>If you install the Marketplace app before whitelist approval:</strong> "Test Connection" in Step 8 will fail with a 403 error. This is expected. Wait for the confirmation email, then retry — no reinstall required.
+</div>
 
+<h2 id="step-8">Step 8: Connect the Forge App</h2>
+<ol>
+  <li>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the <a href="https://marketplace.atlassian.com" target="_blank">Atlassian Marketplace</a>.</li>
+  <li>In Confluence, open any page. In the page toolbar, click the <strong>&hellip;</strong> (more) menu.</li>
+  <li>Select <strong>Spec2Tickets for Confluence and Jira</strong>. An onboarding screen will appear with configuration instructions.</li>
+  <li>Follow the onboarding instructions to open <strong>Apps &rarr; Spec2JIRA &rarr; Configure</strong>.</li>
+  <li>In the configuration page, enter:
+    <ul>
+      <li>Your backend URL (e.g., <code>https://api.yourcompany.com</code>)</li>
+      <li>Your <code>SPEC2JIRA_API_TOKEN</code> from your backend <code>.env</code> file</li>
+      <li>Your default Jira Project Key (e.g., <code>PROJ</code>)</li>
+    </ul>
+  </li>
+  <li>Click <strong>Save</strong>.</li>
+  <li>Click <strong>Test Connection</strong> — you should see a green checkmark.</li>
+</ol>
+<p>You're ready — open any Confluence specification page and click <strong>Generate Breakdown</strong>.</p>
+
+<h2 id="commands">Commands Reference</h2>
 <table>
-  <tr><th>Variable</th><th>Description</th><th>Default</th></tr>
-  <tr><td><code>API_KEY</code></td><td>Shared secret for authentication</td><td>(required)</td></tr>
-  <tr><td><code>BASE_MODEL_PATH</code></td><td>Path to GGUF model file</td><td><code>/models/base/Qwen2.5-14B-Instruct-Q4_K_M.gguf</code></td></tr>
-  <tr><td><code>PIPELINE_MODE</code></td><td><code>base</code> or <code>finetuned</code></td><td><code>base</code></td></tr>
-  <tr><td><code>FINETUNED_MODEL_PATH</code></td><td>Path to fine-tuned model (if applicable)</td><td>(optional)</td></tr>
+  <tr><th>Command</th><th>Description</th></tr>
+  <tr><td><code>docker compose up -d</code></td><td>Start backend</td></tr>
+  <tr><td><code>docker compose down</code></td><td>Stop backend</td></tr>
+  <tr><td><code>docker compose logs -f</code></td><td>View live logs</td></tr>
+  <tr><td><code>docker compose restart</code></td><td>Restart after config change</td></tr>
+  <tr><td><code>docker compose pull &amp;&amp; docker compose up -d</code></td><td>Update to latest version</td></tr>
 </table>
 
-<h2 id="gpu-compat">GPU Compatibility</h2>
-<p>The Docker image is built for CUDA 12.8. If your GPU requires a different CUDA architecture, rebuild with:</p>
-<pre><code><span class="cmd">docker compose build</span> --build-arg CUDA_ARCH=<span class="comment">&lt;your_arch&gt;</span></code></pre>
+<h2 id="fine-tuning">Fine-Tuning (Optional)</h2>
+<p>Improve breakdown quality by training on your own specification data:</p>
+<pre><code><span class="comment"># 1. Install training dependencies (one-time, inside the container)</span>
+<span class="cmd">docker exec</span> -it spec2jira-backend pip install -r /training/requirements-train.txt
 
-<table>
-  <tr><th>GPU</th><th>VRAM</th><th>CUDA Arch</th><th>Status</th></tr>
-  <tr><td>NVIDIA T4</td><td>16 GB</td><td>sm_75</td><td>Supported</td></tr>
-  <tr><td>NVIDIA L4</td><td>24 GB</td><td>sm_89</td><td>Tested &#10003;</td></tr>
-  <tr><td>NVIDIA A10</td><td>24 GB</td><td>sm_86</td><td>Supported</td></tr>
-  <tr><td>NVIDIA A100</td><td>40/80 GB</td><td>sm_80</td><td>Supported</td></tr>
-  <tr><td>RTX 4090</td><td>24 GB</td><td>sm_89</td><td>Supported</td></tr>
-  <tr><td>RTX 3090</td><td>24 GB</td><td>sm_86</td><td>Supported</td></tr>
-</table>
+<span class="comment"># 2. Add training pairs to training/data/ (see training/README.md for format)</span>
+
+<span class="comment"># 3. Run training (~10-15 minutes on L4)</span>
+<span class="cmd">docker exec</span> -it spec2jira-backend python -m app.training.train_qwen
+
+<span class="comment"># 4. Update config to use fine-tuned model</span>
+<span class="comment">#    Edit .env: set PIPELINE_MODE=finetuned</span>
+
+<span class="comment"># 5. Restart</span>
+<span class="cmd">docker compose</span> restart</code></pre>
 
 <h2 id="troubleshooting">Troubleshooting</h2>
 
-<h3>Connection test fails</h3>
-<p>Verify your backend is accessible: <code>curl -I https://api.yourdomain.com/health</code>. Check that your firewall allows inbound HTTPS (port 443) and that nginx is proxying to port 8000.</p>
+<h3>docker gives "permission denied"</h3>
+<p>Run <code>newgrp docker</code> or log out and back in. Verify your user is in the docker group: <code>groups</code>.</p>
 
-<h3>Generation timeout</h3>
-<p>Large specifications (10,000+ words) may take 15-20 minutes. The Forge app will poll for completion. If it consistently times out, check GPU memory with <code>nvidia-smi</code> and Docker logs with <code>docker compose logs -f</code>.</p>
+<h3>nvidia-container-toolkit install fails with dependency conflict</h3>
+<p>Common on cloud GPU VMs with pre-installed NVIDIA packages. Check if the toolkit is already working: <code>docker run --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi</code>. If it works, skip the toolkit install step.</p>
 
-<h3>Out of GPU memory</h3>
-<p>The 14B Q4 model requires ~8GB VRAM at rest and peaks at ~15GB during generation. Ensure no other GPU workloads are running. If using a 16GB GPU (T4), close other CUDA processes before generating.</p>
+<h3>nvidia-smi works on host but <code>docker run --gpus all</code> fails</h3>
+<p>NVIDIA Container Toolkit is not installed or Docker was not restarted. Run: <code>sudo nvidia-ctk runtime configure --runtime=docker &amp;&amp; sudo systemctl restart docker</code>.</p>
+
+<h3>"No space left on device" during Docker pull</h3>
+<p>You need at least 100&nbsp;GB free. Check with <code>df -h /</code>. Clean Docker cache: <code>docker system prune -af</code>.</p>
+
+<h3>"Out of memory" during generation</h3>
+<p>Ensure no other GPU processes are running: <code>nvidia-smi</code>. The pipeline needs ~18&nbsp;GB VRAM peak during inference — 16&nbsp;GB GPUs are not sufficient.</p>
+
+<h3>Backend starts but health check fails</h3>
+<p>Models may still be loading. Wait 2 minutes and retry. Check logs: <code>docker compose logs -f</code>. Verify models exist: <code>ls -la models/base/</code>.</p>
+
+<h3>Backend unreachable from Confluence</h3>
+<p>Verify HTTPS works from an external machine: <code>curl https://api.yourcompany.com/health</code>. Verify firewall allows inbound port 443. If behind a corporate firewall, ensure Atlassian Cloud IPs can reach your server.</p>
+
+<h3>"Test Connection" fails with 403 error</h3>
+<p>Your backend domain may not yet be whitelisted in the Spec2Tickets Forge app. See <a href="#step-7">Step 7</a>. If you've already received whitelist confirmation, verify that the backend URL in your Forge app configuration exactly matches the domain you submitted.</p>
+
+<h3>Pipeline runs time out (502 Bad Gateway)</h3>
+<p>Increase <code>proxy_read_timeout</code> in nginx to at least <code>1800s</code>. Large specifications (5000+ words) can take 20–25 minutes to process.</p>
+
+<h3>"Model file not found" on startup</h3>
+<p>Run <code>./setup.sh</code> again — the model download may have been interrupted. Verify: <code>ls -la models/base/Qwen2.5-14B-Instruct-GGUF/</code>.</p>
 
 <h3>Need help?</h3>
-<p>Contact us at <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
+<p>Contact <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
+
+<h2 id="privacy">Data Privacy</h2>
+<ul>
+  <li>All AI processing happens on <strong>your</strong> infrastructure.</li>
+  <li>The backend uses customer-provided Atlassian API credentials to read Confluence pages and create Jira issues — these credentials are stored in your <code>.env</code> file only, never transmitted externally.</li>
+  <li>No data passes through Spec2JIRA servers (there are none — the architecture is fully self-hosted).</li>
+  <li>Models run locally with no external API calls during inference.</li>
+  <li>See our full <a href="/privacy">privacy policy</a> for details.</li>
+</ul>
 
 </main>
 </div>
