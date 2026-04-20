@@ -146,6 +146,7 @@
   <a href="#step-2">Step 2: Download backend</a>
   <a href="#step-3">Step 3: Download models</a>
   <a href="#step-4">Step 4: Configure</a>
+  <a href="#step-4-1">Step 4.1: Generate API key</a>
   <a href="#step-5">Step 5: Start</a>
   <a href="#step-6">Step 6: HTTPS</a>
   <a href="#step-7">Step 7: Request whitelist</a>
@@ -163,9 +164,8 @@
 <h1>Documentation</h1>
 <p class="meta">Self-hosted install guide for Spec2Tickets</p>
 
-<div class="info-banner">
-  <span class="icon">ℹ️</span>
-  <span>ℹTwo names, one product — Spec2Tickets is how the app is published on the Atlassian Marketplace. Spec2JIRA is the project and vendor name you'll see in the backend, in .env variables like SPEC2JIRA_API_TOKEN, and across this site.</span>
+<div class="callout">
+  <strong>ℹ Two names, one product</strong> — Spec2Tickets is how the app is published on the Atlassian Marketplace. Spec2JIRA is the project and vendor name you'll see in the backend, in <code>.env</code> variables like <code>SPEC2JIRA_API_KEY</code>, and across this site.
 </div>
 
 <div class="callout">
@@ -251,7 +251,7 @@
 <span class="comment"># Should show the same GPU as bare-metal nvidia-smi</span></code></pre>
 
 <h2 id="step-2">Step 2: Download Spec2JIRA</h2>
-<pre><code><span class="cmd">curl</span> -fsSL https://spec2jira.com/releases/spec2jira-backend-2.0.0.tar.gz | <span class="cmd">tar</span> xz
+<pre><code><span class="cmd">curl</span> -fsSL https://spec2jira.com/releases/spec2jira-backend-2.0.1.tar.gz | <span class="cmd">tar</span> xz
 <span class="cmd">cd</span> spec2jira-backend</code></pre>
 <p>This gives you:</p>
 <table>
@@ -289,6 +289,7 @@
   <tr><td><code>ATLASSIAN_SERVICE_ACCOUNT_EMAIL</code></td><td>Service account email</td><td><code>spec2jira-svc@yourcompany.com</code></td></tr>
   <tr><td><code>ATLASSIAN_SERVICE_ACCOUNT_TOKEN</code></td><td>API token for the service account</td><td><code>ATATT3xF...</code></td></tr>
   <tr><td><code>JIRA_PROJECT_KEY</code></td><td>Default Jira project for created issues</td><td><code>PROJ</code></td></tr>
+  <tr><td><code>SPEC2JIRA_API_KEY</code></td><td>Backend API key (see <a href="#step-4-1">Step 4.1</a>)</td><td><code>QCRmjrQPm2APyQ6o...</code></td></tr>
 </table>
 
 <h3>Creating a service account (recommended)</h3>
@@ -301,13 +302,31 @@
 </ol>
 <p>Using a dedicated service account with minimal permissions is a security best practice — it limits the backend's access to only what it needs.</p>
 
+<h2 id="step-4-1">Step 4.1: Generate Backend API Key</h2>
+<p>Spec2Tickets requires a shared secret between your self-hosted backend and the Confluence app. This key authenticates the Forge app to your backend.</p>
+<ol>
+  <li>Generate a random key:
+    <pre><code><span class="cmd">openssl</span> rand -base64 32</code></pre>
+  </li>
+  <li>Set it in your backend <code>.env</code> file:
+    <pre><code>SPEC2JIRA_API_KEY=&lt;paste-output-here&gt;</code></pre>
+  </li>
+  <li>In <a href="#step-8">Step 8</a>, you will paste the <strong>same key</strong> into the Forge app settings. Both values must match exactly.</li>
+</ol>
+<div class="callout warn">
+  <strong>Required:</strong> The backend will refuse to start if <code>SPEC2JIRA_API_KEY</code> is missing or shorter than 16 characters. This is intentional — it prevents accidental production deploys with no authentication.
+</div>
+
 <h2 id="step-5">Step 5: Start</h2>
 <pre><code><span class="cmd">docker compose</span> up -d
 
 <span class="comment"># Wait ~60 seconds for models to load into GPU memory, then verify:</span>
-<span class="cmd">curl</span> http://localhost:8000/health</code></pre>
+<span class="cmd">curl</span> -H "Authorization: Bearer &lt;your-api-key&gt;" http://localhost:8000/health</code></pre>
 <div class="callout">
   <strong>First startup</strong> pulls the Docker image (~11&nbsp;GB) and loads AI models into GPU memory. This can take 2–5 minutes. Subsequent starts are faster.
+</div>
+<div class="callout warn">
+  <strong>Authentication required:</strong> The <code>/health</code> endpoint requires a valid API key. A bare <code>curl http://localhost:8000/health</code> will return <strong>401 Unauthorized</strong> — this is expected behavior, not an error.
 </div>
 <p>Watch startup progress:</p>
 <pre><code><span class="cmd">docker compose</span> logs -f --tail=50</code></pre>
@@ -374,7 +393,7 @@ server {
 <pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx
 
 <span class="comment"># Verify HTTPS works:</span>
-<span class="cmd">curl</span> https://api.yourcompany.com/health</code></pre>
+<span class="cmd">curl</span> -H "Authorization: Bearer &lt;your-api-key&gt;" https://api.yourcompany.com/health</code></pre>
 
 <h2 id="step-7">Step 7: Request Backend Whitelist Approval</h2>
 <p>During early access, each customer's backend domain is added to the Spec2Tickets Forge app allowlist. This is a one-time, ~5-minute step on our side.</p>
@@ -457,14 +476,23 @@ server {
 <h3>"Out of memory" during generation</h3>
 <p>Ensure no other GPU processes are running: <code>nvidia-smi</code>. The pipeline needs ~18&nbsp;GB VRAM peak during inference — 16&nbsp;GB GPUs are not sufficient.</p>
 
+<h3>Backend refuses to start (ValidationError)</h3>
+<p>If the container exits immediately with a Pydantic <code>ValidationError</code> mentioning <code>SPEC2JIRA_API_KEY</code>, your API key is either missing from <code>.env</code> or shorter than 16 characters. Generate one with <code>openssl rand -base64 32</code> and add it to your <code>.env</code> file. See <a href="#step-4-1">Step 4.1</a>.</p>
+
+<h3>Health check returns 401 Unauthorized</h3>
+<p>This is expected. The <code>/health</code> endpoint requires authentication. Use: <code>curl -H "Authorization: Bearer &lt;your-api-key&gt;" http://localhost:8000/health</code>. If you get 401 with a valid key, verify the key in <code>.env</code> matches exactly (no trailing spaces or newlines).</p>
+
 <h3>Backend starts but health check fails</h3>
 <p>Models may still be loading. Wait 2 minutes and retry. Check logs: <code>docker compose logs -f</code>. Verify models exist: <code>ls -la models/base/</code>.</p>
 
 <h3>Backend unreachable from Confluence</h3>
-<p>Verify HTTPS works from an external machine: <code>curl https://api.yourcompany.com/health</code>. Verify firewall allows inbound port 443. If behind a corporate firewall, ensure Atlassian Cloud IPs can reach your server.</p>
+<p>Verify HTTPS works from an external machine: <code>curl -H "Authorization: Bearer &lt;your-api-key&gt;" https://api.yourcompany.com/health</code>. Verify firewall allows inbound port 443. If behind a corporate firewall, ensure Atlassian Cloud IPs can reach your server.</p>
 
 <h3>"Test Connection" fails with 403 error</h3>
 <p>Your backend domain may not yet be whitelisted in the Spec2Tickets Forge app. See <a href="#step-7">Step 7</a>. If you've already received whitelist confirmation, verify that the backend URL in your Forge app configuration exactly matches the domain you submitted.</p>
+
+<h3>"Test Connection" fails with "Unauthorized"</h3>
+<p>The API key in Forge app settings does not match the <code>SPEC2JIRA_API_KEY</code> in your backend <code>.env</code>. Copy the exact value from <code>.env</code> and paste into the Backend API Key field in Forge settings. Both must match character-for-character.</p>
 
 <h3>Pipeline runs time out (502 Bad Gateway)</h3>
 <p>Increase <code>proxy_read_timeout</code> in nginx to at least <code>1800s</code>. Large specifications (5000+ words) can take 20–25 minutes to process.</p>
