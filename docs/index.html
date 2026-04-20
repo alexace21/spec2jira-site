@@ -97,6 +97,8 @@
   pre code { background: none; padding: 0; }
   .cmd { color: var(--blue-light); }
   .comment { color: #6B778C; }
+  .placeholder { color: #FF991F; font-weight: 600; }
+  .placeholder-inline { color: #FF991F; font-weight: 600; background: #FFF7E6; }
 
   table {
     width: 100%; border-collapse: collapse; margin: 16px 0 24px;
@@ -342,7 +344,10 @@ Points to: &lt;your VM public IP&gt;
 TTL:       3600</code></pre>
 
 <h3>6.2 Install nginx and certbot</h3>
-<pre><code><span class="cmd">sudo apt</span> install -y nginx certbot python3-certbot-nginx</code></pre>
+<pre><code><span class="cmd">sudo apt</span> install -y nginx certbot python3-certbot-nginx
+
+<span class="comment"># Remove the default site (prevents it from intercepting traffic)</span>
+<span class="cmd">sudo rm</span> -f /etc/nginx/sites-enabled/default</code></pre>
 
 <h3>6.3 Initial HTTP config</h3>
 <p>Create <code>/etc/nginx/sites-enabled/spec2jira</code>:</p>
@@ -350,7 +355,7 @@ TTL:       3600</code></pre>
 <p>Paste:</p>
 <pre><code>server {
     listen 80;
-    server_name api.yourcompany.com;
+    server_name <span class="placeholder">api.yourcompany.com</span>;
     location / {
         proxy_pass http://127.0.0.1:8000;
     }
@@ -358,17 +363,25 @@ TTL:       3600</code></pre>
 <pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx</code></pre>
 
 <h3>6.4 Get the SSL certificate</h3>
-<pre><code><span class="cmd">sudo certbot</span> --nginx -d api.yourcompany.com</code></pre>
+<pre><code><span class="cmd">sudo certbot</span> --nginx -d <span class="placeholder">api.yourcompany.com</span></code></pre>
+<p>Certbot will ask three questions on first run:</p>
+<ol>
+  <li><strong>Email address</strong> — enter your email (used for renewal reminders and security notices).</li>
+  <li><strong>Terms of Service</strong> — type <code>Y</code> to agree (required).</li>
+  <li><strong>Share email with EFF</strong> — type <code>Y</code> or <code>N</code> (your preference, does not affect the certificate).</li>
+</ol>
 <p>If certbot fails, make sure your DNS A record from 6.1 has propagated and that port 80 is reachable from the internet.</p>
 
 <h3>6.5 Final HTTPS config</h3>
-<p>Replace the contents of <code>/etc/nginx/sites-enabled/spec2jira</code> with the full HTTPS configuration (certbot writes parts of this automatically; adjust to match):</p>
+<p>Open the config file for editing:</p>
+<pre><code><span class="cmd">sudo nano</span> /etc/nginx/sites-enabled/spec2jira</code></pre>
+<p>Replace the contents with the full HTTPS configuration below. <strong>Replace every instance of <code class="placeholder-inline">api.yourcompany.com</code> with your actual domain</strong> (certbot writes the SSL paths automatically; adjust to match your domain):</p>
 <pre><code>server {
     listen 443 ssl;
-    server_name api.yourcompany.com;
+    server_name <span class="placeholder">api.yourcompany.com</span>;
 
-    ssl_certificate     /etc/letsencrypt/live/api.yourcompany.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.yourcompany.com/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/<span class="placeholder">api.yourcompany.com</span>/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/<span class="placeholder">api.yourcompany.com</span>/privkey.pem;
     include             /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
 
@@ -378,22 +391,22 @@ TTL:       3600</code></pre>
         proxy_pass http://localhost:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_read_timeout 1800s;  # Pipeline runs can take up to 25 minutes
+        proxy_read_timeout 1800s;  <span class="comment"># Pipeline runs can take up to 25 minutes</span>
     }
 }
 
 server {
-    if ($host = api.yourcompany.com) {
+    if ($host = <span class="placeholder">api.yourcompany.com</span>) {
         return 301 https://$host$request_uri;
     }
     listen 80;
-    server_name api.yourcompany.com;
+    server_name <span class="placeholder">api.yourcompany.com</span>;
     return 404;
 }</code></pre>
 <pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx
 
 <span class="comment"># Verify HTTPS works:</span>
-<span class="cmd">curl</span> -H "Authorization: Bearer &lt;your-api-key&gt;" https://api.yourcompany.com/health</code></pre>
+<span class="cmd">curl</span> -H "Authorization: Bearer &lt;your-api-key&gt;" https://<span class="placeholder">api.yourcompany.com</span>/health</code></pre>
 
 <h2 id="step-7">Step 7: Request Backend Whitelist Approval</h2>
 <p>During early access, each customer's backend domain is added to the Spec2Tickets Forge app allowlist. This is a one-time, ~5-minute step on our side.</p>
