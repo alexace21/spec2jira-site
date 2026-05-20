@@ -94,10 +94,14 @@
 <main class="content">
 
 <h1>Privacy Policy</h1>
-<p class="meta">Effective Date: April 15, 2026 &middot; Last Updated: April 15, 2026</p>
+<p class="meta">Effective Date: April 15, 2026 &middot; Last Updated: May 20, 2026</p>
 
 <div class="callout">
   <strong>Key principle:</strong> Spec2JIRA is designed so that your data never leaves your infrastructure. The AI processing backend runs on hardware that you own and control.
+</div>
+
+<div class="callout">
+  <strong>Early access (free Marketplace):</strong> Spec2JIRA does not operate a shared multi-tenant backend. Each customer hosts their own backend on their own infrastructure; we add their backend domain to the Spec2Tickets Forge app egress allowlist on request (see <a href="/docs#step-7">installation docs Step 7</a>).
 </div>
 
 <h2>1. Overview</h2>
@@ -110,6 +114,7 @@
   <li><strong>Self-Hosted Backend (customer component):</strong> A Docker container that you deploy on your own infrastructure. This backend performs all AI processing using an open-source language model (Qwen 2.5) running locally on your hardware.</li>
 </ul>
 <p>Data flows directly between the Atlassian Forge platform and your self-hosted backend. <strong>No data is routed through, stored on, or accessible to Spec2JIRA's servers.</strong></p>
+<p>Each customer's backend domain is added to the Spec2Tickets Forge app egress allowlist on a per-installation basis (see <a href="/docs#step-7">installation docs Step 7</a>). Customer data flows only between the Atlassian Forge platform and that specific customer's backend domain — there is no shared multi-tenant backend operated by Spec2JIRA.</p>
 
 <h2>3. Data We Process</h2>
 
@@ -158,13 +163,23 @@
   <li>The self-hosted backend runs in an isolated Docker container on your infrastructure.</li>
 </ul>
 
-<h2>9. Children's Privacy</h2>
+<h2>9. Authentication and Access Control</h2>
+<p>The self-hosted backend authenticates to Confluence and Jira using a <strong>service account</strong> that your Atlassian administrator provisions and scopes. The service account's credentials live in your backend's <code>.env</code> file only — they are never transmitted to Spec2JIRA, the Forge app's resolver layer, or any third party.</p>
+<p><strong>Recommended minimum scope</strong> (least-privilege):</p>
+<ul>
+  <li>Read access to the Confluence spaces containing your specification pages.</li>
+  <li>Create-issue permission in the target Jira project.</li>
+</ul>
+<p>The backend never uses individual end-user credentials; all reads and writes are performed by the service account configured by your administrator. Configuration of the Spec2Tickets Forge app (backend URL, API key, Jira project key) is restricted to Atlassian administrators via the standard <em>Manage Apps &rarr; Configure</em> flow.</p>
+<p>Page-search operations inside the Forge app interface use Atlassian's standard <code>asUser()</code> authorization — users see only the Confluence pages they have read access to in their normal Atlassian session.</p>
+
+<h2>10. Children's Privacy</h2>
 <p>The App is designed for professional software development teams and is not intended for use by individuals under the age of 16.</p>
 
-<h2>10. Changes to This Policy</h2>
+<h2>11. Changes to This Policy</h2>
 <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date. Material changes will be communicated through the Atlassian Marketplace listing.</p>
 
-<h2>11. Contact</h2>
+<h2>12. Contact</h2>
 <p>For questions about this Privacy Policy or the App's data practices:</p>
 <ul>
   <li><strong>Email:</strong> <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>
