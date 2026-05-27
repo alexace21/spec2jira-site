@@ -182,8 +182,8 @@
 
 <table>
   <tr><th>Component</th><th>Requirement</th></tr>
-  <tr><td><strong>OS</strong></td><td>Ubuntu 22.04 LTS (tested on GCP Deep Learning VM with CUDA)</td></tr>
-  <tr><td><strong>Image</strong></td><td>Deep Learning VM with CUDA M132 (Ubuntu 22.04, CUDA 12.9, Python 3.12)</td></tr>
+  <tr><td><strong>OS</strong></td><td>Ubuntu 24.04 LTS or 22.04 LTS (tested on GCP Deep Learning VM with CUDA)</td></tr>
+  <tr><td><strong>Image</strong></td><td>Deep Learning VM with CUDA (Ubuntu 24.04, CUDA 12.x, Python 3.12)</td></tr>
   <tr><td><strong>GPU</strong></td><td>NVIDIA with ≥24&nbsp;GB VRAM — tested: L4, A10, A100, RTX&nbsp;4090</td></tr>
   <tr><td><strong>RAM</strong></td><td>32&nbsp;GB system RAM (16&nbsp;GB minimum, 32&nbsp;GB recommended)</td></tr>
   <tr><td><strong>Disk</strong></td><td>SSD, 100&nbsp;GB free (10&nbsp;GB image + 25&nbsp;GB models + Docker overhead)</td></tr>
@@ -224,6 +224,18 @@
 <span class="comment"># After reboot, verify:</span>
 <span class="cmd">nvidia-smi</span>
 <span class="comment"># Should show your GPU model and driver version</span></code></pre>
+
+<div class="callout warn">
+  <strong>Recommended on Ubuntu 24.04:</strong> pin kernel and NVIDIA packages to prevent automatic upgrades from breaking the NVIDIA driver. Unpaired kernel updates can leave the NVIDIA kernel module unbuilt, causing the backend to fail at next reboot.
+</div>
+<pre><code><span class="comment"># Pin kernel and NVIDIA driver packages against unattended upgrades</span>
+<span class="cmd">sudo apt-mark</span> hold linux-image-generic linux-headers-generic linux-image-gcp
+<span class="cmd">sudo apt-mark</span> hold nvidia-driver-550 nvidia-dkms-550
+
+<span class="comment"># When you want to update them deliberately:</span>
+<span class="comment">#   sudo apt-mark unhold &lt;package&gt;</span>
+<span class="comment">#   sudo apt update &amp;&amp; sudo apt upgrade</span>
+<span class="comment">#   sudo dkms autoinstall   # rebuild NVIDIA module against new kernel</span></code></pre>
 
 <h2 id="step-1">Step 1: Docker + NVIDIA Container Toolkit</h2>
 <p><em>Skip if <code>docker run --rm --gpus all ...</code> already works.</em></p>
