@@ -495,6 +495,12 @@ server {
 <h3>nvidia-smi works on host but <code>docker run --gpus all</code> fails</h3>
 <p>NVIDIA Container Toolkit is not installed or Docker was not restarted. Run: <code>sudo nvidia-ctk runtime configure --runtime=docker &amp;&amp; sudo systemctl restart docker</code>.</p>
 
+<h3>setup.sh fails with "externally-managed-environment" error (Ubuntu 24.04)</h3>
+<p>Ubuntu 24.04 ships Python 3.12, which enforces PEP 668 — system Python cannot have packages installed via <code>pip</code> without an explicit override. The <code>setup.sh</code> script's <code>pip install huggingface_hub</code> step is blocked with this error message. The workaround is a one-time <code>--break-system-packages</code> flag, then re-run <code>setup.sh</code>:</p>
+<pre><code><span class="cmd">pip3 install</span> huggingface_hub --break-system-packages
+<span class="cmd">./setup.sh</span></code></pre>
+<p>This flag is safe in this context — <code>huggingface_hub</code> is used only by <code>setup.sh</code> to download AI models from Hugging Face; the backend itself runs containerized in Docker and does not depend on the host's system Python state. <code>setup.sh</code> will recognize the dependency as already installed and proceed directly to model download.</p>
+
 <h3>"No space left on device" during Docker pull</h3>
 <p>You need at least 100&nbsp;GB free. Check with <code>df -h /</code>. Clean Docker cache: <code>docker system prune -af</code>.</p>
 
