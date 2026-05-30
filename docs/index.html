@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Documentation — Spec2JIRA</title>
-<meta name="description" content="Installation and setup guide for Spec2JIRA / Spec2Tickets. Deploy the self-hosted AI backend on your own infrastructure and connect it to your Confluence and Jira instance.">
+<title>Documentation — Spec2Tickets for Confluence and Jira</title>
+<meta name="description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -140,408 +140,111 @@
   <div class="section-title">Getting Started</div>
   <a href="#overview">Overview</a>
   <a href="#requirements">Requirements</a>
-  <a href="#cloud-gpu">Cloud GPU shortcut</a>
-
-  <div class="section-title">Installation</div>
-  <a href="#step-0">Step 0: NVIDIA drivers</a>
-  <a href="#step-1">Step 1: Docker &amp; toolkit</a>
-  <a href="#step-2">Step 2: Download backend</a>
-  <a href="#step-3">Step 3: Download models</a>
-  <a href="#step-4">Step 4: Configure</a>
-  <a href="#step-4-1">Step 4.1: Generate API key</a>
-  <a href="#step-5">Step 5: Start</a>
-  <a href="#step-6">Step 6: HTTPS</a>
-  <a href="#step-7">Step 7: Request whitelist</a>
-  <a href="#step-8">Step 8: Connect Forge app</a>
-
+  <div class="section-title">Setup (~5 min)</div>
+  <a href="#step-1">1. Install from Marketplace</a>
+  <a href="#step-2">2. Get an Anthropic API key</a>
+  <a href="#step-3">3. Configure the app</a>
+  <div class="section-title">Using it</div>
+  <a href="#generate">4. Generate a breakdown</a>
+  <a href="#review">5. Review &amp; edit</a>
+  <a href="#push">6. Push to Jira</a>
   <div class="section-title">Reference</div>
-  <a href="#commands">Commands</a>
-  <a href="#fine-tuning">Fine-tuning</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#data">Data &amp; privacy</a>
   <a href="#troubleshooting">Troubleshooting</a>
-  <a href="#privacy">Data privacy</a>
+  <a href="#support">Support</a>
 </aside>
 
 <main class="content">
-
 <h1>Documentation</h1>
-<p class="meta">Self-hosted install guide for Spec2Tickets</p>
+<p class="meta">Setup &amp; usage guide for Spec2Tickets</p>
 
 <div class="callout">
-  <strong>ℹ Two names, one product</strong> — Spec2Tickets is how the app is published on the Atlassian Marketplace. Spec2JIRA is the project and vendor name you'll see in the backend, in <code>.env</code> variables like <code>SPEC2JIRA_API_KEY</code>, and across this site.
-</div>
-
-<div class="callout">
-  <strong>Setup time:</strong> ~30–45 minutes of active work, plus up to one business day for backend whitelist approval (<a href="#step-7">Step 7</a>). You'll need a Linux server with an NVIDIA GPU (24&nbsp;GB+ VRAM).
+  <strong>ℹ Two names, one product</strong> — the app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>. <strong>Spec2JIRA</strong> is the vendor name and this site's domain. They are the same product.
 </div>
 
 <h2 id="overview">Overview</h2>
-<p>The Spec2JIRA backend runs AI models that convert your Confluence specifications into structured Jira work items. It runs on <strong>your infrastructure</strong> — your data never leaves your network.</p>
-<p>The Forge app in Confluence and Jira (installed from the Atlassian Marketplace as <strong>Spec2Tickets for Confluence and Jira</strong>) connects to your self-hosted backend over HTTPS. All AI inference happens on your hardware using the open-source Qwen 2.5 model.</p>
+<p>Spec2Tickets turns a Confluence specification page into a structured Jira breakdown — one Epic, Stories, Subtasks, cross-feature dependency links, and quality signals — using <strong>Anthropic's Claude Sonnet 4.6</strong>.</p>
+<p>It runs entirely on <strong>Atlassian Forge</strong>. There is no server to host, no GPU, and no Docker. The app uses <strong>your own Anthropic API key</strong> (Bring Your Own Key), so AI processing happens under your own Anthropic account.</p>
 
 <h2 id="requirements">Requirements</h2>
-
 <table>
-  <tr><th>Component</th><th>Requirement</th></tr>
-  <tr><td><strong>OS</strong></td><td>Ubuntu 24.04 LTS or 22.04 LTS (tested on GCP Deep Learning VM with CUDA)</td></tr>
-  <tr><td><strong>Image</strong></td><td>Deep Learning VM with CUDA (Ubuntu 24.04, CUDA 12.x, Python 3.12)</td></tr>
-  <tr><td><strong>GPU</strong></td><td>NVIDIA with ≥24&nbsp;GB VRAM — tested: L4, A10, A100, RTX&nbsp;4090</td></tr>
-  <tr><td><strong>RAM</strong></td><td>32&nbsp;GB system RAM (16&nbsp;GB minimum, 32&nbsp;GB recommended)</td></tr>
-  <tr><td><strong>Disk</strong></td><td>SSD, 100&nbsp;GB free (10&nbsp;GB image + 25&nbsp;GB models + Docker overhead)</td></tr>
-  <tr><td><strong>Drivers</strong></td><td>NVIDIA driver 550+</td></tr>
-  <tr><td><strong>Software</strong></td><td>Docker 24+, Docker Compose v2, NVIDIA Container Toolkit</td></tr>
-  <tr><td><strong>Network</strong></td><td>Static IP or domain with HTTPS, reachable from Atlassian Cloud</td></tr>
+  <tr><td><strong>Atlassian</strong></td><td>A Confluence Cloud + Jira Cloud site, with admin rights to install and configure an app.</td></tr>
+  <tr><td><strong>Anthropic API key</strong></td><td>An API key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> with billing/credits enabled. Cost is typically a few cents per breakdown, billed to your Anthropic account.</td></tr>
 </table>
+<p>That's it — no infrastructure, drivers, or downloads.</p>
 
-<div class="callout warn">
-  <strong>VRAM note:</strong> The pipeline peaks at ~18&nbsp;GB VRAM during inference. 16&nbsp;GB GPUs (e.g., T4) are <strong>not sufficient</strong>. 24&nbsp;GB minimum is required.
+<h2 id="step-1">Step 1 — Install from the Atlassian Marketplace</h2>
+<p>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the Atlassian Marketplace into your site. Because it works across both products (the editor lives in Confluence; it creates issues in Jira), you'll approve it for <strong>both Confluence and Jira</strong>.</p>
+<div class="callout">
+  <strong>Two entries in <em>Manage Apps</em> is normal.</strong> A cross-product app registers once per product — Atlassian reviewers expect this, and the requested scopes explain why.
 </div>
 
-<h2 id="cloud-gpu">Using a Cloud GPU VM?</h2>
-<p>If you're using a cloud GPU image (e.g., GCP Deep Learning VM, AWS Deep Learning AMI), NVIDIA drivers, Docker, and the Container Toolkit are typically <strong>pre-installed</strong>. Verify with:</p>
-<pre><code><span class="cmd">nvidia-smi</span>          <span class="comment"># Should show your GPU</span>
-<span class="cmd">docker</span> --version    <span class="comment"># Should show Docker 24+</span>
-
-<span class="comment"># If docker is missing, install it:</span>
-<span class="cmd">curl</span> -fsSL https://get.docker.com | sh
-<span class="cmd">sudo usermod</span> -aG docker $USER
-<span class="cmd">newgrp</span> docker
-
-<span class="cmd">docker run</span> --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi</code></pre>
-<p>If all three work, <strong>skip directly to Step 2</strong>. If <code>docker</code> returns "permission denied", run <code>newgrp docker</code> or log out and back in — your user needs to be in the <code>docker</code> group.</p>
-
-<h2 id="step-0">Step 0: NVIDIA Drivers</h2>
-<p><em>Skip if <code>nvidia-smi</code> already works.</em></p>
-<pre><code><span class="comment"># Check if drivers are already installed</span>
-<span class="cmd">nvidia-smi</span>
-
-<span class="comment"># If not found, install:</span>
-<span class="cmd">sudo apt</span> update
-<span class="cmd">sudo apt</span> install -y nvidia-driver-550
-
-<span class="comment"># Reboot required after driver install</span>
-<span class="cmd">sudo reboot</span>
-
-<span class="comment"># After reboot, verify:</span>
-<span class="cmd">nvidia-smi</span>
-<span class="comment"># Should show your GPU model and driver version</span></code></pre>
-
-<div class="callout warn">
-  <strong>Recommended on Ubuntu 24.04:</strong> pin kernel and NVIDIA packages to prevent automatic upgrades from breaking the NVIDIA driver. Unpaired kernel updates can leave the NVIDIA kernel module unbuilt, causing the backend to fail at next reboot.
+<h2 id="step-2">Step 2 — Get an Anthropic API key</h2>
+<ol>
+  <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (or create an account).</li>
+  <li>Open <strong>Settings → API Keys → Create Key</strong> and copy the key (it looks like <code>sk-ant-api03-…</code>).</li>
+  <li>Make sure your Anthropic account has billing or credits set up under <strong>Billing</strong>.</li>
+</ol>
+<div class="callout">
+  Your key stays yours. Spec2Tickets stores it in Atlassian's encrypted Forge secret storage and uses it only to call Anthropic on your behalf — see <a href="#data">Data &amp; privacy</a>.
 </div>
-<pre><code><span class="comment"># Pin kernel and NVIDIA driver packages against unattended upgrades</span>
-<span class="cmd">sudo apt-mark</span> hold linux-image-generic linux-headers-generic linux-image-gcp
-<span class="cmd">sudo apt-mark</span> hold nvidia-driver-550 nvidia-dkms-550
 
-<span class="comment"># When you want to update them deliberately:</span>
-<span class="comment">#   sudo apt-mark unhold &lt;package&gt;</span>
-<span class="comment">#   sudo apt update &amp;&amp; sudo apt upgrade</span>
-<span class="comment">#   sudo dkms autoinstall   # rebuild NVIDIA module against new kernel</span></code></pre>
+<h2 id="step-3">Step 3 — Configure the app</h2>
+<ol>
+  <li>In Confluence, open <strong>Settings</strong> (gear icon, top right) &rarr; <strong>Apps</strong>, and find <strong>Spec2Tickets Settings</strong> in the sidebar.</li>
+  <li>Paste your <strong>Anthropic API key</strong>.</li>
+  <li>Set a <strong>default Jira project key</strong> (e.g. <code>SCRUM</code>) — the project where issues will be created — then <strong>Test &amp; Save</strong>.</li>
+  <li><em>(Optional)</em> If your Jira project requires custom fields on create, add them under <strong>Advanced</strong>.</li>
+</ol>
 
-<h2 id="step-1">Step 1: Docker + NVIDIA Container Toolkit</h2>
-<p><em>Skip if <code>docker run --rm --gpus all ...</code> already works.</em></p>
+<h2 id="generate">Step 4 — Generate a breakdown</h2>
+<ol>
+  <li>Open the Spec2Tickets page and pick the Confluence specification page you want to convert.</li>
+  <li>Click <strong>Generate</strong>. Claude analyzes the page and produces the breakdown — typically <strong>60–150 seconds</strong> depending on spec size.</li>
+</ol>
 
-<h3>Install Docker</h3>
-<pre><code><span class="cmd">curl</span> -fsSL https://get.docker.com | sh
-<span class="cmd">sudo usermod</span> -aG docker $USER
-
-<span class="comment"># Apply group change without logging out:</span>
-<span class="cmd">newgrp</span> docker</code></pre>
-
-<h3>Install NVIDIA Container Toolkit</h3>
-<pre><code><span class="cmd">curl</span> -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | \
-  <span class="cmd">sudo gpg</span> --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
-
-<span class="cmd">curl</span> -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
-  <span class="cmd">sed</span> 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-  <span class="cmd">sudo tee</span> /etc/apt/sources.list.d/nvidia-container-toolkit.list
-
-<span class="cmd">sudo apt-get</span> update
-<span class="cmd">sudo apt-get</span> install -y nvidia-container-toolkit
-<span class="cmd">sudo nvidia-ctk</span> runtime configure --runtime=docker
-<span class="cmd">sudo systemctl</span> restart docker
-
-<span class="comment"># Verify GPU access in Docker:</span>
-<span class="cmd">docker run</span> --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi
-<span class="comment"># Should show the same GPU as bare-metal nvidia-smi</span></code></pre>
-
-<h2 id="step-2">Step 2: Download Spec2JIRA</h2>
-<pre><code><span class="cmd">curl</span> -fsSL https://spec2jira.com/releases/spec2jira-backend-2.2.0.tar.gz | <span class="cmd">tar</span> xz
-<span class="cmd">cd</span> spec2jira-backend</code></pre>
-<p>This gives you:</p>
-<table>
-  <tr><th>File</th><th>Purpose</th></tr>
-  <tr><td><code>docker-compose.yml</code></td><td>Container configuration (pulls from Docker Hub)</td></tr>
-  <tr><td><code>setup.sh</code></td><td>Downloads AI models from Hugging Face</td></tr>
-  <tr><td><code>.env.example</code></td><td>Configuration template</td></tr>
-  <tr><td><code>requirements-train.txt</code></td><td>Dependencies for optional fine-tuning</td></tr>
-  <tr><td><code>INSTALL.md</code></td><td>Offline copy of this guide</td></tr>
-</table>
-
-<h2 id="step-3">Step 3: Download AI Models</h2>
-<p>The backend uses two open-source Qwen 2.5 models (~25&nbsp;GB total download). This is a one-time step.</p>
-<pre><code><span class="cmd">chmod</span> +x setup.sh train.sh
-<span class="cmd">./setup.sh</span></code></pre>
-<p>The script will automatically install any missing dependencies (pip, huggingface_hub) before downloading.</p>
-<p><strong>What this downloads:</strong></p>
+<h2 id="review">Step 5 — Review &amp; edit</h2>
+<p>Review the breakdown before anything is written to Jira. You can edit:</p>
 <ul>
-  <li>Qwen 2.5 14B Instruct (GGUF, ~9&nbsp;GB) — used for spec extraction and classification</li>
-  <li>Qwen 2.5 7B Instruct (~15&nbsp;GB) — base for optional fine-tuning</li>
+  <li>Feature names, user stories, descriptions, and acceptance criteria.</li>
+  <li><strong>Priority</strong>, <strong>story points</strong> (suggested), and a <strong>complexity</strong> signal per Story.</li>
+  <li><strong>Labels</strong> on the Epic and on each Story.</li>
+  <li>Shared (cross-cutting) acceptance criteria — assign them to the right Story.</li>
 </ul>
-<p>Models are saved to <code>./models/</code> and mounted into the Docker container.</p>
-<div class="callout">
-  <strong>Resumable:</strong> If the download is interrupted, re-run <code>./setup.sh</code> — it picks up where it left off.
-</div>
+<p>The review screen also surfaces quality signals — confidence per feature, risks, ambiguities, and any circular dependencies it auto-resolved.</p>
 
-<h2 id="step-4">Step 4: Configure</h2>
-<pre><code><span class="cmd">cp</span> .env.example .env
-<span class="cmd">nano</span> .env  <span class="comment"># Ctrl+O, Enter, Ctrl+X to save and exit</span></code></pre>
-
-<p><strong>Required settings:</strong></p>
-<table>
-  <tr><th>Variable</th><th>Description</th><th>Example</th></tr>
-  <tr><td><code>ATLASSIAN_SITE_URL</code></td><td>Your Atlassian site (without protocol)</td><td><code>yourcompany.atlassian.net</code></td></tr>
-  <tr><td><code>ATLASSIAN_SERVICE_ACCOUNT_EMAIL</code></td><td>Service account email</td><td><code>spec2jira-svc@yourcompany.com</code></td></tr>
-  <tr><td><code>ATLASSIAN_SERVICE_ACCOUNT_TOKEN</code></td><td>API token for the service account</td><td><code>ATATT3xF...</code></td></tr>
-  <tr><td><code>JIRA_PROJECT_KEY</code></td><td>Default Jira project for created issues</td><td><code>PROJ</code></td></tr>
-  <tr><td><code>SPEC2JIRA_API_KEY</code></td><td>Backend API key (see <a href="#step-4-1">Step 4.1</a>)</td><td><code>QCRmjrQPm2APyQ6o...</code></td></tr>
-</table>
-
-<h3>Creating a service account (recommended)</h3>
-<ol>
-  <li>Create a dedicated Atlassian account (e.g., <code>spec2jira-svc@yourcompany.com</code>).</li>
-  <li>Grant it <strong>read access</strong> to the Confluence spaces containing your specs.</li>
-  <li>Grant it <strong>write access</strong> to the target Jira project.</li>
-  <li>Generate an API token at <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank">id.atlassian.com/manage-profile/security/api-tokens</a>.</li>
-  <li>Use this email and token in <code>.env</code>.</li>
-</ol>
-<p>Using a dedicated service account with minimal permissions is a security best practice — it limits the backend's access to only what it needs.</p>
-
-<h2 id="step-4-1">Step 4.1: Generate Backend API Key</h2>
-<p>Spec2Tickets requires a shared secret between your self-hosted backend and the Confluence app. This key authenticates the Forge app to your backend.</p>
-<ol>
-  <li>Generate a random key:
-    <pre><code><span class="cmd">openssl</span> rand -base64 32</code></pre>
-  </li>
-  <li>Set it in your backend <code>.env</code> file:
-    <pre><code>SPEC2JIRA_API_KEY=&lt;paste-output-here&gt;</code></pre>
-  </li>
-  <li>In <a href="#step-8">Step 8</a>, you will paste the <strong>same key</strong> into the Forge app settings. Both values must match exactly.</li>
-</ol>
-<div class="callout warn">
-  <strong>Required:</strong> The backend will refuse to start if <code>SPEC2JIRA_API_KEY</code> is missing or shorter than 16 characters. This is intentional — it prevents accidental production deploys with no authentication.
-</div>
-
-<h2 id="step-5">Step 5: Start</h2>
-<pre><code><span class="cmd">docker compose</span> up -d
-
-<span class="comment"># Wait ~60 seconds for models to load into GPU memory, then verify:</span>
-<span class="cmd">curl</span> -H "Authorization: Bearer &lt;your-api-key&gt;" http://localhost:8000/health</code></pre>
-<div class="callout">
-  <strong>First startup</strong> pulls the Docker image (~11&nbsp;GB) and loads AI models into GPU memory. This can take 2–5 minutes. Subsequent starts are faster.
-</div>
-<div class="callout warn">
-  <strong>Authentication required:</strong> The <code>/health</code> endpoint requires a valid API key. A bare <code>curl http://localhost:8000/health</code> will return <strong>401 Unauthorized</strong> — this is expected behavior, not an error.
-</div>
-<p>Watch startup progress:</p>
-<pre><code><span class="cmd">docker compose</span> logs -f --tail=50</code></pre>
-
-<h2 id="step-6">Step 6: Expose via HTTPS</h2>
-<p>The backend must be reachable from Atlassian Cloud over HTTPS.</p>
-
-<h3>6.1 DNS record</h3>
-<p>Add an A record pointing to your VM's public IP:</p>
-<pre><code>Type:      A
-Name:      api
-Points to: &lt;your VM public IP&gt;
-TTL:       3600</code></pre>
-
-<h3>6.2 Install nginx and certbot</h3>
-<pre><code><span class="cmd">sudo apt</span> install -y nginx certbot python3-certbot-nginx
-
-<span class="comment"># Remove the default site (prevents it from intercepting traffic)</span>
-<span class="cmd">sudo rm</span> -f /etc/nginx/sites-enabled/default</code></pre>
-
-<h3>6.3 Initial HTTP config</h3>
-<p>Create <code>/etc/nginx/sites-enabled/spec2jira</code>:</p>
-<pre><code><span class="cmd">sudo nano</span> /etc/nginx/sites-enabled/spec2jira</code></pre>
-<p>Paste:</p>
-<pre><code>server {
-    listen 80;
-    server_name <span class="placeholder">api.yourcompany.com</span>;
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-    }
-}</code></pre>
-<pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx</code></pre>
-
-<h3>6.4 Get the SSL certificate</h3>
-<pre><code><span class="cmd">sudo certbot</span> --nginx -d <span class="placeholder">api.yourcompany.com</span></code></pre>
-<p>Certbot will ask three questions on first run:</p>
-<ol>
-  <li><strong>Email address</strong> — enter your email (used for renewal reminders and security notices).</li>
-  <li><strong>Terms of Service</strong> — type <code>Y</code> to agree (required).</li>
-  <li><strong>Share email with EFF</strong> — type <code>Y</code> or <code>N</code> (your preference, does not affect the certificate).</li>
-</ol>
-<p>If certbot fails, make sure your DNS A record from 6.1 has propagated and that port 80 is reachable from the internet.</p>
-
-<h3>6.5 Final HTTPS config</h3>
-<p>Open the config file for editing:</p>
-<pre><code><span class="cmd">sudo nano</span> /etc/nginx/sites-enabled/spec2jira</code></pre>
-<p>Replace the contents with the full HTTPS configuration below. <strong>Replace every instance of <code class="placeholder-inline">api.yourcompany.com</code> with your actual domain</strong> (certbot writes the SSL paths automatically; adjust to match your domain):</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name <span class="placeholder">api.yourcompany.com</span>;
-
-    ssl_certificate     /etc/letsencrypt/live/<span class="placeholder">api.yourcompany.com</span>/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/<span class="placeholder">api.yourcompany.com</span>/privkey.pem;
-    include             /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
-
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-
-    location / {
-        proxy_pass http://localhost:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_read_timeout 1800s;  <span class="comment"># Pipeline runs can take up to 25 minutes</span>
-    }
-}
-
-server {
-    if ($host = <span class="placeholder">api.yourcompany.com</span>) {
-        return 301 https://$host$request_uri;
-    }
-    listen 80;
-    server_name <span class="placeholder">api.yourcompany.com</span>;
-    return 404;
-}</code></pre>
-<pre><code><span class="cmd">sudo nginx</span> -t &amp;&amp; <span class="cmd">sudo systemctl</span> reload nginx
-
-<span class="comment"># Verify HTTPS works:</span>
-<span class="cmd">curl</span> -H "Authorization: Bearer &lt;your-api-key&gt;" https://<span class="placeholder">api.yourcompany.com</span>/health</code></pre>
-
-<h2 id="step-7">Step 7: Request Backend Whitelist Approval</h2>
-<p>During early access, each customer's backend domain is added to the Spec2Tickets Forge app allowlist. This is a one-time, ~5-minute step on our side.</p>
-
-<p><strong>Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a> with:</strong></p>
+<h2 id="push">Step 6 — Push to Jira</h2>
+<p>Click <strong>Push to Jira</strong>. Spec2Tickets creates, in your project:</p>
 <ul>
-  <li>Your backend domain (e.g., <code>api.yourcompany.com</code>)</li>
-  <li>Your Atlassian site URL (e.g., <code>yourcompany.atlassian.net</code>)</li>
-  <li>Your name and company</li>
+  <li>One <strong>Epic</strong> for the spec.</li>
+  <li>A <strong>Story</strong> per feature (with priority, story points, and labels).</li>
+  <li><strong>Subtasks</strong> under each Story.</li>
+  <li><strong>“blocks / is blocked by” links</strong> for cross-feature dependencies.</li>
 </ul>
+<p>Issues are created with your own Atlassian permissions — you'll see links to the new Epic and Stories when it's done.</p>
 
-<p>We respond within one business day with a confirmation email. Once you receive confirmation, the Forge app installed on your Atlassian site can reach your backend.</p>
-
-<div class="callout">
-  <strong>Tip:</strong> You can send this email as soon as you've chosen your backend domain — no need to wait for HTTPS setup to complete. Running this in parallel with Step 6 reduces total wait time.
-</div>
-
-<div class="callout warn">
-  <strong>If you install the Marketplace app before whitelist approval:</strong> "Test Connection" in Step 8 will fail with a 403 error. This is expected. Wait for the confirmation email, then retry — no reinstall required.
-</div>
-
-<h2 id="step-8">Step 8: Connect the Forge App</h2>
-<ol>
-  <li>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the <a href="https://marketplace.atlassian.com" target="_blank">Atlassian Marketplace</a>.</li>
-  <li>In Confluence, open any page. In the page toolbar, click the <strong>&hellip;</strong> (more) menu.</li>
-  <li>Select <strong>Spec2Tickets for Confluence and Jira</strong>. An onboarding screen will appear with configuration instructions.</li>
-  <li>Follow the onboarding instructions to open <strong>Apps &rarr; Spec2JIRA &rarr; Configure</strong>.</li>
-  <li>In the configuration page, enter:
-    <ul>
-      <li>Your backend URL (e.g., <code>https://api.yourcompany.com</code>)</li>
-      <li>Your <code>SPEC2JIRA_API_KEY</code> from your backend <code>.env</code> file</li>
-      <li>Your default Jira Project Key (e.g., <code>PROJ</code>)</li>
-    </ul>
-  </li>
-  <li>Click <strong>Save</strong>.</li>
-  <li>Click <strong>Test Connection</strong> — you should see a green checkmark.</li>
-</ol>
-<p>You're ready — open any Confluence specification page and click <strong>Generate Breakdown</strong>.</p>
-
-<h2 id="commands">Commands Reference</h2>
+<h2 id="pricing">Pricing</h2>
 <table>
-  <tr><th>Command</th><th>Description</th></tr>
-  <tr><td><code>docker compose up -d</code></td><td>Start backend</td></tr>
-  <tr><td><code>docker compose down</code></td><td>Stop backend</td></tr>
-  <tr><td><code>docker compose logs -f</code></td><td>View live logs</td></tr>
-  <tr><td><code>docker compose restart</code></td><td>Restart after config change</td></tr>
-  <tr><td><code>docker compose pull &amp;&amp; docker compose up -d</code></td><td>Update to latest version</td></tr>
+  <tr><th>Plan</th><th>Price</th><th>Breakdowns / month</th></tr>
+  <tr><td><strong>Free</strong></td><td>—</td><td>3</td></tr>
+  <tr><td><strong>Pro</strong></td><td>€20 / month</td><td>Unlimited</td></tr>
 </table>
+<p>You bring your own Anthropic API key on every plan, so AI usage is billed to your Anthropic account separately. The subscription covers the app itself.</p>
 
-<h2 id="fine-tuning">Fine-Tuning (Optional)</h2>
-<p>Improve breakdown quality by training on your own specification data:</p>
-<pre><code><span class="comment"># 1. Install training dependencies (one-time, inside the container)</span>
-<span class="cmd">docker exec</span> -it spec2jira-backend pip install -r /training/requirements-train.txt
-
-<span class="comment"># 2. Add training pairs to training/data/ (see training/README.md for format)</span>
-
-<span class="comment"># 3. Run training (~10-15 minutes on L4)</span>
-<span class="cmd">docker exec</span> -it spec2jira-backend python -m app.training.train_qwen
-
-<span class="comment"># 4. Update config to use fine-tuned model</span>
-<span class="comment">#    Edit .env: set PIPELINE_MODE=finetuned</span>
-
-<span class="comment"># 5. Restart</span>
-<span class="cmd">docker compose</span> restart</code></pre>
+<h2 id="data">Data &amp; privacy</h2>
+<p>Spec2Tickets operates no backend. Your page content is sent to <strong>Anthropic</strong> using <strong>your own API key</strong>, governed by your agreement with Anthropic — by default Anthropic does not train on API data and retains it only briefly. Page content and breakdowns are stored transiently in Atlassian Forge storage and removed after you push. Full details are in the <a href="/privacy">Privacy Policy</a>.</p>
 
 <h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+  <tr><td><strong>“API key not configured”</strong></td><td>Add your Anthropic API key under Settings (Step 3).</td></tr>
+  <tr><td><strong>Anthropic rate limit / credits</strong></td><td>Check your usage tier and billing at console.anthropic.com.</td></tr>
+  <tr><td><strong>Subtasks created as a checklist</strong></td><td>Your Jira project has no Subtask issue type — enable it in project settings, or contact support.</td></tr>
+  <tr><td><strong>“You've reached your free limit”</strong></td><td>You've used your 3 free breakdowns this month. Upgrade to Pro, or wait for the monthly reset.</td></tr>
+</table>
 
-<h3>docker gives "permission denied"</h3>
-<p>Run <code>newgrp docker</code> or log out and back in. Verify your user is in the docker group: <code>groups</code>.</p>
-
-<h3>nvidia-container-toolkit install fails with dependency conflict</h3>
-<p>Common on cloud GPU VMs with pre-installed NVIDIA packages. Check if the toolkit is already working: <code>docker run --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi</code>. If it works, skip the toolkit install step.</p>
-
-<h3>nvidia-smi works on host but <code>docker run --gpus all</code> fails</h3>
-<p>NVIDIA Container Toolkit is not installed or Docker was not restarted. Run: <code>sudo nvidia-ctk runtime configure --runtime=docker &amp;&amp; sudo systemctl restart docker</code>.</p>
-
-<h3>setup.sh fails with "externally-managed-environment" error (Ubuntu 24.04)</h3>
-<p>Ubuntu 24.04 ships Python 3.12, which enforces PEP 668 — system Python cannot have packages installed via <code>pip</code> without an explicit override. The <code>setup.sh</code> script's <code>pip install huggingface_hub</code> step is blocked with this error message. The workaround is a one-time <code>--break-system-packages</code> flag, then re-run <code>setup.sh</code>:</p>
-<pre><code><span class="cmd">pip3 install</span> huggingface_hub --break-system-packages
-<span class="cmd">./setup.sh</span></code></pre>
-<p>This flag is safe in this context — <code>huggingface_hub</code> is used only by <code>setup.sh</code> to download AI models from Hugging Face; the backend itself runs containerized in Docker and does not depend on the host's system Python state. <code>setup.sh</code> will recognize the dependency as already installed and proceed directly to model download.</p>
-
-<h3>"No space left on device" during Docker pull</h3>
-<p>You need at least 100&nbsp;GB free. Check with <code>df -h /</code>. Clean Docker cache: <code>docker system prune -af</code>.</p>
-
-<h3>"Out of memory" during generation</h3>
-<p>Ensure no other GPU processes are running: <code>nvidia-smi</code>. The pipeline needs ~18&nbsp;GB VRAM peak during inference — 16&nbsp;GB GPUs are not sufficient.</p>
-
-<h3>Backend refuses to start (ValidationError)</h3>
-<p>If the container exits immediately with a Pydantic <code>ValidationError</code> mentioning <code>SPEC2JIRA_API_KEY</code>, your API key is either missing from <code>.env</code> or shorter than 16 characters. Generate one with <code>openssl rand -base64 32</code> and add it to your <code>.env</code> file. See <a href="#step-4-1">Step 4.1</a>.</p>
-
-<h3>Health check returns 401 Unauthorized</h3>
-<p>This is expected. The <code>/health</code> endpoint requires authentication. Use: <code>curl -H "Authorization: Bearer &lt;your-api-key&gt;" http://localhost:8000/health</code>. If you get 401 with a valid key, verify the key in <code>.env</code> matches exactly (no trailing spaces or newlines).</p>
-
-<h3>Backend starts but health check fails</h3>
-<p>Models may still be loading. Wait 2 minutes and retry. Check logs: <code>docker compose logs -f</code>. Verify models exist: <code>ls -la models/base/</code>.</p>
-
-<h3>Backend unreachable from Confluence</h3>
-<p>Verify HTTPS works from an external machine: <code>curl -H "Authorization: Bearer &lt;your-api-key&gt;" https://api.yourcompany.com/health</code>. Verify firewall allows inbound port 443. If behind a corporate firewall, ensure Atlassian Cloud IPs can reach your server.</p>
-
-<h3>"Test Connection" fails with 403 error</h3>
-<p>Your backend domain may not yet be whitelisted in the Spec2Tickets Forge app. See <a href="#step-7">Step 7</a>. If you've already received whitelist confirmation, verify that the backend URL in your Forge app configuration exactly matches the domain you submitted.</p>
-
-<h3>"Test Connection" fails with "Unauthorized"</h3>
-<p>The API key in Forge app settings does not match the <code>SPEC2JIRA_API_KEY</code> in your backend <code>.env</code>. Copy the exact value from <code>.env</code> and paste into the Backend API Key field in Forge settings. Both must match character-for-character.</p>
-
-<h3>Pipeline runs time out (502 Bad Gateway)</h3>
-<p>Increase <code>proxy_read_timeout</code> in nginx to at least <code>1800s</code>. Large specifications (5000+ words) can take 20–25 minutes to process.</p>
-
-<h3>"Model file not found" on startup</h3>
-<p>Run <code>./setup.sh</code> again — the model download may have been interrupted. Verify: <code>ls -la models/base/Qwen2.5-14B-Instruct-GGUF/</code>.</p>
-
-<h3>Need help?</h3>
-<p>Contact <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
-
-<h2 id="privacy">Data Privacy</h2>
-<ul>
-  <li>All AI processing happens on <strong>your</strong> infrastructure.</li>
-  <li>The backend uses customer-provided Atlassian API credentials to read Confluence pages and create Jira issues — these credentials are stored in your <code>.env</code> file only, never transmitted externally.</li>
-  <li>No data passes through Spec2JIRA servers (there are none — the architecture is fully self-hosted).</li>
-  <li>Models run locally with no external API calls during inference.</li>
-  <li>See our full <a href="/privacy">privacy policy</a> for details.</li>
-</ul>
+<h2 id="support">Support</h2>
+<p>Questions or issues? Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
 
 </main>
 </div>

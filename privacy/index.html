@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — Spec2JIRA</title>
-<meta name="description" content="Privacy Policy for Spec2JIRA for Confluence and Jira. Your data never leaves your infrastructure.">
+<title>Privacy Policy — Spec2Tickets for Confluence and Jira</title>
+<meta name="description" content="Privacy Policy for Spec2Tickets (Spec2JIRA). A Forge app that uses your own Anthropic API key (BYOK) — Spec2JIRA operates no backend and never sees your data on its own servers.">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -59,6 +59,7 @@
   }
   .content ul li { margin-bottom: 6px; line-height: 1.6; }
   .content strong { color: var(--navy); }
+  .content a { color: var(--blue); }
   .callout {
     background: #E9F2FF; border-left: 4px solid var(--blue);
     padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
@@ -94,92 +95,92 @@
 <main class="content">
 
 <h1>Privacy Policy</h1>
-<p class="meta">Effective Date: April 15, 2026 &middot; Last Updated: May 20, 2026</p>
+<p class="meta">Effective Date: May 30, 2026 &middot; Last Updated: May 30, 2026</p>
 
 <div class="callout">
-  <strong>Key principle:</strong> Spec2JIRA is designed so that your data never leaves your infrastructure. The AI processing backend runs on hardware that you own and control.
+  <strong>In one line:</strong> Spec2Tickets is a Forge app that runs entirely on Atlassian's platform and uses <strong>your own Anthropic API key</strong> (Bring Your Own Key). AI processing happens under <em>your</em> agreement with Anthropic — Spec2JIRA operates no backend and never receives your data on its own servers.
 </div>
 
 <div class="callout">
-  <strong>Early access (free Marketplace):</strong> Spec2JIRA does not operate a shared multi-tenant backend. Each customer hosts their own backend on their own infrastructure; we add their backend domain to the Spec2Tickets Forge app egress allowlist on request (see <a href="/docs#step-7">installation docs Step 7</a>).
+  <strong>Naming:</strong> the app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>; <strong>Spec2JIRA</strong> is the vendor name (and this site's domain). They are the same product.
 </div>
 
 <h2>1. Overview</h2>
-<p>Spec2JIRA for Confluence and Jira ("the App") converts specification pages into structured Jira work items. This Privacy Policy describes how we handle data in connection with the App.</p>
+<p>Spec2Tickets for Confluence and Jira ("the App") converts a Confluence specification page into a structured Jira breakdown — an Epic, Stories, Subtasks, and dependency links. This Privacy Policy explains what data the App handles and how.</p>
 
 <h2>2. Architecture and Data Flow</h2>
-<p>The App consists of two components:</p>
+<p>The App runs entirely on the <strong>Atlassian Forge</strong> platform — there is <strong>no Spec2JIRA-operated server or backend</strong>. It has two external touch-points:</p>
 <ul>
-  <li><strong>Forge App (cloud component):</strong> A user interface layer hosted on the Atlassian Forge platform. It reads Confluence page content via standard Atlassian APIs and displays results within the Atlassian product interface.</li>
-  <li><strong>Self-Hosted Backend (customer component):</strong> A Docker container that you deploy on your own infrastructure. This backend performs all AI processing using an open-source language model (Qwen 2.5) running locally on your hardware.</li>
+  <li><strong>Atlassian APIs:</strong> the App reads the Confluence page you select and creates issues in your Jira project, using your own Atlassian session permissions (<code>asUser</code>).</li>
+  <li><strong>Anthropic API (your key):</strong> to generate the breakdown, the App sends the page content to Anthropic's Claude model <strong>using the Anthropic API key that you provide</strong>. The request is billed to, and governed by, <em>your</em> account and agreement with Anthropic.</li>
 </ul>
-<p>Data flows directly between the Atlassian Forge platform and your self-hosted backend. <strong>No data is routed through, stored on, or accessible to Spec2JIRA's servers.</strong></p>
-<p>Each customer's backend domain is added to the Spec2Tickets Forge app egress allowlist on a per-installation basis (see <a href="/docs#step-7">installation docs Step 7</a>). Customer data flows only between the Atlassian Forge platform and that specific customer's backend domain — there is no shared multi-tenant backend operated by Spec2JIRA.</p>
+<p>Spec2JIRA does not route your content through, store it on, or have access to any Spec2JIRA-operated infrastructure. The only parties that handle your content are <strong>Atlassian</strong> (the Forge platform your instance runs on) and <strong>Anthropic</strong> (under your own API key).</p>
 
-<h2>3. Data We Process</h2>
-
-<h3>3.1 Data Processed by the Forge App</h3>
-<p>The Forge app processes the following data transiently (in-memory, during a single request):</p>
+<h2>3. Data the App Processes</h2>
 <ul>
-  <li><strong>Confluence page content:</strong> The text of the specification page you choose to process, read via Atlassian APIs and forwarded to your self-hosted backend.</li>
-  <li><strong>Jira project metadata:</strong> Project keys and issue type information, used to create work items in your Jira instance.</li>
-  <li><strong>Configuration data:</strong> Your backend URL and API key, stored in Atlassian Forge Key-Value Storage (encrypted, managed by Atlassian).</li>
+  <li><strong>Confluence page content:</strong> the text of the specification page you choose to convert — read via Atlassian APIs and sent to the Anthropic API (your key) to produce the breakdown.</li>
+  <li><strong>Generated breakdown:</strong> the structured work items (features, acceptance criteria, tasks, dependencies, concerns) returned by the model, which you review and edit before pushing to Jira.</li>
+  <li><strong>Jira project metadata:</strong> project key, issue types, and field information, used to create the issues.</li>
+  <li><strong>Configuration:</strong> your Anthropic API key and default Jira project key, stored in Atlassian Forge Key-Value Storage (the API key in encrypted secret storage, managed by Atlassian, with resolver-only access).</li>
 </ul>
 
-<h3>3.2 Data Processed by the Self-Hosted Backend</h3>
-<p>All AI processing occurs on your infrastructure. The backend processes Confluence page content and produces structured work item breakdowns. This data resides entirely on your hardware. We have no access to it.</p>
-
-<h3>3.3 Data We Do NOT Collect</h3>
-<p>We do not collect, store, transmit, or have access to:</p>
+<h2>4. AI Processing and Anthropic (Bring Your Own Key)</h2>
+<p>The App does not run its own AI models and does not use a shared AI service. All AI processing is performed by <strong>Anthropic's Claude</strong> via the Anthropic API, authenticated with <strong>the API key you provide</strong>. Because the key is yours:</p>
 <ul>
-  <li>Confluence page content or any document text</li>
-  <li>Jira issue data</li>
-  <li>User identities, email addresses, or account information</li>
-  <li>Usage analytics or telemetry</li>
-  <li>Any personally identifiable information (PII)</li>
+  <li>API calls are billed to your Anthropic account and governed by your agreement with Anthropic.</li>
+  <li>By default, Anthropic <strong>does not use data submitted through its API to train its models</strong>, and retains API data only for a limited period (up to 30 days) for trust-and-safety purposes. You can verify this directly in Anthropic's official statements: <a href="https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training" target="_blank" rel="noopener">"Is my data used for model training?"</a> and the <a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention" target="_blank" rel="noopener">API data-retention documentation</a>.</li>
+</ul>
+<p>If no Anthropic API key is configured, the App cannot generate a breakdown and no page content is sent beyond Atlassian.</p>
+
+<h2>5. Data Storage and Retention</h2>
+<p>The App stores data only in <strong>Atlassian Forge Key-Value Storage</strong>, inside your own Atlassian instance's app storage (encrypted and managed by Atlassian):</p>
+<ul>
+  <li><strong>Your Anthropic API key and default project key</strong> — kept until you change, clear, or uninstall.</li>
+  <li><strong>Page content and the generated breakdown</strong> — stored transiently to drive the review-and-push workflow, and removed once you push to Jira. Uninstalling the App removes all of its stored data.</li>
+</ul>
+<p>Spec2JIRA keeps no copy of your content on any Spec2JIRA-operated system, because there is none.</p>
+
+<h2>6. Data Spec2JIRA Does NOT Have</h2>
+<p>Spec2JIRA, as the vendor, operates no server and does <strong>not</strong> receive, store, or have access to:</p>
+<ul>
+  <li>Your Confluence page content or generated breakdowns — these stay within Atlassian Forge and are sent to Anthropic under your key.</li>
+  <li>Your Jira issue data.</li>
+  <li>Your Anthropic API key — held in Atlassian's encrypted Forge secret storage, resolver-only.</li>
+  <li>User identities, usage analytics, or telemetry — the App does not collect them.</li>
 </ul>
 
-<h2>4. Data Storage</h2>
-<p>The Forge app stores only configuration settings (backend URL and API key) using Atlassian's Forge Key-Value Storage, encrypted and managed by Atlassian.</p>
-<p>Any data persisted by the self-hosted backend (such as pipeline logs or generated outputs) is stored on your infrastructure. You control retention, encryption, and access policies.</p>
-
-<h2>5. Third-Party Services</h2>
-<p>The App does not share data with any third-party services, sub-processors, or external APIs beyond the Atlassian platform itself.</p>
-<p>The self-hosted backend uses an open-source AI model (Qwen 2.5 by Alibaba Cloud) that runs entirely offline on your hardware. No data is sent to model providers or any external AI service.</p>
-
-<h2>6. Data Residency</h2>
-<p>Because the backend runs on your infrastructure, you have full control over where your data is processed and stored. The Forge app component operates within the Atlassian Forge platform infrastructure.</p>
-
-<h2>7. GDPR Compliance</h2>
-<p><strong>You (the customer)</strong> are the data controller for any personal data contained in your Confluence pages and Jira projects.</p>
-<p><strong>Spec2JIRA</strong> does not act as a data processor, as we do not process or store your end-user data. The Forge app acts as a pass-through interface within the Atlassian platform.</p>
-<p>Since we do not store personal data, there is no personal data held by us to access, correct, delete, or export. All data resides within your Atlassian instance and your self-hosted backend, both of which you control.</p>
-
-<h2>8. Security</h2>
+<h2>7. Sub-processors and Third Parties</h2>
 <ul>
-  <li>All communication between the Forge app and your backend is encrypted via HTTPS (TLS 1.2+) with HSTS enabled.</li>
-  <li>Backend authentication uses API key verification on every request.</li>
-  <li>The Forge app follows Atlassian's security requirements for cloud applications.</li>
-  <li>The self-hosted backend runs in an isolated Docker container on your infrastructure.</li>
+  <li><strong>Atlassian</strong> — the Forge platform hosts the App and stores its data within your instance; your Confluence and Jira data is governed by your Atlassian agreement.</li>
+  <li><strong>Anthropic</strong> — processes the page content you send via your own API key, under your agreement with Anthropic (see Section 4).</li>
+</ul>
+<p>The App sends data to no other external service. Its only configured network egress is to <code>api.anthropic.com</code>.</p>
+
+<h2>8. Data Residency</h2>
+<p>The App runs within the Atlassian Forge platform. AI processing occurs in Anthropic's API regions per your Anthropic account. Your source content remains in your Atlassian instance, under your control.</p>
+
+<h2>9. GDPR</h2>
+<p><strong>You (the customer)</strong> are the data controller for any personal data in your Confluence pages and Jira projects. <strong>Anthropic</strong> processes the content you choose to send, under <em>your</em> agreement with Anthropic. <strong>Spec2JIRA</strong> does not store your end-user content on its own systems; the App is a processing interface running on Atlassian Forge.</p>
+<p>Because Spec2JIRA holds none of your personal data on its own systems, there is nothing held by Spec2JIRA to access, correct, delete, or export. Your data resides in your Atlassian instance (and, transiently, with Anthropic under your key) — both of which you control.</p>
+
+<h2>10. Security</h2>
+<ul>
+  <li>All access to Confluence and Jira uses Atlassian's <code>asUser</code> authorization — the App acts with the signed-in user's permissions, never a separate service account.</li>
+  <li>Your Anthropic API key is stored in Atlassian Forge encrypted secret storage, accessible only to the App's backend resolver and never exposed to the browser.</li>
+  <li>Calls to Anthropic use HTTPS/TLS. The App's only external egress is <code>api.anthropic.com</code>, declared in its Forge manifest.</li>
+  <li>The App follows Atlassian's security requirements for cloud Forge apps.</li>
 </ul>
 
-<h2>9. Authentication and Access Control</h2>
-<p>The self-hosted backend authenticates to Confluence and Jira using a <strong>service account</strong> that your Atlassian administrator provisions and scopes. The service account's credentials live in your backend's <code>.env</code> file only — they are never transmitted to Spec2JIRA, the Forge app's resolver layer, or any third party.</p>
-<p><strong>Recommended minimum scope</strong> (least-privilege):</p>
-<ul>
-  <li>Read access to the Confluence spaces containing your specification pages.</li>
-  <li>Create-issue permission in the target Jira project.</li>
-</ul>
-<p>The backend never uses individual end-user credentials; all reads and writes are performed by the service account configured by your administrator. Configuration of the Spec2Tickets Forge app (backend URL, API key, Jira project key) is restricted to Atlassian administrators via the standard <em>Manage Apps &rarr; Configure</em> flow.</p>
-<p>Page-search operations inside the Forge app interface use Atlassian's standard <code>asUser()</code> authorization — users see only the Confluence pages they have read access to in their normal Atlassian session.</p>
+<h2>11. Access Control</h2>
+<p>Reading pages and creating issues use the signed-in user's own Atlassian permissions (<code>asUser</code>) — users can only act on content they already have access to. Configuration (the Anthropic API key and default project key) is set by an Atlassian administrator via <em>Settings &rarr; Spec2Tickets</em>.</p>
 
-<h2>10. Children's Privacy</h2>
-<p>The App is designed for professional software development teams and is not intended for use by individuals under the age of 16.</p>
+<h2>12. Children's Privacy</h2>
+<p>The App is intended for professional software teams and is not directed to individuals under the age of 16.</p>
 
-<h2>11. Changes to This Policy</h2>
-<p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date. Material changes will be communicated through the Atlassian Marketplace listing.</p>
+<h2>13. Changes to This Policy</h2>
+<p>We may update this Privacy Policy from time to time. Changes are posted on this page with an updated date; material changes will also be noted on the Atlassian Marketplace listing.</p>
 
-<h2>12. Contact</h2>
+<h2>14. Contact</h2>
 <p>For questions about this Privacy Policy or the App's data practices:</p>
 <ul>
   <li><strong>Email:</strong> <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>

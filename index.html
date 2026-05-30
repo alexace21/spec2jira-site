@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spec2JIRA — AI-Powered Specification Breakdown for Confluence and Jira</title>
-<meta name="description" content="Automatically turn Confluence specifications into structured Jira tickets with a self-hosted AI backend. Open-source model runs on your own infrastructure.">
+<title>Spec2JIRA — AI Specification Breakdown for Confluence and Jira</title>
+<meta name="description" content="Turn Confluence specifications into structured Jira breakdowns with frontier AI (Anthropic Claude). Bring your own Anthropic key, install from the Atlassian Marketplace — no servers, no GPU, no setup.">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -107,6 +107,28 @@
   }
   .steps li strong { color: var(--white); }
 
+  .pricing {
+    max-width: 800px; margin: 0 auto; padding: 80px 24px;
+    text-align: center;
+  }
+  .pricing h2 {
+    font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px;
+  }
+  .pricing .sub { font-size: 16px; color: var(--slate); margin-bottom: 40px; }
+  .plans {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;
+    text-align: left;
+  }
+  .plan {
+    background: var(--white); border: 1px solid #E4E7EB; border-radius: var(--radius);
+    padding: 28px 28px;
+  }
+  .plan.pro { border-color: var(--blue); box-shadow: 0 4px 20px rgba(38,132,255,0.12); }
+  .plan .name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray); }
+  .plan .price { font-size: 32px; font-weight: 800; margin: 8px 0 4px; }
+  .plan .price small { font-size: 15px; font-weight: 600; color: var(--slate); }
+  .plan .desc { font-size: 15px; color: var(--slate); }
+
   footer {
     max-width: 1080px; margin: 0 auto; padding: 40px 24px;
     display: flex; justify-content: space-between; align-items: center;
@@ -136,26 +158,26 @@
 
 <section class="hero">
   <h1>Specifications in. <span class="highlight">Structured work out.</span></h1>
-  <p>Spec2JIRA turns Confluence specification pages into ready-to-use Jira epics, user stories, tasks, and acceptance criteria — automatically. The AI runs on your own infrastructure, so your specs never leave your environment.</p>
+  <p>Spec2Tickets turns Confluence specification pages into ready-to-use Jira epics, stories, subtasks, and dependency links — using Anthropic's Claude. No servers to run: bring your own Anthropic API key and install straight from the Atlassian Marketplace.</p>
   <a href="https://marketplace.atlassian.com" class="cta">Get it on Marketplace</a>
-  <p class="note">Free early access — <a href="/docs#step-7">contact us first</a> to get your backend whitelisted (~1 business day).</p>
+  <p class="note">Free early access — install, add your Anthropic API key, and generate. 3 free breakdowns every month.</p>
 </section>
 
 <section class="features">
   <div class="feature">
     <div class="icon blue">&#9889;</div>
-    <h3>AI-Powered Breakdown</h3>
-    <p>Point Spec2JIRA at any Confluence specification page. It analyzes the content and generates a complete work breakdown — epics, stories, tasks, and acceptance criteria — in minutes.</p>
+    <h3>Frontier-AI Breakdown</h3>
+    <p>Point Spec2Tickets at any Confluence specification page. Claude Sonnet 4.6 analyzes it and generates a complete breakdown — Epic, stories, subtasks, acceptance criteria, cross-feature dependencies, and quality signals — in about a minute or two.</p>
   </div>
   <div class="feature">
     <div class="icon green">&#9998;</div>
     <h3>Human Review &amp; Edit</h3>
-    <p>Every generated breakdown goes through an interactive editor. Your team reviews, edits, and approves before anything is pushed to Jira. AI assists, humans decide.</p>
+    <p>Every breakdown goes through an interactive editor. Adjust stories, acceptance criteria, priority, story points, and labels — then approve. Nothing reaches Jira until you push. AI assists, humans decide.</p>
   </div>
   <div class="feature">
-    <div class="icon purple">&#128274;</div>
-    <h3>Your Data Stays Yours</h3>
-    <p>The AI runs on a Docker container you deploy on your own hardware using an open-source model (Qwen 2.5). No external API calls, no data leaves your environment. For teams who can't — or won't — send specifications to cloud AI services.</p>
+    <div class="icon purple">&#128273;</div>
+    <h3>Bring Your Own Key</h3>
+    <p>Spec2Tickets runs entirely on Atlassian Forge and calls Claude with <strong>your own</strong> Anthropic API key. No backend to host, no GPU, no Docker — and no data routed through our servers. Your AI usage stays under your own Anthropic account.</p>
   </div>
 </section>
 
@@ -163,11 +185,28 @@
   <div class="inner">
     <h2>How it works</h2>
     <ol class="steps">
-      <li><strong>Open a Confluence specification page</strong> and click "Generate Breakdown" in the Spec2JIRA panel.</li>
-      <li><strong>AI analyzes your spec</strong> — the pipeline extracts capabilities, groups features, and generates structured work items (~5-10 min).</li>
-      <li><strong>Review in the Breakdown Editor</strong> — edit titles, acceptance criteria, dependencies, and story structure inline.</li>
-      <li><strong>Push to Jira</strong> — approved items are created as epics, stories, and tasks in your Jira project with one click.</li>
+      <li><strong>Install &amp; configure</strong> — add Spec2Tickets from the Marketplace, then paste your Anthropic API key and default project key in Settings (~5 minutes, no infrastructure).</li>
+      <li><strong>Generate</strong> — pick a Confluence spec page and click Generate. Claude produces a structured breakdown in ~60–150 seconds.</li>
+      <li><strong>Review in the editor</strong> — edit stories, acceptance criteria, dependencies, priority, story points, and labels inline.</li>
+      <li><strong>Push to Jira</strong> — one Epic, stories, subtasks, and blocks/is-blocked-by links, created in your project with one click.</li>
     </ol>
+  </div>
+</section>
+
+<section class="pricing">
+  <h2>Simple pricing</h2>
+  <p class="sub">Bring your own Anthropic API key on every plan — the subscription covers the app.</p>
+  <div class="plans">
+    <div class="plan">
+      <div class="name">Free</div>
+      <div class="price">€0</div>
+      <p class="desc">3 breakdowns per month. Full editor, push to Jira, and dependency links included.</p>
+    </div>
+    <div class="plan pro">
+      <div class="name">Pro &middot; Early access</div>
+      <div class="price">€20<small> / month</small></div>
+      <p class="desc">Unlimited breakdowns. Everything in Free, with no monthly cap.</p>
+    </div>
   </div>
 </section>
 
