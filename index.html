@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spec2JIRA — Turn Confluence specs into a ready Jira backlog</title>
+<title>Spec2Tickets — Turn Confluence specs into a ready Jira backlog</title>
 <meta name="description" content="Spec2Tickets reads your Confluence specification and writes the entire Jira backlog — Epic, stories, subtasks, acceptance criteria, and dependency links — in minutes. Free your team from manual ticket-writing. Runs on Atlassian Forge with your own Anthropic key.">
+<link rel="canonical" href="https://spec2jira.com/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Spec2Tickets">
+<meta property="og:title" content="Spec2Tickets — Turn Confluence specs into a ready Jira backlog">
+<meta property="og:description" content="Spec2Tickets reads your Confluence specification and writes the entire Jira backlog — Epic, stories, subtasks, acceptance criteria, and dependency links — in minutes. Free your team from manual ticket-writing. Runs on Atlassian Forge with your own Anthropic key.">
+<meta property="og:url" content="https://spec2jira.com/">
+<meta property="og:image" content="https://spec2jira.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spec2Tickets — Turn Confluence specs into a ready Jira backlog">
+<meta name="twitter:description" content="Spec2Tickets reads your Confluence specification and writes the entire Jira backlog — Epic, stories, subtasks, acceptance criteria, and dependency links — in minutes. Free your team from manual ticket-writing. Runs on Atlassian Forge with your own Anthropic key.">
+<meta name="twitter:image" content="https://spec2jira.com/og-image.png">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -15,9 +29,14 @@
     --bg: #FAFBFC;
     --white: #FFFFFF;
     --accent: #8B5CF6;
+    --link: #0B5CD7;
     --radius: 8px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
+  .skip-link:focus { left: 0; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: var(--navy);
@@ -109,7 +128,7 @@
   .trust-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--navy); }
   .trust-item p { font-size: 15px; color: var(--slate); line-height: 1.6; }
   .trust .more { text-align: center; margin-top: 36px; }
-  .trust .more a { color: var(--blue); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .trust .more a { color: var(--link); text-decoration: none; font-weight: 600; font-size: 15px; }
   .trust .more a:hover { text-decoration: underline; }
 
   .cta-band { background: #F4F8FF; border-top: 1px solid #E4E7EB; border-bottom: 1px solid #E4E7EB; }
@@ -136,6 +155,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav>
   <a href="/" class="logo">Spec<span>2JIRA</span></a>
@@ -148,9 +168,11 @@
   </div>
 </nav>
 
+<main id="main">
+
 <section class="hero">
-  <h1>Specifications in. <span class="highlight">Structured work out.</span></h1>
-  <p class="lead">Spec2Tickets reads your Confluence specification and writes the entire Jira backlog for you — Epic, stories, subtasks, acceptance criteria, and dependency links — in minutes. Your team stops hand-writing tickets and gets back to the work that actually needs them.</p>
+  <h1>Your Confluence page &rarr; a <span class="highlight">sprint-ready Jira backlog</span>.</h1>
+  <p class="lead">Spec2Tickets reads your Confluence page — a spec, PRD, or requirements doc — and writes the whole Jira backlog for you: Epic, stories, subtasks, acceptance criteria, and dependency links, in minutes. Your team stops hand-writing tickets and gets back to the work that actually needs them.</p>
   <a href="https://marketplace.atlassian.com" class="btn btn-primary">Get it on Marketplace</a>
   <a href="/how-it-works" class="btn btn-secondary">See how it works</a>
   <p class="note">Free 30-day trial &middot; Bring your own Anthropic API key &middot; Your spec content stays under your own Anthropic agreement.</p>
@@ -158,8 +180,8 @@
 
 <section class="stats">
   <div class="stat">
-    <div class="num">50%+</div>
-    <div class="cap">less time from spec to a ready backlog</div>
+    <div class="num">~70%</div>
+    <div class="cap">less hand-work turning a spec into a sprint-ready backlog</div>
   </div>
   <div class="stat">
     <div class="num">Minutes</div>
@@ -172,18 +194,19 @@
 </section>
 
 <section class="features">
+  <h2 class="sr-only">Why teams use Spec2Tickets</h2>
   <div class="feature">
-    <div class="icon blue">&#9889;</div>
+    <div class="icon blue" aria-hidden="true">&#9889;</div>
     <h3>Hours of work, gone</h3>
     <p>A spec that used to take a day to break into tickets becomes a complete, structured backlog in minutes — Epic, stories, subtasks, acceptance criteria, sizing, and dependencies. No copy-paste, no hand-numbered checklists.</p>
   </div>
   <div class="feature">
-    <div class="icon purple">&#127919;</div>
+    <div class="icon purple" aria-hidden="true">&#127919;</div>
     <h3>Your people, freed for real work</h3>
     <p>Analysts and product owners move from mechanical ticket-writing to refinement, prioritization, and stakeholder alignment. Developers start from full context — descriptions, acceptance criteria, and dependencies — instead of chasing ambiguity.</p>
   </div>
   <div class="feature">
-    <div class="icon green">&#10003;</div>
+    <div class="icon green" aria-hidden="true">&#10003;</div>
     <h3>Consistent quality, fewer gaps</h3>
     <p>Every breakdown meets the same bar — clear acceptance criteria, consistent structure, sizing, and dependency links. Fewer gaps, less rework, and cleaner handovers between analysts, developers, and QA.</p>
   </div>
@@ -237,6 +260,8 @@
     <a href="/pricing" class="btn btn-secondary">View pricing</a>
   </div>
 </section>
+
+</main>
 
 <footer>
   <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>

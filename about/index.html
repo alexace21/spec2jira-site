@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="About Spec2Tickets (Spec2JIRA): we take the mechanical work out of turning specifications into a structured Jira backlog, so teams spend their time on judgment, not transcription. Privacy-first, human-in-the-loop, built on Atlassian Forge and Anthropic Claude.">
+<link rel="canonical" href="https://spec2jira.com/about">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Spec2Tickets">
+<meta property="og:title" content="About — Spec2Tickets for Confluence and Jira">
+<meta property="og:description" content="About Spec2Tickets (Spec2JIRA): we take the mechanical work out of turning specifications into a structured Jira backlog, so teams spend their time on judgment, not transcription. Privacy-first, human-in-the-loop, built on Atlassian Forge and Anthropic Claude.">
+<meta property="og:url" content="https://spec2jira.com/about">
+<meta property="og:image" content="https://spec2jira.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About — Spec2Tickets for Confluence and Jira">
+<meta name="twitter:description" content="About Spec2Tickets (Spec2JIRA): we take the mechanical work out of turning specifications into a structured Jira backlog, so teams spend their time on judgment, not transcription. Privacy-first, human-in-the-loop, built on Atlassian Forge and Anthropic Claude.">
+<meta name="twitter:image" content="https://spec2jira.com/og-image.png">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -14,9 +28,13 @@
     --gray: #6B778C;
     --bg: #FAFBFC;
     --white: #FFFFFF;
+    --link: #0B5CD7;
     --radius: 8px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
+  .skip-link:focus { left: 0; }
+  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: var(--navy); background: var(--bg); line-height: 1.6;
@@ -40,7 +58,7 @@
   .content ul { margin: 0 0 16px 22px; color: var(--slate); font-size: 16px; }
   .content li { margin-bottom: 8px; line-height: 1.6; }
   .content strong { color: var(--navy); }
-  .content a { color: var(--blue); }
+  .content a { color: var(--link); }
   .callout {
     background: #E9F2FF; border-left: 4px solid var(--blue);
     padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
@@ -56,6 +74,10 @@
   .btn-primary:hover { background: var(--blue-light); }
   .btn-secondary { background: transparent; color: var(--slate); border: 1px solid #D5DAE1; margin-left: 12px; }
   .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+  /* The body-link recolor (.content a → --link) must not bleed into the CTA buttons */
+  .content a.btn-primary { color: var(--white); }
+  .content a.btn-secondary { color: var(--slate); }
+  .content a.btn-secondary:hover { color: var(--blue); }
 
   footer {
     max-width: 1080px; margin: 0 auto; padding: 40px 24px;
@@ -76,6 +98,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav>
   <a href="/" class="logo">Spec<span>2JIRA</span></a>
@@ -88,7 +111,7 @@
   </div>
 </nav>
 
-<main class="content">
+<main class="content" id="main">
 
 <h1>About Spec2Tickets</h1>
 <p class="lead">We build one thing, and we build it well: a tool that turns a Confluence specification into a structured Jira backlog — so the people who used to spend their day transcribing requirements into tickets can spend it on the work that actually needs them.</p>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1200" height="630" fill="#1B2A4A"/>
+  <rect x="64" y="64" width="64" height="64" rx="14" fill="#2684FF"/>
+  <text x="80" y="110" font-size="34" font-weight="800" fill="#FFFFFF">S2</text>
+  <text x="148" y="110" font-size="30" font-weight="700" fill="#C1C7D0">Spec2Tickets</text>
+  <text x="64" y="300" font-size="68" font-weight="800" fill="#FFFFFF">Turn a Confluence spec into a</text>
+  <text x="64" y="378" font-size="68" font-weight="800" fill="#FFFFFF">sprint-ready <tspan fill="#4C9AFF">Jira backlog</tspan>.</text>
+  <text x="64" y="470" font-size="34" fill="#C1C7D0">Epic, stories, subtasks, acceptance criteria &amp; dependencies — in minutes.</text>
+  <text x="64" y="556" font-size="28" fill="#8898B5">Bring your own Anthropic key  ·  Runs on Atlassian Forge  ·  spec2jira.com</text>
+</svg>

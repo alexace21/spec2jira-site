@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How it works — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="How Spec2Tickets works: install from the Atlassian Marketplace, generate a structured breakdown from a Confluence spec with Anthropic's Claude, review and edit it, then push the Epic, stories, subtasks, and dependency links to Jira.">
+<link rel="canonical" href="https://spec2jira.com/how-it-works">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Spec2Tickets">
+<meta property="og:title" content="How it works — Spec2Tickets for Confluence and Jira">
+<meta property="og:description" content="How Spec2Tickets works: install from the Atlassian Marketplace, generate a structured breakdown from a Confluence spec with Anthropic's Claude, review and edit it, then push the Epic, stories, subtasks, and dependency links to Jira.">
+<meta property="og:url" content="https://spec2jira.com/how-it-works">
+<meta property="og:image" content="https://spec2jira.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How it works — Spec2Tickets for Confluence and Jira">
+<meta name="twitter:description" content="How Spec2Tickets works: install from the Atlassian Marketplace, generate a structured breakdown from a Confluence spec with Anthropic's Claude, review and edit it, then push the Epic, stories, subtasks, and dependency links to Jira.">
+<meta name="twitter:image" content="https://spec2jira.com/og-image.png">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -15,9 +29,13 @@
     --bg: #FAFBFC;
     --white: #FFFFFF;
     --accent: #8B5CF6;
+    --link: #0B5CD7;
     --radius: 8px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
+  .skip-link:focus { left: 0; }
+  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: var(--navy); background: var(--bg); line-height: 1.6;
@@ -86,6 +104,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav>
   <a href="/" class="logo">Spec<span>2JIRA</span></a>
@@ -98,6 +117,8 @@
   </div>
 </nav>
 
+<main id="main">
+
 <header class="page-header">
   <h1>From spec to backlog, in four steps</h1>
   <p>Spec2Tickets does the mechanical work of breaking a specification into structured Jira issues — you stay in control and approve everything before it lands. Here's the whole flow.</p>
@@ -107,7 +128,7 @@
   <div class="inner">
     <h2>The workflow</h2>
     <ol class="steps">
-      <li><strong>Install &amp; configure</strong> Add Spec2Tickets from the Atlassian Marketplace, then paste your Anthropic API key and a default Jira project key in Settings. About five minutes — no servers, no infrastructure.</li>
+      <li><strong>Install &amp; configure</strong> Add Spec2Tickets from the Atlassian Marketplace. After installing, it opens as a page inside <strong>Confluence</strong> — open its <strong>in-app Settings</strong> from there (no digging through Atlassian's admin) to paste your Anthropic API key and a default Jira project key. About five minutes — no servers, no infrastructure.</li>
       <li><strong>Generate</strong> Pick a Confluence specification page and click Generate. Claude reads the whole page and produces a structured breakdown — typically in a few minutes (longer for large specs, or when Anthropic is under heavy load). You can leave and come back; it keeps running.</li>
       <li><strong>Review in the editor</strong> Every breakdown opens in an interactive editor. Adjust feature names, user stories, acceptance criteria, dependencies, priority, story points, and labels inline. Quality signals — confidence, risks, ambiguities, and any circular dependencies the app auto-resolved — are surfaced so you know where to look.</li>
       <li><strong>Push to Jira</strong> When it looks right, click Push to Jira. Spec2Tickets creates one Epic, a Story per feature, the subtasks beneath them, and the “blocks / is blocked by” links between features — all under your own Atlassian permissions, with links back to the new issues.</li>
@@ -153,6 +174,8 @@
     <a href="/docs" class="btn btn-secondary">Read the setup guide</a>
   </div>
 </section>
+
+</main>
 
 <footer>
   <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>

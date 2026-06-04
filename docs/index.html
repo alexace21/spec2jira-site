@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Documentation — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
+<link rel="canonical" href="https://spec2jira.com/docs">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Spec2Tickets">
+<meta property="og:title" content="Documentation — Spec2Tickets for Confluence and Jira">
+<meta property="og:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
+<meta property="og:url" content="https://spec2jira.com/docs">
+<meta property="og:image" content="https://spec2jira.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Documentation — Spec2Tickets for Confluence and Jira">
+<meta name="twitter:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
+<meta name="twitter:image" content="https://spec2jira.com/og-image.png">
 <style>
   :root {
     --navy: #1B2A4A;
@@ -15,9 +29,13 @@
     --bg: #FAFBFC;
     --white: #FFFFFF;
     --accent: #8B5CF6;
+    --link: #0B5CD7;
     --radius: 8px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
+  .skip-link:focus { left: 0; }
+  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     color: var(--navy); background: var(--bg); line-height: 1.6;
@@ -73,7 +91,7 @@
   .content li { margin-bottom: 6px; line-height: 1.6; }
   .content li ul { margin-top: 6px; }
   .content strong { color: var(--navy); }
-  .content a { color: var(--blue); }
+  .content a { color: var(--link); }
 
   .callout {
     background: #E9F2FF; border-left: 4px solid var(--blue);
@@ -127,6 +145,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav>
   <a href="/" class="logo">Spec<span>2JIRA</span></a>
@@ -159,12 +178,12 @@
   <a href="#support">Support</a>
 </aside>
 
-<main class="content">
+<main class="content" id="main">
 <h1>Documentation</h1>
 <p class="meta">Setup &amp; usage guide for Spec2Tickets</p>
 
 <div class="callout">
-  <strong>ℹ Two names, one product</strong> — the app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>. <strong>Spec2JIRA</strong> is the vendor name and this site's domain. They are the same product.
+  <strong><span aria-hidden="true">ℹ</span> Two names, one product</strong> — the app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>. <strong>Spec2JIRA</strong> is the vendor name and this site's domain. They are the same product.
 </div>
 
 <h2 id="overview">Overview</h2>
