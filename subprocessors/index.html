@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub-processors — Spec2Tickets</title>
+<meta name="description" content="The third parties Spec2Tickets engages to process customer content (Managed tier) — Anthropic PBC for AI inference — with retention, transfer, and change-notice details.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #6B778C;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy); background: var(--bg); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a {
+    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
+  }
+  nav .links a:hover { color: var(--blue); }
+
+  .content {
+    max-width: 740px; margin: 0 auto; padding: 48px 24px 80px;
+  }
+  .content h1 {
+    font-size: 36px; font-weight: 800; margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .content .meta {
+    font-size: 14px; color: var(--gray); margin-bottom: 40px;
+  }
+  .content h2 {
+    font-size: 22px; font-weight: 700; margin: 36px 0 12px;
+    padding-top: 20px; border-top: 1px solid #E4E7EB;
+  }
+  .content h2:first-of-type { border-top: none; padding-top: 0; }
+  .content h3 {
+    font-size: 17px; font-weight: 600; margin: 24px 0 8px;
+  }
+  .content p {
+    font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7;
+  }
+  .content ul {
+    margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
+  }
+  .content ul li { margin-bottom: 6px; line-height: 1.6; }
+  .content strong { color: var(--navy); }
+  .content a { color: var(--blue); }
+  .callout {
+    background: #E9F2FF; border-left: 4px solid var(--blue);
+    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 24px 0; font-size: 15px; color: var(--navy);
+  }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 640px) {
+    nav { flex-wrap: wrap; row-gap: 10px; }
+    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
+    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
+    .content h1 { font-size: 28px; }
+  }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 15px; }
+  th { text-align: left; padding: 10px 16px; background: #F4F5F7; font-weight: 600; border: 1px solid #E4E7EB; vertical-align: top; }
+  td { padding: 10px 16px; border: 1px solid #E4E7EB; color: var(--slate); vertical-align: top; }
+  .table-wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="https://marketplace.atlassian.com" target="_blank" rel="noopener">Marketplace</a>
+  </div>
+</nav>
+
+<main class="content">
+
+<h1>Sub-processors</h1>
+<p class="meta">Last updated: June 4, 2026</p>
+
+<p>This page lists the third parties that Spec2Tickets engages to process customer content on its behalf. It is material only for the <strong>Managed tier</strong>, where Spec2Tickets calls the Anthropic API using <strong>its own</strong> Anthropic account — making Spec2Tickets the processor and the listed party a sub-processor.</p>
+
+<div class="callout">
+  <strong>BYOK engages no Spec2Tickets sub-processor.</strong> Under the <strong>Bring-Your-Own-Key (BYOK)</strong> tier, the customer uses their <strong>own</strong> Anthropic key, and Anthropic is the customer's own processor under the customer's own agreement. Spec2Tickets engages no sub-processor for BYOK content. Questions: <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a> &middot; Security: <a href="mailto:security@spec2jira.com">security@spec2jira.com</a>.
+</div>
+
+<h2>Current sub-processors (Managed tier)</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Sub-processor</th>
+      <th>Purpose</th>
+      <th>Data processed</th>
+      <th>Location</th>
+      <th>Safeguards</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Anthropic PBC</strong><br>(maker of Claude)</td>
+      <td>AI inference for the Managed tier. Receives the Confluence specification content the customer submits for a breakdown and returns the generated Jira breakdown (Epic, stories, subtasks, acceptance criteria, and dependencies).</td>
+      <td>The selected spec page content (which may contain customer-controlled personal data, such as names or work emails in free text) and the generated breakdown.</td>
+      <td>United States (and any additional regions on Anthropic's then-current sub-processor list).</td>
+      <td>
+        Anthropic Commercial Terms of Service, with Anthropic's DPA plus EU SCCs (and UK Addendum) incorporated by reference (no separate signature).<br><br>
+        No training on customer content by default.<br><br>
+        Message Batches API: not ZDR-eligible, so inputs and outputs are retained for up to about 29 days and then deleted; flagged or abuse-related content may be retained up to about 2 years for legal and safety purposes.<br><br>
+        Anthropic's own sub-processors, certifications, and change-notice policy are published at <a href="https://trust.anthropic.com" target="_blank" rel="noopener">trust.anthropic.com</a>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout">
+  <strong>No &ldquo;zero retention.&rdquo;</strong> Because the Managed tier uses the Anthropic Batches API, content is retained at Anthropic for up to about 29 days. We disclose this rather than claim zero retention. Customers who require zero or minimal retention should use the <strong>BYOK tier</strong> and configure their own Anthropic agreement accordingly.
+</div>
+
+<h2>Atlassian platform</h2>
+<p>Spec2Tickets is an Atlassian <strong>Forge</strong> app. Atlassian provides the hosting platform: it runs the app and stores the app's data <strong>within the customer's own Atlassian instance</strong>, governed by the customer's existing agreement with Atlassian.</p>
+<p>Because app data is stored inside the customer's own instance, Atlassian is not a party to whom we <em>disclose</em> content in the Managed inference flow the way Anthropic is. It is listed here for transparency rather than as a content sub-processor in the usual sense.</p>
+
+<h2>How we store and purge content</h2>
+<ul>
+  <li>Customer content (the submitted page and the generated breakdown) is stored <strong>transiently</strong> in Atlassian Forge storage within the customer's own instance, only to drive the review-and-push workflow.</li>
+  <li>Content is removed when the customer <strong>pushes the breakdown to Jira</strong>, <strong>regenerates</strong> the breakdown, or <strong>uninstalls</strong> the app. On the Anthropic side, batch inputs and outputs are deleted within about 29 days (flagged content may be retained up to about 2 years).</li>
+  <li>The <strong>only</strong> external destination for content is Anthropic (the sub-processor above). The app runs no separate vendor backend or database, and Spec2Tickets keeps no copy of customer content on any Spec2Tickets-operated system.</li>
+</ul>
+
+<h2>Change-notice policy</h2>
+<ul>
+  <li>We will give customers <strong>at least 30 days'</strong> advance notice before adding or replacing a sub-processor for the Managed tier, by updating this page and/or notifying the customer's designated contact.</li>
+  <li>Customers who reasonably object to a new sub-processor on data-protection grounds may raise it with us; if the matter is unresolved, the customer may stop using the Managed tier for the affected processing (BYOK remains available). See the customer-facing <a href="/dpa">Data Processing Addendum</a> for the full mechanism.</li>
+</ul>
+
+<h2>How to subscribe to changes</h2>
+<p>To receive sub-processor change notices, <strong>watch this page</strong>, or email <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a> to be added to sub-processor change notices.</p>
+
+<div class="callout">
+  This list reflects the Managed tier. <strong>BYOK</strong> uses the customer's own Anthropic key and engages <strong>no Spec2Tickets sub-processor</strong> for the content sent to Anthropic. The external retention figures above (about 29 days; up to about 2 years for flagged content) are Anthropic's own and reflect Anthropic's published policy at the time of this update.
+</div>
+
+</main>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/dpa">DPA</a>
+    <a href="/subprocessors">Sub-processors</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>

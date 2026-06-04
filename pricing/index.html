@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Spec2Tickets for Confluence and Jira</title>
+<meta name="description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Managed Pro coming soon.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #6B778C;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --accent: #8B5CF6;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy); background: var(--bg); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a { color: var(--slate); text-decoration: none; margin-left: 28px; font-size: 15px; font-weight: 500; }
+  nav .links a:hover { color: var(--blue); }
+
+  .page-header { max-width: 720px; margin: 0 auto; padding: 64px 24px 8px; text-align: center; }
+  .page-header h1 { font-size: clamp(30px, 4.5vw, 42px); font-weight: 800; letter-spacing: -0.4px; margin-bottom: 16px; }
+  .page-header p { font-size: 18px; color: var(--slate); line-height: 1.7; }
+
+  .plans {
+    max-width: 980px; margin: 0 auto; padding: 48px 24px 16px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
+    align-items: stretch;
+  }
+  .plan {
+    background: var(--white); border: 1px solid #E4E7EB; border-radius: var(--radius);
+    padding: 28px 26px; display: flex; flex-direction: column;
+  }
+  .plan.pro { border-color: var(--blue); box-shadow: 0 4px 22px rgba(38,132,255,0.12); }
+  .plan.soon { background: #FBFBFC; border-style: dashed; }
+  .plan .name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray); display: flex; align-items: center; gap: 8px; }
+  .plan .badge { font-size: 10px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--blue); background: #E9F2FF; padding: 2px 8px; border-radius: 20px; }
+  .plan .badge.soon { color: var(--accent); background: #F0EBFF; }
+  .plan .price { font-size: 34px; font-weight: 800; margin: 10px 0 4px; }
+  .plan .price small { font-size: 15px; font-weight: 600; color: var(--slate); }
+  .plan .price.soon { font-size: 22px; color: var(--accent); }
+  .plan .desc { font-size: 15px; color: var(--slate); margin-top: 4px; flex: 1; }
+  .plan .desc strong { color: var(--navy); }
+  .plan .foot { font-size: 13px; color: var(--gray); margin-top: 16px; }
+  .plan .foot a { color: var(--blue); text-decoration: none; }
+  .plan .foot a:hover { text-decoration: underline; }
+
+  .billing { max-width: 760px; margin: 0 auto; padding: 56px 24px 16px; }
+  .billing h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 20px; text-align: center; }
+  .billing .qa { border-top: 1px solid #E4E7EB; padding: 18px 0; }
+  .billing .qa h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--navy); }
+  .billing .qa p { font-size: 15px; color: var(--slate); line-height: 1.65; }
+  .billing .qa p a { color: var(--blue); }
+
+  .finenote { max-width: 760px; margin: 0 auto; padding: 8px 24px 24px; font-size: 13px; color: var(--gray); text-align: center; line-height: 1.6; }
+
+  .cta-band { background: #F4F8FF; border-top: 1px solid #E4E7EB; border-bottom: 1px solid #E4E7EB; margin-top: 40px; }
+  .cta-band .inner { max-width: 720px; margin: 0 auto; padding: 56px 24px; text-align: center; }
+  .cta-band h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 22px; }
+  .btn { display: inline-block; padding: 14px 32px; border-radius: var(--radius); font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-light); }
+  .btn-secondary { background: transparent; color: var(--slate); border: 1px solid #D5DAE1; margin-left: 12px; }
+  .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 22px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 640px) {
+    nav { flex-wrap: wrap; row-gap: 10px; }
+    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
+    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
+    .btn-secondary { margin-left: 0; margin-top: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="https://marketplace.atlassian.com" target="_blank" rel="noopener">Marketplace</a>
+  </div>
+</nav>
+
+<header class="page-header">
+  <h1>Simple, per-user pricing</h1>
+  <p>Start free for 30 days. The subscription covers the app; you bring your own Anthropic key, so AI usage is billed to your own account — at cost.</p>
+</header>
+
+<section class="plans">
+  <div class="plan">
+    <div class="name">Free trial</div>
+    <div class="price">$0<small> / 30 days</small></div>
+    <p class="desc">Full access to every feature — generate, review, and push to Jira while you evaluate. No charge during the trial.</p>
+    <p class="foot">Provided automatically by the Atlassian Marketplace.</p>
+  </div>
+
+  <div class="plan pro">
+    <div class="name">BYOK Pro <span class="badge">Early access</span></div>
+    <div class="price">$6.70<small> / user / month</small></div>
+    <p class="desc"><strong>Unlimited breakdowns</strong> with your own Anthropic key. Teams up to 10 users: a flat <strong>$57/month</strong>. Volume discounts above 100 users.</p>
+    <p class="foot">Billed per user via the Atlassian Marketplace, in USD.</p>
+  </div>
+
+  <div class="plan soon">
+    <div class="name">Managed Pro <span class="badge soon">Coming soon</span></div>
+    <div class="price soon">$13<small> / user / month</small></div>
+    <p class="desc">We run Claude for you — <strong>no Anthropic key required</strong>. A generous fair-use allowance per user, ideal for teams that would rather not manage their own API key.</p>
+    <p class="foot"><a href="/privacy#managed">How Managed handles your data &rarr;</a></p>
+  </div>
+</section>
+
+<section class="billing">
+  <h2>How billing works</h2>
+  <div class="qa">
+    <h3>What does the subscription cover?</h3>
+    <p>The app itself — the generation, the editor, and the push to Jira. Under BYOK Pro, the AI compute is paid separately, directly to Anthropic, using your own API key (typically a few cents per breakdown). There is no vendor markup on AI.</p>
+  </div>
+  <div class="qa">
+    <h3>How is the per-user price calculated?</h3>
+    <p>Spec2Tickets is sold as “Paid via Atlassian,” so it's billed per user through the Atlassian Marketplace, in USD. Teams of up to 10 users pay a flat <strong>$57/month</strong>; above that it's <strong>$6.70/user/month</strong>, with volume discounts that begin above 100 users. The Marketplace always shows the exact price for your team size before you subscribe.</p>
+  </div>
+  <div class="qa">
+    <h3>Is there a free plan?</h3>
+    <p>There's a full <strong>30-day free trial</strong> rather than a permanent free tier — every feature is available while you evaluate. After the trial, an active subscription keeps the app running.</p>
+  </div>
+  <div class="qa">
+    <h3>What is Managed Pro?</h3>
+    <p>An upcoming edition where Spec2Tickets runs Claude for you, so you don't need to bring an Anthropic key — planned at <strong>$13/user/month</strong> with a generous fair-use allowance per user. It uses our own Anthropic account, so a customer <a href="/dpa">data-processing addendum</a> and <a href="/subprocessors">sub-processor disclosure</a> apply; you can also read how it handles your data on our <a href="/privacy#managed">privacy page</a>. BYOK Pro remains the privacy-maximising choice.</p>
+  </div>
+  <div class="qa">
+    <h3>How do I manage or cancel my subscription?</h3>
+    <p>Subscriptions are handled through the Atlassian Marketplace and your Atlassian site administration, alongside your other Atlassian apps.</p>
+  </div>
+</section>
+
+<p class="finenote">Prices are in USD and set through the Atlassian Marketplace. Early-access pricing — we grandfather early adopters as the product grows. Managed Pro (coming soon) is planned at $13/user/month and opens when that edition launches.</p>
+
+<section class="cta-band">
+  <div class="inner">
+    <h2>Start your free trial</h2>
+    <a href="https://marketplace.atlassian.com" class="btn btn-primary">Get it on Marketplace</a>
+    <a href="/how-it-works" class="btn btn-secondary">See how it works</a>
+  </div>
+</section>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/dpa">DPA</a>
+    <a href="/subprocessors">Sub-processors</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>

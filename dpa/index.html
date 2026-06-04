@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Processing Addendum (Managed tier) — Spec2Tickets</title>
+<meta name="description" content="Data Processing Addendum for the Spec2Tickets Managed tier: vendor as processor, Anthropic as sub-processor, ≤29-day retention, EU SCCs and UK IDTA, GDPR-aligned.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #6B778C;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy); background: var(--bg); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a {
+    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
+  }
+  nav .links a:hover { color: var(--blue); }
+
+  .content {
+    max-width: 740px; margin: 0 auto; padding: 48px 24px 80px;
+  }
+  .content h1 {
+    font-size: 36px; font-weight: 800; margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .content .meta {
+    font-size: 14px; color: var(--gray); margin-bottom: 40px;
+  }
+  .content h2 {
+    font-size: 22px; font-weight: 700; margin: 36px 0 12px;
+    padding-top: 20px; border-top: 1px solid #E4E7EB;
+  }
+  .content h2:first-of-type { border-top: none; padding-top: 0; }
+  .content h3 {
+    font-size: 17px; font-weight: 600; margin: 24px 0 8px;
+  }
+  .content p {
+    font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7;
+  }
+  .content ul {
+    margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
+  }
+  .content ul li { margin-bottom: 6px; line-height: 1.6; }
+  .content strong { color: var(--navy); }
+  .content a { color: var(--blue); }
+  .callout {
+    background: #E9F2FF; border-left: 4px solid var(--blue);
+    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 24px 0; font-size: 15px; color: var(--navy);
+  }
+  .content table {
+    width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+    font-size: 15px; color: var(--slate);
+  }
+  .content table th, .content table td {
+    border: 1px solid #E4E7EB; padding: 10px 12px;
+    text-align: left; vertical-align: top; line-height: 1.55;
+  }
+  .content table th {
+    background: #F4F5F7; color: var(--navy); font-weight: 600;
+  }
+  .content table td strong { color: var(--navy); }
+  .content .table-wrap { overflow-x: auto; }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 640px) {
+    nav { flex-wrap: wrap; row-gap: 10px; }
+    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
+    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
+    .content h1 { font-size: 28px; }
+    .content table { font-size: 14px; }
+    .content table th, .content table td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="https://marketplace.atlassian.com" target="_blank" rel="noopener">Marketplace</a>
+  </div>
+</nav>
+
+<main class="content">
+
+<h1>Data Processing Addendum</h1>
+<p class="meta">Last updated: June 4, 2026 &middot; Applies to the Managed tier only</p>
+
+<div class="callout">
+  <strong>Scope:</strong> this Addendum governs the <strong>Managed tier</strong> only, in which Spec2Tickets calls Anthropic using its own account to process your content. The <strong>Bring-Your-Own-Key (BYOK)</strong> tier — in which your content is processed only under your own Anthropic agreement — is the privacy-maximising option and does not require this Addendum. The Managed tier is not yet generally available; this Addendum takes effect for a customer only upon enabling it.
+</div>
+
+<h2>1. Parties, structure, and order of precedence</h2>
+<p>This Data Processing Addendum (<strong>"DPA"</strong>) supplements and forms part of the agreement under which <strong>Spec2Tickets</strong> (<strong>"we"</strong>, <strong>"Processor"</strong>) — an independent software vendor based in Sofia, Bulgaria, operating under the Spec2JIRA brand — provides the Spec2Tickets Forge application (the <strong>"App"</strong>) to the customer that has enabled the <strong>Managed tier</strong> (<strong>"Customer"</strong>, <strong>"Controller"</strong>). That underlying agreement is the Atlassian Marketplace end-user agreement applicable to the App (the <strong>"Principal Agreement"</strong>).</p>
+<ul>
+  <li><strong>Processor:</strong> Spec2Tickets, an independent software vendor based in Sofia, Bulgaria, operating under the Spec2JIRA brand.</li>
+  <li><strong>Registered address:</strong> Sofia, Bulgaria.</li>
+  <li><strong>Data-protection / privacy contact:</strong> <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a> (security: <a href="mailto:security@spec2jira.com">security@spec2jira.com</a>).</li>
+  <li><strong>EU/UK representative (Art. 27 GDPR):</strong> Not applicable — the Processor is established in the EEA (Bulgaria).</li>
+</ul>
+<p><strong>Order of precedence.</strong> This DPA applies <strong>only</strong> to the Customer's use of the <strong>Managed tier</strong>. In the event of a conflict between this DPA and the Principal Agreement <strong>on the subject of the processing of Personal Data</strong>, this DPA prevails. On all other matters the Principal Agreement prevails. Nothing in this DPA limits any rights the Customer has directly against Atlassian or Anthropic under their respective terms.</p>
+
+<h2>2. Definitions</h2>
+<p>Capitalised terms not defined here have the meaning given in the <strong>EU General Data Protection Regulation 2016/679 ("GDPR")</strong> and, where applicable, the <strong>UK GDPR</strong> and the <strong>Data Protection Act 2018</strong>.</p>
+<ul>
+  <li><strong>"Applicable Data Protection Law"</strong> — all data-protection and privacy laws applicable to the processing under this DPA, including the GDPR, the UK GDPR, and any implementing or successor legislation. This DPA is GDPR / UK-GDPR-first.</li>
+  <li><strong>"Controller"</strong>, <strong>"Processor"</strong>, <strong>"Sub-processor"</strong>, <strong>"Data Subject"</strong>, <strong>"Personal Data"</strong>, <strong>"Processing"</strong>, <strong>"Personal Data Breach"</strong> — as defined in the GDPR.</li>
+  <li><strong>"Customer Content"</strong> — the Confluence specification page content and any related text the Customer (through its authorised users) submits to the App for processing under the Managed tier, together with the Jira breakdown generated from it, to the extent any of the foregoing contains Personal Data.</li>
+  <li><strong>"Managed tier"</strong> — the App tier in which Spec2Tickets, using its own Anthropic account and API key, calls the Anthropic API to generate a breakdown from Customer Content (as distinct from the BYOK tier, in which the Customer uses its own Anthropic key).</li>
+  <li><strong>"Sub-processor"</strong> — any third party engaged by Spec2Tickets to process Customer Content on its behalf in connection with the Managed tier. The sole Sub-processor at the effective date is identified in Section 6 and at <a href="https://spec2jira.com/subprocessors">https://spec2jira.com/subprocessors</a>.</li>
+  <li><strong>"Standard Contractual Clauses" / "SCCs"</strong> — (a) for EU transfers, the clauses approved by Commission Implementing Decision (EU) 2021/914 of 4 June 2021; and (b) for UK transfers, the UK International Data Transfer Addendum to the EU SCCs ("UK IDTA") issued by the ICO.</li>
+</ul>
+
+<h2>3. Roles of the parties</h2>
+<ul>
+  <li>The <strong>Customer is the Controller</strong> of Customer Content. The Customer determines the purposes and means of the processing (it decides which spec pages to submit and what they contain).</li>
+  <li><strong>Spec2Tickets is a Processor</strong>, processing Customer Content only on the Customer's documented instructions for the purpose of providing the Managed tier.</li>
+  <li><strong>Anthropic PBC is Spec2Tickets' Sub-processor</strong> for the Managed tier (AI inference). With respect to the content Spec2Tickets sends it under the Managed tier, Anthropic acts as a processor; Anthropic's own terms govern that relationship (Section 6).</li>
+  <li>Where the Customer is itself a processor for an upstream controller, the Customer warrants it has the authority to engage Spec2Tickets as a sub-processor on those terms, and this DPA applies <em>mutatis mutandis</em> with the Customer in the processor role.</li>
+</ul>
+
+<h2>4. Subject-matter, nature, purpose, duration, and scope of processing</h2>
+<p>This Section is the <strong>Annex / Description of Processing</strong> required by Art. 28(3) GDPR.</p>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Element</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Subject-matter</strong></td>
+      <td>Processing of Customer Content to generate a structured Jira backlog from a Confluence specification, using AI inference, under the Managed tier.</td>
+    </tr>
+    <tr>
+      <td><strong>Nature of the processing</strong></td>
+      <td>Collection (receipt of the selected page content from Atlassian Forge), transient storage, transmission to the Sub-processor (Anthropic) for inference, generation of a breakdown (Epic, stories, subtasks, acceptance criteria, story points, dependency links), return to the Customer for human review, and deletion. No profiling, no automated decision-making producing legal or similarly significant effects on Data Subjects within the meaning of Art. 22 GDPR.</td>
+    </tr>
+    <tr>
+      <td><strong>Purpose</strong></td>
+      <td>Solely to provide the Managed-tier breakdown feature requested by the Customer. <strong>No</strong> use of Customer Content for product analytics, marketing, or model training (Section 9).</td>
+    </tr>
+    <tr>
+      <td><strong>Duration</strong></td>
+      <td>For the term of the Customer's use of the Managed tier, and only for as long as needed to perform each breakdown, subject to the retention and deletion terms in Section 7.</td>
+    </tr>
+    <tr>
+      <td><strong>Categories of Data Subjects</strong></td>
+      <td>Determined by the Customer. Typically: the Customer's employees, contractors, and project stakeholders referenced in a specification. The App is <strong>not</strong> designed for, and the Customer should <strong>not</strong> submit, special-category data (Art. 9) or children's data.</td>
+    </tr>
+    <tr>
+      <td><strong>Categories of Personal Data</strong></td>
+      <td>Determined by the Customer and limited to whatever Personal Data the Customer chooses to include in a submitted spec page — typically free-text business / product specification content that may incidentally contain names, work email addresses, role titles, or other identifiers. The Customer controls and should minimise this.</td>
+    </tr>
+    <tr>
+      <td><strong>Special-category data</strong></td>
+      <td>Not contemplated. The recommended and instructed position is that special-category data (Art. 9) must not be submitted under the Managed tier (Section 5.4); customers with such data should use the BYOK tier or redact before submission.</td>
+    </tr>
+    <tr>
+      <td><strong>Frequency</strong></td>
+      <td>On-demand, each time an authorised Customer user runs a Managed-tier breakdown.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>5. Obligations of Spec2Tickets as Processor (Art. 28(3))</h2>
+
+<h3>5.1 Processing on documented instructions</h3>
+<p>Spec2Tickets processes Customer Content <strong>only</strong> on the Customer's documented instructions, including with regard to international transfers, unless required to do otherwise by EU / Member-State or UK law to which Spec2Tickets is subject (in which case Spec2Tickets will inform the Customer of that legal requirement before processing, unless the law prohibits it on important grounds of public interest). The Customer's instructions are: (a) this DPA; (b) the Principal Agreement; and (c) the Customer's configuration and use of the App (each Managed-tier generation the Customer initiates is an instruction to process the selected content for that breakdown). Spec2Tickets will inform the Customer if, in its opinion, an instruction infringes Applicable Data Protection Law.</p>
+
+<h3>5.2 Confidentiality</h3>
+<p>Spec2Tickets ensures that persons authorised to process Customer Content are bound by an appropriate duty of confidentiality. Everyone with access to the deploying Atlassian developer account and to the Managed Anthropic account is under a confidentiality obligation.</p>
+
+<h3>5.3 Security</h3>
+<p>Spec2Tickets implements appropriate technical and organisational measures under Art. 32 GDPR, as described in Section 8.</p>
+
+<h3>5.4 No special-category / prohibited data instruction</h3>
+<p>The Customer instructs Spec2Tickets to process <strong>only</strong> ordinary Personal Data. The Customer agrees <strong>not</strong> to submit special-category data (Art. 9), criminal-offence data (Art. 10), payment-card data, or any data subject to heightened regulatory regimes via the Managed tier, and to use the BYOK tier (or to redact) where such data may be present. Spec2Tickets does not inspect content for, and cannot guarantee detection of, such data.</p>
+
+<h3>5.5 Sub-processing</h3>
+<p>See Section 6.</p>
+
+<h3>5.6 Assistance with data-subject rights</h3>
+<p>See Section 10.</p>
+
+<h3>5.7 Assistance with controller obligations</h3>
+<p>Taking into account the nature of the processing and the information available to it, Spec2Tickets assists the Customer in ensuring compliance with Arts. 32–36 GDPR (security, breach notification, data-protection impact assessments, and prior consultation), as further described in Sections 8, 10, and 12.</p>
+
+<h3>5.8 Deletion or return at end of services</h3>
+<p>See Section 7.4.</p>
+
+<h3>5.9 Records and demonstrable compliance</h3>
+<p>Spec2Tickets makes available to the Customer the information necessary to demonstrate compliance with Art. 28 and contributes to audits as described in Section 11.</p>
+
+<h2>6. Sub-processors (Art. 28(2), 28(4))</h2>
+
+<h3>6.1 General authorisation</h3>
+<p>The Customer provides a <strong>general written authorisation</strong> for Spec2Tickets to engage Sub-processors for the Managed tier, subject to the change-notice and objection rights below.</p>
+
+<h3>6.2 Current Sub-processors (effective date)</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Sub-processor</th><th>Role / purpose</th><th>Processing location</th><th>Terms / safeguards</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Anthropic PBC</strong> (Anthropic, the maker of Claude)</td>
+      <td>AI inference for the Managed tier: receives the Customer Content sent for a breakdown and returns the generated breakdown.</td>
+      <td>United States; Anthropic's then-current sub-processor and processing regions apply.</td>
+      <td>Anthropic Commercial Terms of Service, into which <strong>Anthropic's Data Processing Addendum and the EU SCCs are incorporated by reference</strong> (no separate signature). Anthropic's own sub-processors and change-notice are published at <a href="https://trust.anthropic.com" target="_blank" rel="noopener">trust.anthropic.com</a>.</td>
+    </tr>
+    <tr>
+      <td><strong>Atlassian</strong> (platform)</td>
+      <td>Hosts the App (Atlassian Forge) and stores the App's data within the Customer's own Atlassian instance.</td>
+      <td>Per the Customer's Atlassian instance region.</td>
+      <td>Governed by the Customer's existing agreement with Atlassian. Atlassian is the platform on which the App runs; for the Managed tier it is <strong>not</strong> an additional content-disclosure recipient beyond the Customer's own instance.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="callout">
+  <strong>Note on Atlassian's role.</strong> Forge data is stored <em>within the Customer's own Atlassian instance</em>, so Atlassian is not a recipient to whom Spec2Tickets <em>discloses</em> Customer Content in the Managed flow in the way Anthropic is. It is listed for completeness and transparency. The materially relevant Sub-processor for the Managed tier is <strong>Anthropic PBC</strong>.
+</div>
+<p>The authoritative, public Sub-processor list is maintained at <a href="https://spec2jira.com/subprocessors">https://spec2jira.com/subprocessors</a>.</p>
+
+<h3>6.3 Flow-down</h3>
+<p>Spec2Tickets imposes on each Sub-processor data-protection obligations that are, in substance, no less protective than those in this DPA, to the extent applicable to the Sub-processor's role. For Anthropic, this is achieved through the Anthropic Commercial Terms and the DPA / SCCs incorporated therein. The Managed Anthropic account is on the Commercial / API terms, so the no-training default and the DPA / SCCs apply.</p>
+
+<h3>6.4 Change notice and objection</h3>
+<p>Spec2Tickets will give the Customer <strong>at least 30 days'</strong> prior notice (via the public Sub-processor list and/or email to the Customer's designated contact) before adding or replacing a Sub-processor. If the Customer reasonably objects on data-protection grounds within that period, the parties will discuss in good faith; if no resolution is reached, the Customer may terminate the Managed tier for the affected processing without penalty (the BYOK tier remains available as an alternative). Spec2Tickets remains liable for its Sub-processors' performance of their data-protection obligations.</p>
+
+<h2>7. Retention, transience, and deletion</h2>
+<p>This Section states the actual data lifecycle. It is deliberately honest about residual retention at the Sub-processor; it should <strong>not</strong> be read as a "zero-retention" guarantee.</p>
+
+<h3>7.1 Inside Atlassian Forge (storage Spec2Tickets controls)</h3>
+<ul>
+  <li>Customer Content (the submitted page content and the generated breakdown) is stored <strong>transiently</strong> in Atlassian Forge key-value storage (<strong>KVS</strong>) <strong>within the Customer's own Atlassian instance</strong>, only to drive the review-and-push workflow.</li>
+  <li>The App <strong>removes</strong> the stored page content and breakdown when the Customer pushes the breakdown to Jira, and likewise when the Customer regenerates a breakdown for the same page. Until one of those events, content remains in the Customer's own Forge instance.</li>
+  <li>Honest current behaviour: page content and the breakdown persist in the Customer's own Forge instance until they are overwritten by a new generation, until the user pushes to Jira, or until the App is uninstalled. Spec2Tickets does <strong>not</strong> claim an automatic, timed purge of abandoned jobs.</li>
+  <li>Uninstalling the App removes its Forge-stored data for that instance.</li>
+</ul>
+
+<h3>7.2 At Anthropic (Sub-processor — the residual retention to disclose)</h3>
+<ul>
+  <li>The Managed tier uses the <strong>Anthropic Message Batches API</strong>. <strong>The Batches API is not eligible for Zero-Data-Retention (ZDR); inputs and outputs of batch jobs are retained by Anthropic for up to approximately 29 days</strong>, after which they are deleted in the ordinary course, per Anthropic's then-current retention policy.</li>
+  <li>Accordingly, the honest framing is: <strong>Customer Content is not retained at rest by Spec2Tickets after the breakdown is returned and removed from Forge, except</strong> (a) for the <strong>≤ ~29-day</strong> retention of batch inputs / outputs at Anthropic described above, and (b) any <strong>limited legal / safety / abuse-prevention retention</strong> described in Section 7.3.</li>
+  <li>We do <strong>not</strong> claim "zero retention" for the Managed tier. A customer that requires zero retention should use <strong>BYOK</strong> and configure ZDR (if eligible) directly under its own Anthropic agreement, or avoid submitting the data.</li>
+</ul>
+
+<h3>7.3 Limited legal / abuse retention at the Sub-processor</h3>
+<p>Even where ordinary retention limits apply, Anthropic may retain content that is flagged for trust-and-safety, legal, or abuse-prevention reasons for a <strong>longer period (up to approximately 2 years)</strong>, as described in Anthropic's policies. This is outside Spec2Tickets' control and is disclosed for transparency.</p>
+
+<h3>7.4 Deletion or return at end of services</h3>
+<p>On termination of the Managed tier, or on the Customer's written request, Spec2Tickets will delete the Customer Content it holds in Forge (or, at the Customer's option and where technically feasible, return it), save to the extent retention is required by law. Residual copies held by Anthropic are deleted on Anthropic's retention schedule (Sections 7.2–7.3); where a customer requires expedited deletion of batch-job data at Anthropic, see the data-subject-rights caveat in Section 10.3.</p>
+
+<h2>8. Security measures (Art. 32)</h2>
+<p>Spec2Tickets relies on Atlassian Forge's platform security and applies the following technical and organisational measures appropriate to the risk.</p>
+
+<h3>Platform and architecture</h3>
+<ul>
+  <li>The App runs entirely on <strong>Atlassian Forge's managed runtime</strong> (<code>nodejs24.x</code>); there is <strong>no separate Spec2Tickets-operated server, VM, container, or database</strong> for the Managed flow.</li>
+  <li>The only external egress declared in the Forge manifest is <strong><code>https://api.anthropic.com</code></strong>.</li>
+  <li>For the Managed tier, the call to Anthropic uses <strong>Spec2Tickets' own Anthropic API key</strong>, stored in <strong>Forge encrypted secret storage</strong> and accessible only to the backend resolver (never returned to the browser). The Managed key is provisioned via Forge encrypted storage and is never logged.</li>
+</ul>
+
+<h3>Encryption</h3>
+<ul>
+  <li><strong>In transit:</strong> TLS / HTTPS for all Atlassian API calls and for the call to <code>api.anthropic.com</code>.</li>
+  <li><strong>At rest:</strong> Forge storage is encrypted and managed by Atlassian; secrets use Forge encrypted secret storage.</li>
+</ul>
+
+<h3>Access control and tenant isolation</h3>
+<ul>
+  <li>The App inherits Forge tenant isolation; data is stored within the Customer's own instance.</li>
+  <li>Confluence reads and Jira writes act under the <strong>signed-in user's own Atlassian permissions</strong> (<code>asUser()</code>), not a shared service account, so users can only act on content they may already access.</li>
+  <li>Managed-tier generation and push remain gated behind an active license or trial.</li>
+  <li>Administrative access to the Atlassian developer account that deploys the App and to the Managed Anthropic account is restricted to authorised personnel and protected by <strong>multi-factor authentication (MFA)</strong>.</li>
+</ul>
+
+<h3>Data minimisation and logging</h3>
+<ul>
+  <li>The App is designed so that <strong>end-user content is not written to Forge application logs</strong> (log statements record lengths, identifiers, and status, not content).</li>
+  <li>Customer Content is held only transiently and removed per Section 7.</li>
+</ul>
+
+<h3>Telemetry</h3>
+<ul>
+  <li>The App collects <strong>no separate analytics or behavioural telemetry</strong> on end users.</li>
+</ul>
+
+<h3>Certifications</h3>
+<p>Spec2Tickets does <strong>not</strong> claim SOC 2, ISO 27001, or other independent certification for its own operations and does not represent that it holds any. The App inherits the security posture of the <strong>Atlassian Forge</strong> platform; Anthropic maintains its own certifications as published at <a href="https://trust.anthropic.com" target="_blank" rel="noopener">trust.anthropic.com</a>.</p>
+
+<h2>9. No training on Customer Content</h2>
+<ul>
+  <li>Spec2Tickets does <strong>not</strong> use Customer Content to train, fine-tune, or improve any machine-learning model.</li>
+  <li>For the Sub-processor: under the <strong>Anthropic Commercial Terms</strong>, Anthropic <strong>does not train its models on customer content submitted via the commercial / API services by default</strong>; Anthropic's Privacy Center confirms this for commercial / API use. The Managed account is on commercial / API terms so this default applies, and no optional data-sharing or model-improvement setting is enabled on the account.</li>
+</ul>
+
+<h2>10. Data-subject rights and assistance (Arts. 12–23, 28(3)(e))</h2>
+
+<h3>10.1 Forwarding requests</h3>
+<p>If Spec2Tickets receives a request from a Data Subject relating to Customer Content (access, rectification, erasure, restriction, portability, or objection), Spec2Tickets will, unless legally prohibited, <strong>not</strong> respond directly (except to confirm the request was received and will be routed) and will <strong>forward</strong> it to the Customer without undue delay so the Customer, as Controller, can respond.</p>
+
+<h3>10.2 Assistance</h3>
+<p>Taking into account the nature of the processing, Spec2Tickets provides reasonable assistance — by appropriate technical and organisational measures, insofar as possible — to help the Customer fulfil its obligation to respond to Data-Subject requests. Because Customer Content in Forge is held transiently and stored within the Customer's own instance, the Customer can often satisfy access / erasure requests directly (e.g. by editing or removing the source page and by deleting or regenerating the breakdown).</p>
+
+<h3>10.3 Caveat — deletion of data held by the Sub-processor</h3>
+<p>Erasure of Customer Content that resides in <strong>Anthropic's batch-job storage</strong> during the ≤ ~29-day retention window is <strong>not within Spec2Tickets' direct technical control</strong>. Where a Data-Subject erasure request requires expedited deletion of such residual data, Spec2Tickets will, on the Customer's documented request, <strong>submit a corresponding deletion request to Anthropic</strong> and pass back Anthropic's response, but cannot guarantee a deletion timeline shorter than Anthropic's processes allow, and cannot delete content Anthropic is required to retain for legal or abuse reasons (Section 7.3). For use cases that demand guaranteed, controller-driven erasure, <strong>BYOK is the appropriate tier</strong>.</p>
+
+<h2>11. Audit (Art. 28(3)(h))</h2>
+<ul>
+  <li>On the Customer's reasonable written request (no more than <strong>once per 12 months</strong>, except following a Personal Data Breach affecting the Customer or where required by a supervisory authority), Spec2Tickets will make available the information necessary to demonstrate compliance with Art. 28 — including this DPA, the public Sub-processor list, the security summary in Section 8, and relevant Atlassian Forge / Anthropic platform documentation and any third-party attestations those providers publish.</li>
+  <li>Given the no-backend architecture, Spec2Tickets' own auditable surface is limited; much of the relevant assurance derives from <strong>Atlassian's</strong> and <strong>Anthropic's</strong> published security documentation and attestations, which Spec2Tickets will help the Customer locate.</li>
+  <li>On-site audits or detailed questionnaires beyond the above will be handled on reasonable notice, during business hours, and subject to confidentiality.</li>
+</ul>
+
+<h2>12. Personal Data Breach (Arts. 33–34)</h2>
+<ul>
+  <li>Spec2Tickets will notify the Customer <strong>without undue delay</strong> after becoming aware of a Personal Data Breach affecting Customer Content processed under the Managed tier, and in any event <strong>within 72 hours</strong> of becoming aware, providing the information reasonably available to enable the Customer to meet its own notification obligations.</li>
+  <li>The notification will, to the extent known, describe the nature of the breach, likely consequences, and measures taken or proposed.</li>
+  <li>The security / incident contact is <a href="mailto:security@spec2jira.com">security@spec2jira.com</a>, behind which there is a defined internal incident-response process.</li>
+  <li>Breaches occurring within Atlassian's or Anthropic's platforms are subject to those providers' own notification commitments to Spec2Tickets; Spec2Tickets will relay relevant information to the Customer.</li>
+</ul>
+
+<h2>13. International transfers (Chapter V)</h2>
+<ul>
+  <li>The Managed tier transfers Customer Content to <strong>Anthropic PBC in the United States</strong> (and potentially other regions per Anthropic's sub-processor list). This is a <strong>restricted / third-country transfer</strong> under the GDPR and UK GDPR.</li>
+  <li><strong>Transfer mechanism — SCCs.</strong> The transfer is covered by the <strong>EU Standard Contractual Clauses (Commission Decision 2021/914)</strong> and, for UK data, the <strong>UK International Data Transfer Addendum (IDTA)</strong>, as <strong>incorporated into the Anthropic Commercial Terms / Anthropic DPA</strong> between Spec2Tickets and Anthropic. The Spec2Tickets&rarr;Anthropic transfer uses <strong>Module Three (processor-to-processor)</strong>; where Spec2Tickets contracts directly with an EU/UK customer, <strong>Module Two (controller-to-processor)</strong> applies to the Customer&rarr;Spec2Tickets leg.</li>
+  <li><strong>Transfer impact / supplementary measures.</strong> Spec2Tickets maintains a Transfer Impact Assessment reflecting the data categories (low-risk business spec content, customer-controlled, no special categories instructed), the ≤29-day Sub-processor retention, encryption in transit, and the no-training default, together with the supplementary measures described in this DPA.</li>
+  <li><strong>Atlassian Forge</strong> stores data within the Customer's chosen Atlassian region; data residency for the App's Forge-stored data follows the Customer's instance (Section 8). The transfer that leaves the Atlassian boundary is the <strong>Anthropic</strong> call described above.</li>
+</ul>
+
+<h2>14. Liability</h2>
+<p>Each party's liability arising out of or related to this DPA is <strong>subject to the limitations and exclusions of liability set out in the Principal Agreement (the Atlassian Marketplace end-user agreement)</strong>, and counts toward those limits, except where Applicable Data Protection Law does not permit such limitation.</p>
+
+<h2>15. Term and termination</h2>
+<ul>
+  <li>This DPA takes effect when the Customer enables the Managed tier and continues for as long as Spec2Tickets processes Customer Content under that tier.</li>
+  <li>It terminates automatically on termination of the Principal Agreement or when the Customer ceases using the Managed tier.</li>
+  <li>On termination, Section 7.4 (deletion / return) applies. Provisions which by their nature should survive (confidentiality, liability, governing law) survive.</li>
+</ul>
+
+<h2>16. Governing law and jurisdiction</h2>
+<p>This DPA is governed by <strong>the laws of Bulgaria</strong>, and the <strong>courts of Sofia, Bulgaria</strong> have exclusive jurisdiction, <strong>without prejudice</strong> to any mandatory provisions of Applicable Data Protection Law and to the governing-law and forum requirements of the SCCs.</p>
+
+<h2>17. Acceptance</h2>
+<p>This DPA is accepted by <strong>click-through and incorporation by reference</strong> from the Atlassian Marketplace listing and the Principal Agreement when the Customer enables the Managed tier. It is published at a stable URL (this page) and applies without a separate signature.</p>
+
+<h2>Document control</h2>
+<ul>
+  <li><strong>Scope:</strong> Managed tier only. BYOK is unaffected and remains the privacy-maximising option.</li>
+  <li><strong>Source of facts:</strong> Anthropic Commercial Terms, Anthropic Privacy Center / <a href="https://trust.anthropic.com" target="_blank" rel="noopener">trust.anthropic.com</a>, Anthropic Message Batches API retention (non-ZDR, ≤ ~29 days; flagged content up to ~2 years), and the App's actual Forge KVS behaviour (content removed on push, on regeneration, and on uninstall).</li>
+  <li><strong>Last updated:</strong> June 4, 2026.</li>
+</ul>
+
+</main>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/dpa">DPA</a>
+    <a href="/subprocessors">Sub-processors</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>

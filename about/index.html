@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Spec2Tickets for Confluence and Jira</title>
+<meta name="description" content="About Spec2Tickets (Spec2JIRA): we take the mechanical work out of turning specifications into a structured Jira backlog, so teams spend their time on judgment, not transcription. Privacy-first, human-in-the-loop, built on Atlassian Forge and Anthropic Claude.">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2684FF;
+    --blue-light: #4C9AFF;
+    --slate: #505F79;
+    --gray: #6B778C;
+    --bg: #FAFBFC;
+    --white: #FFFFFF;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--navy); background: var(--bg); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
+  }
+  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
+  nav .logo span { color: var(--blue); }
+  nav .links a { color: var(--slate); text-decoration: none; margin-left: 28px; font-size: 15px; font-weight: 500; }
+  nav .links a:hover { color: var(--blue); }
+
+  .content { max-width: 740px; margin: 0 auto; padding: 56px 24px 64px; }
+  .content h1 { font-size: clamp(30px, 4.5vw, 40px); font-weight: 800; margin-bottom: 8px; letter-spacing: -0.4px; }
+  .content .lead { font-size: 19px; color: var(--slate); margin-bottom: 36px; line-height: 1.7; }
+  .content h2 { font-size: 22px; font-weight: 700; margin: 36px 0 12px; padding-top: 24px; border-top: 1px solid #E4E7EB; }
+  .content h2:first-of-type { border-top: none; padding-top: 0; }
+  .content p { font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7; }
+  .content ul { margin: 0 0 16px 22px; color: var(--slate); font-size: 16px; }
+  .content li { margin-bottom: 8px; line-height: 1.6; }
+  .content strong { color: var(--navy); }
+  .content a { color: var(--blue); }
+  .callout {
+    background: #E9F2FF; border-left: 4px solid var(--blue);
+    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 24px 0; font-size: 15px; color: var(--navy);
+  }
+  .values { list-style: none; margin-left: 0; }
+  .values li { margin-bottom: 14px; }
+  .values li strong { display: block; margin-bottom: 2px; }
+
+  .cta-row { margin-top: 36px; }
+  .btn { display: inline-block; padding: 13px 28px; border-radius: var(--radius); font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-light); }
+  .btn-secondary { background: transparent; color: var(--slate); border: 1px solid #D5DAE1; margin-left: 12px; }
+  .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer a { color: var(--slate); text-decoration: none; margin-left: 22px; }
+  footer a:hover { color: var(--blue); }
+
+  @media (max-width: 640px) {
+    nav { flex-wrap: wrap; row-gap: 10px; }
+    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
+    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
+    .content h1 { font-size: 28px; }
+    .btn-secondary { margin-left: 0; margin-top: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Spec<span>2JIRA</span></a>
+  <div class="links">
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="https://marketplace.atlassian.com" target="_blank" rel="noopener">Marketplace</a>
+  </div>
+</nav>
+
+<main class="content">
+
+<h1>About Spec2Tickets</h1>
+<p class="lead">We build one thing, and we build it well: a tool that turns a Confluence specification into a structured Jira backlog — so the people who used to spend their day transcribing requirements into tickets can spend it on the work that actually needs them.</p>
+
+<h2>Why we built it</h2>
+<p>Every delivery team knows the tax: a thoughtful specification exists, and now someone has to hand-translate it into epics, stories, subtasks, acceptance criteria, and dependencies. It's slow, it's repetitive, and it's where detail quietly gets lost. Analysts spend hours transcribing instead of refining. Developers start from a vague paragraph and fill the gaps with guesses. Rework follows.</p>
+<p>Spec2Tickets removes that mechanical step. You point it at a spec, it produces a complete, well-structured breakdown in minutes, and your team reviews and adjusts before anything reaches Jira. The judgment stays human; the typing goes away.</p>
+
+<h2>What we believe</h2>
+<ul class="values">
+  <li><strong>AI assists, humans decide.</strong> Nothing is created in Jira until a person reviews and approves it. The editor is the product — the AI gives you a strong first draft, not the final word.</li>
+  <li><strong>Privacy by architecture, not by promise.</strong> Spec2Tickets runs entirely on Atlassian Forge with no vendor backend, and the Bring-Your-Own-Key model means your spec content goes to <em>your</em> Anthropic account under <em>your</em> agreement. We can't see your data because we never receive it.</li>
+  <li><strong>Work at the altitude of the spec.</strong> We don't generate a single ticket from a prompt — we read a whole specification and produce a coherent backlog with hierarchy, sizing, and dependencies. That's a harder problem, and it's the one worth solving.</li>
+  <li><strong>Least privilege, always.</strong> The app requests only the scopes it needs, creates issues but never deletes them, and acts with your own Atlassian permissions.</li>
+</ul>
+
+<h2>Built on a solid foundation</h2>
+<p>Spec2Tickets is an <strong>Atlassian Forge</strong> app, so it runs inside Atlassian's own cloud platform — there's nothing to host, no servers to secure, and your data stays within the Atlassian and Anthropic boundaries you already trust. The breakdowns are generated by <strong>Anthropic's Claude</strong>, a frontier AI model, using structured outputs so the result is consistent and reviewable rather than free-form text.</p>
+
+<div class="callout">
+  <strong>Two names, one product.</strong> The app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>. <strong>Spec2JIRA</strong> is the vendor name and this site's domain. They refer to the same product.
+</div>
+
+<h2>Who we are</h2>
+<p>Spec2Tickets is built by an independent software vendor based in Sofia, Bulgaria, focused on practical AI tooling for software delivery teams. We're small, we ship deliberately, and we'd genuinely like to hear how the product works for you.</p>
+<p>Reach us at <a href="mailto:support@spec2jira.com">support@spec2jira.com</a> — for privacy questions, <a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a>; for security, <a href="mailto:security@spec2jira.com">security@spec2jira.com</a>.</p>
+
+<div class="cta-row">
+  <a href="https://marketplace.atlassian.com" class="btn btn-primary">Get it on Marketplace</a>
+  <a href="/how-it-works" class="btn btn-secondary">See how it works</a>
+</div>
+
+</main>
+
+<footer>
+  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
+  <div>
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/dpa">DPA</a>
+    <a href="/subprocessors">Sub-processors</a>
+    <a href="mailto:support@spec2jira.com">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>

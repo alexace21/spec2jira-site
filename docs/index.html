@@ -11,7 +11,7 @@
     --blue: #2684FF;
     --blue-light: #4C9AFF;
     --slate: #505F79;
-    --gray: #97A0AF;
+    --gray: #6B778C;
     --bg: #FAFBFC;
     --white: #FFFFFF;
     --accent: #8B5CF6;
@@ -119,7 +119,9 @@
   @media (max-width: 768px) {
     .sidebar { display: none; }
     .page { padding: 0 24px; }
-    nav .links a { margin-left: 20px; font-size: 14px; }
+    nav { flex-wrap: wrap; row-gap: 10px; }
+    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
+    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
     .content h1 { font-size: 28px; }
   }
 </style>
@@ -129,9 +131,11 @@
 <nav>
   <a href="/" class="logo">Spec<span>2JIRA</span></a>
   <div class="links">
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
     <a href="/docs">Docs</a>
-    <a href="/privacy">Privacy</a>
-    <a href="https://marketplace.atlassian.com" target="_blank">Marketplace</a>
+    <a href="https://marketplace.atlassian.com" target="_blank" rel="noopener">Marketplace</a>
   </div>
 </nav>
 
@@ -177,7 +181,7 @@
 <h2 id="step-1">Step 1 — Install from the Atlassian Marketplace</h2>
 <p>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the Atlassian Marketplace into your site. Because it works across both products (the editor lives in Confluence; it creates issues in Jira), you'll approve it for <strong>both Confluence and Jira</strong>.</p>
 <div class="callout">
-  <strong>Two entries in <em>Manage Apps</em> is normal.</strong> A cross-product app registers once per product — Atlassian reviewers expect this, and the requested scopes explain why.
+  <strong>Seeing two entries in <em>Manage Apps</em> is expected.</strong> Because Spec2Tickets works across both Confluence and Jira, it registers once for each product — that's normal for a cross-product app, and the permissions it requests explain why.
 </div>
 
 <h2 id="step-2">Step 2 — Get an Anthropic API key</h2>
@@ -192,7 +196,7 @@
 
 <h2 id="step-3">Step 3 — Configure the app</h2>
 <ol>
-  <li>In Confluence, open <strong>Settings</strong> (gear icon, top right) &rarr; <strong>Apps</strong>, and find <strong>Spec2Tickets Settings</strong> in the sidebar.</li>
+  <li>Open the <strong>Spec2Tickets</strong> page in Confluence and click <strong>Settings</strong> (top-right of the app) to open its configuration screen.</li>
   <li>Paste your <strong>Anthropic API key</strong>.</li>
   <li>Set a <strong>default Jira project key</strong> (e.g. <code>SCRUM</code>) — the project where issues will be created — then <strong>Test &amp; Save</strong>.</li>
   <li><em>(Optional)</em> If your Jira project requires custom fields on create, add them under <strong>Advanced</strong>.</li>
@@ -201,7 +205,7 @@
 <h2 id="generate">Step 4 — Generate a breakdown</h2>
 <ol>
   <li>Open the Spec2Tickets page and pick the Confluence specification page you want to convert.</li>
-  <li>Click <strong>Generate</strong>. Claude analyzes the page and produces the breakdown — typically <strong>60–150 seconds</strong> depending on spec size.</li>
+  <li>Click <strong>Generate</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large specs or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
 </ol>
 
 <h2 id="review">Step 5 — Review &amp; edit</h2>
@@ -226,11 +230,11 @@
 
 <h2 id="pricing">Pricing</h2>
 <table>
-  <tr><th>Plan</th><th>Price</th><th>Breakdowns / month</th></tr>
-  <tr><td><strong>Free</strong></td><td>—</td><td>3</td></tr>
-  <tr><td><strong>Pro</strong></td><td>€39<small> / month</small></td><td>Unlimited</td></tr>
+  <tr><th>Plan</th><th>Price</th><th>Breakdowns</th></tr>
+  <tr><td><strong>Free trial</strong></td><td>$0 &middot; 30 days</td><td>Unlimited during the trial</td></tr>
+  <tr><td><strong>BYOK Pro</strong></td><td>$6.70<small> / user / month</small>*</td><td>Unlimited</td></tr>
 </table>
-<p>You bring your own Anthropic API key on every plan, so AI usage is billed to your Anthropic account separately. The subscription covers the app itself.</p>
+<p>*Billed per user through the Atlassian Marketplace (Paid via Atlassian), in USD. Teams of up to 10 users pay a flat <strong>$57/month</strong>; volume discounts apply above 100 users, and the Marketplace shows the exact price for your team size. Every plan is Bring Your Own Key — you add your own Anthropic API key, so AI usage is billed to your Anthropic account separately, and the subscription covers only the app itself.</p>
 
 <h2 id="data">Data &amp; privacy</h2>
 <p>Spec2Tickets operates no backend. Your page content is sent to <strong>Anthropic</strong> using <strong>your own API key</strong>, governed by your agreement with Anthropic — by default Anthropic does not train on API data and retains it only briefly. Page content and breakdowns are stored transiently in Atlassian Forge storage and removed after you push. Full details are in the <a href="/privacy">Privacy Policy</a>.</p>
@@ -240,7 +244,7 @@
   <tr><td><strong>“API key not configured”</strong></td><td>Add your Anthropic API key under Settings (Step 3).</td></tr>
   <tr><td><strong>Anthropic rate limit / credits</strong></td><td>Check your usage tier and billing at console.anthropic.com.</td></tr>
   <tr><td><strong>Subtasks created as a checklist</strong></td><td>Your Jira project has no Subtask issue type — enable it in project settings, or contact support.</td></tr>
-  <tr><td><strong>“You've reached your free limit”</strong></td><td>You've used your 3 free breakdowns this month. Upgrade to Pro, or wait for the monthly reset.</td></tr>
+  <tr><td><strong>“Subscription required”</strong></td><td>Your 30-day trial has ended, or there's no active subscription. Subscribe to Spec2Tickets from the Atlassian Marketplace (or ask your Atlassian site admin) to keep generating.</td></tr>
 </table>
 
 <h2 id="support">Support</h2>
@@ -252,8 +256,13 @@
 <footer>
   <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
   <div>
-    <a href="/privacy">Privacy Policy</a>
-    <a href="/docs">Documentation</a>
+    <a href="/how-it-works">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/docs">Docs</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/dpa">DPA</a>
+    <a href="/subprocessors">Sub-processors</a>
     <a href="mailto:support@spec2jira.com">Support</a>
   </div>
 </footer>
