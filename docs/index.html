@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Documentation — Spec2Tickets for Confluence and Jira</title>
-<meta name="description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
+<meta name="description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence pages into Jira breakdowns. No servers, no GPU.">
 <link rel="canonical" href="https://spec2jira.com/docs">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Spec2Tickets">
 <meta property="og:title" content="Documentation — Spec2Tickets for Confluence and Jira">
-<meta property="og:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
+<meta property="og:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence pages into Jira breakdowns. No servers, no GPU.">
 <meta property="og:url" content="https://spec2jira.com/docs">
 <meta property="og:image" content="https://spec2jira.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Documentation — Spec2Tickets for Confluence and Jira">
-<meta name="twitter:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence specs into Jira breakdowns. No servers, no GPU.">
+<meta name="twitter:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence pages into Jira breakdowns. No servers, no GPU.">
 <meta name="twitter:image" content="https://spec2jira.com/og-image.png">
 <style>
   :root {
@@ -187,7 +187,7 @@
 </div>
 
 <h2 id="overview">Overview</h2>
-<p>Spec2Tickets turns a Confluence specification page into a structured Jira breakdown — one Epic, Stories, Subtasks, cross-feature dependency links, and quality signals — using <strong>Anthropic's Claude Sonnet 4.6</strong>.</p>
+<p>Spec2Tickets turns a Confluence page into a structured Jira breakdown — one Epic, Stories, Subtasks, cross-feature dependency links, and quality signals — using <strong>Anthropic's Claude Sonnet 4.6</strong>.</p>
 <p>It runs entirely on <strong>Atlassian Forge</strong>. There is no server to host, no GPU, and no Docker. The app uses <strong>your own Anthropic API key</strong> (Bring Your Own Key), so AI processing happens under your own Anthropic account.</p>
 
 <h2 id="requirements">Requirements</h2>
@@ -223,8 +223,8 @@
 
 <h2 id="generate">Step 4 — Generate a breakdown</h2>
 <ol>
-  <li>Open the Spec2Tickets page and pick the Confluence specification page you want to convert.</li>
-  <li>Click <strong>Generate</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large specs or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
+  <li>Open the Spec2Tickets page and pick the Confluence page you want to convert.</li>
+  <li>Click <strong>Generate</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large pages or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
 </ol>
 
 <h2 id="review">Step 5 — Review &amp; edit</h2>
@@ -240,7 +240,7 @@
 <h2 id="push">Step 6 — Push to Jira</h2>
 <p>Click <strong>Push to Jira</strong>. Spec2Tickets creates, in your project:</p>
 <ul>
-  <li>One <strong>Epic</strong> for the spec.</li>
+  <li>One <strong>Epic</strong> for the page.</li>
   <li>A <strong>Story</strong> per feature (with priority, story points, and labels).</li>
   <li><strong>Subtasks</strong> under each Story.</li>
   <li><strong>“blocks / is blocked by” links</strong> for cross-feature dependencies.</li>

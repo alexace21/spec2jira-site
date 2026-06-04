@@ -154,7 +154,7 @@
 <ul>
   <li><strong>"Applicable Data Protection Law"</strong> — all data-protection and privacy laws applicable to the processing under this DPA, including the GDPR, the UK GDPR, and any implementing or successor legislation. This DPA is GDPR / UK-GDPR-first.</li>
   <li><strong>"Controller"</strong>, <strong>"Processor"</strong>, <strong>"Sub-processor"</strong>, <strong>"Data Subject"</strong>, <strong>"Personal Data"</strong>, <strong>"Processing"</strong>, <strong>"Personal Data Breach"</strong> — as defined in the GDPR.</li>
-  <li><strong>"Customer Content"</strong> — the Confluence specification page content and any related text the Customer (through its authorised users) submits to the App for processing under the Managed tier, together with the Jira breakdown generated from it, to the extent any of the foregoing contains Personal Data.</li>
+  <li><strong>"Customer Content"</strong> — the Confluence page content and any related text the Customer (through its authorised users) submits to the App for processing under the Managed tier, together with the Jira breakdown generated from it, to the extent any of the foregoing contains Personal Data.</li>
   <li><strong>"Managed tier"</strong> — the App tier in which Spec2Tickets, using its own Anthropic account and API key, calls the Anthropic API to generate a breakdown from Customer Content (as distinct from the BYOK tier, in which the Customer uses its own Anthropic key).</li>
   <li><strong>"Sub-processor"</strong> — any third party engaged by Spec2Tickets to process Customer Content on its behalf in connection with the Managed tier. The sole Sub-processor at the effective date is identified in Section 6 and at <a href="https://spec2jira.com/subprocessors">https://spec2jira.com/subprocessors</a>.</li>
   <li><strong>"Standard Contractual Clauses" / "SCCs"</strong> — (a) for EU transfers, the clauses approved by Commission Implementing Decision (EU) 2021/914 of 4 June 2021; and (b) for UK transfers, the UK International Data Transfer Addendum to the EU SCCs ("UK IDTA") issued by the ICO.</li>
@@ -162,7 +162,7 @@
 
 <h2>3. Roles of the parties</h2>
 <ul>
-  <li>The <strong>Customer is the Controller</strong> of Customer Content. The Customer determines the purposes and means of the processing (it decides which spec pages to submit and what they contain).</li>
+  <li>The <strong>Customer is the Controller</strong> of Customer Content. The Customer determines the purposes and means of the processing (it decides which Confluence pages to submit and what they contain).</li>
   <li><strong>Spec2Tickets is a Processor</strong>, processing Customer Content only on the Customer's documented instructions for the purpose of providing the Managed tier.</li>
   <li><strong>Anthropic PBC is Spec2Tickets' Sub-processor</strong> for the Managed tier (AI inference). With respect to the content Spec2Tickets sends it under the Managed tier, Anthropic acts as a processor; Anthropic's own terms govern that relationship (Section 6).</li>
   <li>Where the Customer is itself a processor for an upstream controller, the Customer warrants it has the authority to engage Spec2Tickets as a sub-processor on those terms, and this DPA applies <em>mutatis mutandis</em> with the Customer in the processor role.</li>
@@ -178,7 +178,7 @@
   <tbody>
     <tr>
       <td><strong>Subject-matter</strong></td>
-      <td>Processing of Customer Content to generate a structured Jira backlog from a Confluence specification, using AI inference, under the Managed tier.</td>
+      <td>Processing of Customer Content to generate a structured Jira backlog from a Confluence page, using AI inference, under the Managed tier.</td>
     </tr>
     <tr>
       <td><strong>Nature of the processing</strong></td>
@@ -194,11 +194,11 @@
     </tr>
     <tr>
       <td><strong>Categories of Data Subjects</strong></td>
-      <td>Determined by the Customer. Typically: the Customer's employees, contractors, and project stakeholders referenced in a specification. The App is <strong>not</strong> designed for, and the Customer should <strong>not</strong> submit, special-category data (Art. 9) or children's data.</td>
+      <td>Determined by the Customer. Typically: the Customer's employees, contractors, and project stakeholders referenced in a Confluence page. The App is <strong>not</strong> designed for, and the Customer should <strong>not</strong> submit, special-category data (Art. 9) or children's data.</td>
     </tr>
     <tr>
       <td><strong>Categories of Personal Data</strong></td>
-      <td>Determined by the Customer and limited to whatever Personal Data the Customer chooses to include in a submitted spec page — typically free-text business / product specification content that may incidentally contain names, work email addresses, role titles, or other identifiers. The Customer controls and should minimise this.</td>
+      <td>Determined by the Customer and limited to whatever Personal Data the Customer chooses to include in a submitted Confluence page — typically free-text business / product content that may incidentally contain names, work email addresses, role titles, or other identifiers. The Customer controls and should minimise this.</td>
     </tr>
     <tr>
       <td><strong>Special-category data</strong></td>
@@ -377,7 +377,7 @@
 <ul>
   <li>The Managed tier transfers Customer Content to <strong>Anthropic PBC in the United States</strong> (and potentially other regions per Anthropic's sub-processor list). This is a <strong>restricted / third-country transfer</strong> under the GDPR and UK GDPR.</li>
   <li><strong>Transfer mechanism — SCCs.</strong> The transfer is covered by the <strong>EU Standard Contractual Clauses (Commission Decision 2021/914)</strong> and, for UK data, the <strong>UK International Data Transfer Addendum (IDTA)</strong>, as <strong>incorporated into the Anthropic Commercial Terms / Anthropic DPA</strong> between Spec2Tickets and Anthropic. The Spec2Tickets&rarr;Anthropic transfer uses <strong>Module Three (processor-to-processor)</strong>; where Spec2Tickets contracts directly with an EU/UK customer, <strong>Module Two (controller-to-processor)</strong> applies to the Customer&rarr;Spec2Tickets leg.</li>
-  <li><strong>Transfer impact / supplementary measures.</strong> Spec2Tickets maintains a Transfer Impact Assessment reflecting the data categories (low-risk business spec content, customer-controlled, no special categories instructed), the ≤29-day Sub-processor retention, encryption in transit, and the no-training default, together with the supplementary measures described in this DPA.</li>
+  <li><strong>Transfer impact / supplementary measures.</strong> Spec2Tickets maintains a Transfer Impact Assessment reflecting the data categories (low-risk business page content, customer-controlled, no special categories instructed), the ≤29-day Sub-processor retention, encryption in transit, and the no-training default, together with the supplementary measures described in this DPA.</li>
   <li><strong>Atlassian Forge</strong> stores data within the Customer's chosen Atlassian region; data residency for the App's Forge-stored data follows the Customer's instance (Section 8). The transfer that leaves the Atlassian boundary is the <strong>Anthropic</strong> call described above.</li>
 </ul>
 

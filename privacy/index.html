@@ -129,7 +129,7 @@
 </div>
 
 <h2>1. Overview</h2>
-<p>Spec2Tickets for Confluence and Jira ("the App") converts a Confluence specification page into a structured Jira breakdown — an Epic, Stories, Subtasks, and dependency links. This Privacy Policy explains what data the App handles and how.</p>
+<p>Spec2Tickets for Confluence and Jira ("the App") converts a Confluence page into a structured Jira breakdown — an Epic, Stories, Subtasks, and dependency links. This Privacy Policy explains what data the App handles and how.</p>
 
 <h2>2. Architecture and Data Flow</h2>
 <p>The App runs entirely on the <strong>Atlassian Forge</strong> platform — there is <strong>no Spec2JIRA-operated server or backend</strong>. It has two external touch-points:</p>
@@ -141,7 +141,7 @@
 
 <h2>3. Data the App Processes</h2>
 <ul>
-  <li><strong>Confluence page content:</strong> the text of the specification page you choose to convert — read via Atlassian APIs and sent to the Anthropic API (your key) to produce the breakdown.</li>
+  <li><strong>Confluence page content:</strong> the text of the Confluence page you choose to convert — read via Atlassian APIs and sent to the Anthropic API (your key) to produce the breakdown.</li>
   <li><strong>Generated breakdown:</strong> the structured work items (features, acceptance criteria, tasks, dependencies, concerns) returned by the model, which you review and edit before pushing to Jira.</li>
   <li><strong>Jira project metadata:</strong> project key, issue types, and field information, used to create the issues.</li>
   <li><strong>Configuration:</strong> your Anthropic API key and default Jira project key, stored in Atlassian Forge Key-Value Storage (the API key in encrypted secret storage, managed by Atlassian, with resolver-only access).</li>
