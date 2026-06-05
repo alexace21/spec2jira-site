@@ -165,6 +165,7 @@
   <a href="#requirements">Requirements</a>
   <div class="section-title">Setup (~5 min)</div>
   <a href="#step-1">1. Install from Marketplace</a>
+  <a href="#where">Where to open the app</a>
   <a href="#step-2">2. Get an Anthropic API key</a>
   <a href="#step-3">3. Configure the app</a>
   <div class="section-title">Using it</div>
@@ -198,10 +199,20 @@
 <p>That's it — no infrastructure, drivers, or downloads.</p>
 
 <h2 id="step-1">Step 1 — Install from the Atlassian Marketplace</h2>
-<p>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the Atlassian Marketplace into your site. Because it works across both products (the editor lives in Confluence; it creates issues in Jira), you'll approve it for <strong>both Confluence and Jira</strong>.</p>
+<p>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the Atlassian Marketplace into your site. It installs into <strong>Confluence</strong> and connects to <strong>Jira</strong>, so you'll approve it for <strong>both products</strong>.</p>
+<div class="callout">
+  <strong><span aria-hidden="true">ℹ</span> You use Spec2Tickets entirely in Confluence; Jira is simply where the issues are created.</strong> There is <strong>no separate app screen on Jira</strong> — if you set the app up from Jira and went looking for it there, you won't find a screen to open. The Jira connection just lets the app create the Epic, Stories, and Subtasks in your Jira project. Everything you do — picking a page, generating, reviewing, and pushing — happens on the Confluence side.
+</div>
 <div class="callout">
   <strong>Seeing two entries in <em>Manage Apps</em> is expected.</strong> Because Spec2Tickets works across both Confluence and Jira, it registers once for each product — that's normal for a cross-product app, and the permissions it requests explain why.
 </div>
+
+<h3 id="where">Where to open the app in Confluence</h3>
+<p>There are two ways to open Spec2Tickets, both in Confluence:</p>
+<ul>
+  <li><strong>From the top navigation:</strong> in Confluence, go to <strong>Apps → Spec2Tickets</strong>. This opens the app, where you pick the page you want to convert.</li>
+  <li><strong>From a page:</strong> on any Confluence page, click the <strong>••• (more actions)</strong> button at the top right and choose <strong>“Generate Breakdown with Spec2Tickets”</strong> — this opens the app with that page already selected.</li>
+</ul>
 
 <h2 id="step-2">Step 2 — Get an Anthropic API key</h2>
 <ol>
@@ -215,7 +226,7 @@
 
 <h2 id="step-3">Step 3 — Configure the app</h2>
 <ol>
-  <li>Open the <strong>Spec2Tickets</strong> page in Confluence and click <strong>Settings</strong> (top-right of the app) to open its configuration screen.</li>
+  <li>Open Spec2Tickets in Confluence (<strong>Apps → Spec2Tickets</strong>, or the <strong>••• → “Generate Breakdown with Spec2Tickets”</strong> action on a page — see <a href="#where">Where to open the app</a>). The first time, click <strong>Settings</strong> (top-right of the app) to open its configuration screen.</li>
   <li>Paste your <strong>Anthropic API key</strong>.</li>
   <li>Set a <strong>default Jira project key</strong> (e.g. <code>SCRUM</code>) — the project where issues will be created — then <strong>Test &amp; Save</strong>.</li>
   <li><em>(Optional)</em> If your Jira project requires custom fields on create, add them under <strong>Advanced</strong>.</li>
@@ -223,8 +234,8 @@
 
 <h2 id="generate">Step 4 — Generate a breakdown</h2>
 <ol>
-  <li>Open the Spec2Tickets page and pick the Confluence page you want to convert.</li>
-  <li>Click <strong>Generate</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large pages or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
+  <li>Open Spec2Tickets in Confluence (see <a href="#where">Where to open the app</a>) and pick the Confluence page you want to convert. If you opened it from a page via the <strong>•••</strong> action, that page is already selected.</li>
+  <li>Click <strong>Generate AI Breakdown</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large pages or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
 </ol>
 
 <h2 id="review">Step 5 — Review &amp; edit</h2>
