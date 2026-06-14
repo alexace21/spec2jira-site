@@ -171,7 +171,7 @@
 <h2>How we store and purge content</h2>
 <ul>
   <li>Customer content (the submitted page and the generated breakdown) is stored <strong>transiently</strong> in Atlassian Forge storage within the customer's own instance, only to drive the review-and-push workflow.</li>
-  <li>Content is removed when the customer <strong>pushes the breakdown to Jira</strong>, <strong>regenerates</strong> the breakdown, or <strong>uninstalls</strong> the app. On the Anthropic side, batch inputs and outputs are deleted within about 29 days (flagged content may be retained up to about 2 years).</li>
+  <li>Content is removed when the customer <strong>pushes the breakdown to Jira</strong> or <strong>uninstalls</strong> the app; a breakdown that is never pushed — including one the customer regenerates away or leaves unattended — is automatically removed after <strong>7 days of inactivity</strong> (opening it for review resets that timer). On the Anthropic side, batch inputs and outputs are deleted within about 29 days (flagged content may be retained up to about 2 years).</li>
   <li>The <strong>only</strong> external destination for content is Anthropic (the sub-processor above). The app runs no separate vendor backend or database, and Spec2Tickets keeps no copy of customer content on any Spec2Tickets-operated system.</li>
 </ul>
 
