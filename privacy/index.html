@@ -173,7 +173,10 @@
 <p>The App stores data only in <strong>Atlassian Forge Key-Value Storage</strong>, inside your own Atlassian instance's app storage (encrypted and managed by Atlassian):</p>
 <ul>
   <li><strong>Your Anthropic API key and default project key</strong> — kept until you change, clear, or uninstall.</li>
-  <li><strong>Page content and the generated breakdown</strong> — stored transiently to drive the review-and-push workflow. The App removes them when you push to Jira; a breakdown you never push — including one you regenerate away or leave to age — is automatically removed after <strong>7 days of inactivity</strong>, and opening it for review resets that timer. Until removed, it remains only in your own Forge instance. Uninstalling the App removes all of its stored data.</li>
+  <li><strong>Page content and the generated breakdown</strong> — stored transiently to drive the review-and-push workflow. The App removes them when you push to Jira; a breakdown you never push remains only in your own Forge instance until you push it, regenerate it, or uninstall the App. Uninstalling the App removes all of its stored data.
+  <!-- v5.5.0 TOGGLE: when the 7-day inactivity sweep (Task #13) ships, REPLACE the sentence "a breakdown you never push remains only in your own Forge instance until you push it, regenerate it, or uninstall the App." above with:
+       a breakdown you never push, including one you regenerate away or leave to age, is automatically removed after <strong>7 days of inactivity</strong>, and opening it for review resets that timer. Until removed, it remains only in your own Forge instance.
+  --></li>
 </ul>
 <p>Spec2JIRA keeps no copy of your content on any Spec2JIRA-operated system, because there is none.</p>
 
