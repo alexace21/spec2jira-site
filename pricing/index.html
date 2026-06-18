@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pricing — Spec2Tickets for Confluence and Jira</title>
-<meta name="description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Managed Pro coming soon.">
+<meta name="description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Advanced edition (test-case generation) coming soon.">
 <link rel="canonical" href="https://spec2jira.com/pricing">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Spec2Tickets">
 <meta property="og:title" content="Pricing — Spec2Tickets for Confluence and Jira">
-<meta property="og:description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Managed Pro coming soon.">
+<meta property="og:description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Advanced edition (test-case generation) coming soon.">
 <meta property="og:url" content="https://spec2jira.com/pricing">
 <meta property="og:image" content="https://spec2jira.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pricing — Spec2Tickets for Confluence and Jira">
-<meta name="twitter:description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Managed Pro coming soon.">
+<meta name="twitter:description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Advanced edition (test-case generation) coming soon.">
 <meta name="twitter:image" content="https://spec2jira.com/og-image.png">
 <style>
   :root {
@@ -148,11 +148,22 @@
     <p class="foot">Billed per user via the Atlassian Marketplace, in USD.</p>
   </div>
 
+  <!-- v6 VALUE-SPLIT (2026-06-18): editions pivoted from key-source to VALUE — BOTH editions are now BYOK.
+       The 2nd tier is "Advanced" (BYOK + test-case generation), NOT "Managed" (we-run-the-key), which was
+       dropped as a Marketplace edition. The old Managed Pro card is PRESERVED below (commented) for the
+       off-Marketplace Managed fallback / future; re-enable only if Managed returns as a Marketplace edition.
   <div class="plan soon">
     <div class="name">Managed Pro <span class="badge soon">Coming soon</span></div>
     <div class="price soon">$13<small> / user / month</small></div>
     <p class="desc">We run Claude for you — <strong>no Anthropic key required</strong>. A generous fair-use allowance per user, ideal for teams that would rather not manage their own API key.</p>
     <p class="foot"><a href="/privacy#managed">How Managed handles your data &rarr;</a></p>
+  </div>
+  -->
+  <div class="plan soon">
+    <div class="name">Advanced <span class="badge soon">Coming soon</span></div>
+    <div class="price soon">$13.40<small> / user / month</small></div>
+    <p class="desc">Everything in BYOK Pro, plus <strong>AI-generated acceptance test cases</strong> (BA-grade Gherkin / CSV) for every story. Still your own Anthropic key — unlimited.</p>
+    <p class="foot">Same BYOK privacy posture — your content stays under your own Anthropic agreement.</p>
   </div>
 </section>
 
@@ -170,9 +181,16 @@
     <h3>Is there a free plan?</h3>
     <p>There's a full <strong>30-day free trial</strong> rather than a permanent free tier — every feature is available while you evaluate. After the trial, an active subscription keeps the app running.</p>
   </div>
+  <!-- v6 VALUE-SPLIT (2026-06-18): the 2nd tier is now "Advanced" (BYOK + test-cases), not "Managed".
+       Old "What is Managed Pro?" Q&A PRESERVED below (commented) for the off-Marketplace Managed fallback.
   <div class="qa">
     <h3>What is Managed Pro?</h3>
     <p>An upcoming edition where Spec2Tickets runs Claude for you, so you don't need to bring an Anthropic key — planned at <strong>$13/user/month</strong> with a generous fair-use allowance per user. It uses our own Anthropic account, so a customer <a href="/dpa">data-processing addendum</a> and <a href="/subprocessors">sub-processor disclosure</a> apply; you can also read how it handles your data on our <a href="/privacy#managed">privacy page</a>. BYOK Pro remains the privacy-maximising choice.</p>
+  </div>
+  -->
+  <div class="qa">
+    <h3>What is Advanced?</h3>
+    <p>An upcoming edition that adds <strong>AI-generated acceptance test cases</strong> — BA-grade Gherkin and CSV, ready to import into your test tools — on top of everything in BYOK Pro. Planned at <strong>$13.40/user/month</strong>. Like BYOK Pro, it uses <strong>your own Anthropic key</strong>, so your content stays under your own Anthropic agreement — no extra data-processing terms needed.</p>
   </div>
   <div class="qa">
     <h3>How do I manage or cancel my subscription?</h3>
@@ -180,7 +198,7 @@
   </div>
 </section>
 
-<p class="finenote">Prices are in USD and set through the Atlassian Marketplace. Early-access pricing — we grandfather early adopters as the product grows. Managed Pro (coming soon) is planned at $13/user/month and opens when that edition launches.</p>
+<p class="finenote">Prices are in USD and set through the Atlassian Marketplace. Early-access pricing — we grandfather early adopters as the product grows. The Advanced edition (coming soon) adds test-case generation at $13.40/user/month and opens when that edition launches.</p>
 
 <section class="cta-band">
   <div class="inner">
@@ -200,8 +218,10 @@
     <a href="/about">About</a>
     <a href="/docs">Docs</a>
     <a href="/privacy">Privacy</a>
+    <!-- v6 (2026-06-18): DPA + Sub-processors are Managed-tier-only legal docs; under the v6 value-split both Marketplace editions are BYOK (Managed is not a Marketplace edition), so these are hidden from nav. The pages remain live at their URLs.
     <a href="/dpa">DPA</a>
     <a href="/subprocessors">Sub-processors</a>
+    -->
     <a href="mailto:support@spec2jira.com">Support</a>
   </div>
 </footer>
