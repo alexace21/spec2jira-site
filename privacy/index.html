@@ -121,7 +121,7 @@
 <p class="meta">Effective Date: May 30, 2026 &middot; Last Updated: June 4, 2026</p>
 
 <div class="callout">
-  <strong>In one line:</strong> Spec2Tickets is a Forge app that runs entirely on Atlassian's platform and uses <strong>your own Anthropic API key</strong> (Bring Your Own Key). In this BYOK model, AI processing happens under <em>your</em> agreement with Anthropic, and Spec2JIRA operates no backend and never receives your data on its own servers.
+  <strong>In one line:</strong> Spec2Tickets is a Forge app that runs entirely on Atlassian's platform and, once configured, uses <strong>your own Anthropic API key</strong> (Bring Your Own Key). In this BYOK model, AI processing happens under <em>your</em> agreement with Anthropic, and Spec2JIRA operates no backend and never receives your data on its own servers. <em>During your free trial</em>, you can start on <em>our</em> Anthropic key — a small welcome credit — before adding your own; see <a href="#managed">Managed AI processing</a> for how we handle your data then.
 </div>
 <!-- v6 (2026-06-18): Managed dropped as a Marketplace edition (both editions are BYOK) — the Managed forward-look is removed from the one-liner. Preserved: "— the only tier available today —" and "(A Managed tier (#managed), where we run Claude for you under our own Anthropic account, is coming soon — its different data handling is summarised below.)" -->
 
@@ -139,7 +139,7 @@
   <li><strong>Anthropic API (your key):</strong> to generate the breakdown, the App sends the page content to Anthropic's Claude model <strong>using the Anthropic API key that you provide</strong>. The request is billed to, and governed by, <em>your</em> account and agreement with Anthropic.</li>
 </ul>
 <p>Spec2JIRA operates no server or database of its own, so it stores no content on Spec2JIRA-operated infrastructure. Under <strong>BYOK</strong>, the only parties that handle your content are <strong>Atlassian</strong> (the Forge platform your instance runs on) and <strong>Anthropic</strong> (under your own API key).</p>
-<!-- v6 (2026-06-18): Managed dropped as a Marketplace edition — the Managed-tier sentence is removed. Preserved: "Under the Managed tier (coming soon), Spec2Tickets additionally processes your content by calling Anthropic under its own account — still from Atlassian Forge, with no vendor server — as described in the #managed section and our /dpa DPA." -->
+<p><strong>During your free trial</strong>, Spec2Tickets may additionally call Anthropic under <em>its own</em> account (a welcome credit) to generate your breakdown — still from Atlassian Forge, with no vendor server. This <a href="#managed">managed processing</a> is described below and in our <a href="/dpa">DPA</a>.</p>
 
 <h2>3. Data the App Processes</h2>
 <ul>
@@ -157,24 +157,19 @@
 </ul>
 <p>If no Anthropic API key is configured, the App cannot generate a breakdown and no page content is sent beyond Atlassian.</p>
 
-<!-- v6 VALUE-SPLIT (2026-06-18): Managed is no longer a Marketplace edition (both editions are now BYOK;
-     Advanced = BYOK + test-cases). This forward-looking "Managed tier — coming soon" disclosure is HIDDEN
-     (preserved below) — re-enable only if Managed returns as a Marketplace offering. The BYOK model the rest
-     of this policy describes remains the accurate, current model for BOTH Marketplace editions.
-<h2 id="managed">Managed tier — coming soon</h2>
+<h2 id="managed">Managed AI processing (during your free trial)</h2>
 <div class="callout">
-  <strong>Today, Spec2Tickets is Bring-Your-Own-Key only, and the rest of this policy describes that BYOK model.</strong> We are preparing an optional <strong>Managed</strong> tier in which Spec2Tickets runs Claude for you using our own Anthropic account — so you would not need to supply your own key. Because that changes who processes your content, we summarise the Managed data handling here in advance.
+  <strong>During your free trial, Spec2Tickets can run Claude for you on our own Anthropic account — so you can try the App before supplying your own key.</strong> This uses a small welcome credit; once that credit is used, or as soon as you configure your own Anthropic key, the App switches to <strong>Bring-Your-Own-Key (BYOK)</strong> and the rest of this policy applies. Because managed processing changes who processes your content, we summarise its data handling here.
 </div>
-<p>When the Managed tier launches, its data handling will differ from BYOK in these specific, disclosed ways:</p>
+<p>While Spec2Tickets runs Claude for you on our own account (the welcome credit), the data handling differs from BYOK in these specific, disclosed ways:</p>
 <ul>
   <li><strong>Roles.</strong> You remain the data controller; <strong>Spec2Tickets acts as a processor</strong> on your instructions, and <strong>Anthropic is our sub-processor</strong> for the AI inference.</li>
-  <li><strong>Retention (disclosed honestly).</strong> Managed uses Anthropic's asynchronous Message Batches API, which is <strong>not eligible for zero data retention</strong>: batch inputs and outputs are retained by Anthropic for <strong>up to about 29 days</strong> and then deleted, except content Anthropic flags for trust-and-safety or legal reasons, which it may retain longer per its policy. We will <strong>not</strong> claim &ldquo;zero retention&rdquo; for the Managed tier.</li>
+  <li><strong>Retention (disclosed honestly).</strong> Managed processing uses Anthropic's asynchronous Message Batches API, which is <strong>not eligible for zero data retention</strong>: batch inputs and outputs are retained by Anthropic for <strong>up to about 29 days</strong> and then deleted, except content Anthropic flags for trust-and-safety or legal reasons, which it may retain longer per its policy. We <strong>do not</strong> claim &ldquo;zero retention&rdquo; for managed processing.</li>
   <li><strong>No training.</strong> Neither Spec2Tickets nor Anthropic uses your content to train AI models (Anthropic's commercial/API no-training default).</li>
   <li><strong>International transfers.</strong> Content is processed by Anthropic in the United States under <strong>Standard Contractual Clauses</strong> incorporated into Anthropic's commercial terms.</li>
-  <li><strong>Your documents.</strong> See our <a href="/dpa">Managed-tier Data Processing Addendum</a> and our public <a href="/subprocessors">sub-processor list</a> for the full detail.</li>
+  <li><strong>Your documents.</strong> See our <a href="/dpa">Data Processing Addendum</a> and our public <a href="/subprocessors">sub-processor list</a> for the full detail.</li>
   <li><strong>BYOK stays the privacy-maximising choice.</strong> If you need the strictest data posture — including configuring your own retention directly with Anthropic — use BYOK: your content is processed only under your own Anthropic agreement, and Spec2Tickets is not a processor of it.</li>
 </ul>
--->
 
 <h2>5. Data Storage and Retention</h2>
 <p>The App stores data only in <strong>Atlassian Forge Key-Value Storage</strong>, inside your own Atlassian instance's app storage (encrypted and managed by Atlassian):</p>
@@ -186,16 +181,14 @@
 <p>Spec2JIRA keeps no copy of your content on any Spec2JIRA-operated system, because there is none.</p>
 
 <h2>6. Data Spec2JIRA Does NOT Have</h2>
-<p>Spec2JIRA, as the vendor, operates no server or database of its own. Under the <strong>BYOK tier</strong> (today's only tier), it does <strong>not</strong> receive, store, or have access to:</p>
+<p>Spec2JIRA, as the vendor, operates no server or database of its own. Under <strong>BYOK</strong> (your own key), it does <strong>not</strong> receive, store, or have access to:</p>
 <ul>
   <li>Your Confluence page content or generated breakdowns — these stay within Atlassian Forge and are sent to Anthropic under your key.</li>
   <li>Your Jira issue data.</li>
   <li>Your Anthropic API key — held in Atlassian's encrypted Forge secret storage, resolver-only.</li>
   <li>User identities, usage analytics, or telemetry — the App does not collect them.</li>
 </ul>
-<!-- v6 VALUE-SPLIT (2026-06-18): Managed dropped as a Marketplace edition — this Managed-tier paragraph is HIDDEN (preserved). BOTH Marketplace editions are BYOK, already covered by the BYOK text above.
-<p>Under the <strong>Managed tier</strong> (coming soon), Spec2Tickets processes your page content by calling Anthropic under its own account — it still runs no server of its own and stores no content on vendor infrastructure. See the <a href="#managed">Managed tier</a> section and our <a href="/dpa">DPA</a> for that tier's role and retention details.</p>
--->
+<p><strong>During your free trial</strong>, while Spec2Tickets calls Anthropic under <em>its own</em> account (managed processing), it still runs no server of its own and stores no content on vendor infrastructure; it acts as a processor of that content on your instructions. See the <a href="#managed">Managed AI processing</a> section and our <a href="/dpa">DPA</a> for its role and retention details.</p>
 
 <h2>7. Sub-processors and Third Parties</h2>
 <ul>
@@ -209,8 +202,8 @@
 
 <h2>9. GDPR</h2>
 <p><strong>You (the customer)</strong> are the data controller for any personal data in your Confluence pages and Jira projects. Under <strong>BYOK</strong>, <strong>Anthropic</strong> processes the content you choose to send under <em>your</em> own agreement with Anthropic, and Spec2JIRA is neither a controller nor a processor of that content (it operates no systems that receive it). In all cases, Spec2JIRA stores no end-user content on its own systems.</p>
-<!-- v6 (2026-06-18): Managed dropped as a Marketplace edition — the Managed-tier sentence is removed. Preserved: "Under the Managed tier (coming soon), Spec2Tickets acts as your processor and Anthropic as its sub-processor, governed by our /dpa Data Processing Addendum." -->
-<p>Because Spec2JIRA holds none of your personal data on its own systems, there is nothing held by Spec2JIRA to access, correct, delete, or export. Your data resides in your Atlassian instance (and, transiently, with Anthropic under your key) — both of which you control.</p>
+<p><strong>During your free trial (managed processing)</strong>, Spec2Tickets acts as <strong>your processor</strong> and Anthropic as its <strong>sub-processor</strong>, governed by our <a href="/dpa">Data Processing Addendum</a>; your data-subject rights are supported as set out there.</p>
+<p>Spec2JIRA holds no personal data on its own systems — it operates none. Under <strong>BYOK</strong>, your data resides in your Atlassian instance and, transiently, with Anthropic under <em>your own</em> key — both of which you control. <strong>During the free trial</strong>, that transient AI processing runs under <em>our</em> Anthropic account instead, subject to the DPA and to Anthropic's retention schedule (about 29 days); it is still stored on no Spec2JIRA-operated system.</p>
 
 <h2>10. Security</h2>
 <ul>
@@ -246,10 +239,8 @@
     <a href="/about">About</a>
     <a href="/docs">Docs</a>
     <a href="/privacy">Privacy</a>
-    <!-- v6 (2026-06-18): DPA + Sub-processors are Managed-tier-only legal docs; under the v6 value-split both Marketplace editions are BYOK (Managed is not a Marketplace edition), so these are hidden from nav. The pages remain live at their URLs.
     <a href="/dpa">DPA</a>
     <a href="/subprocessors">Sub-processors</a>
-    -->
     <a href="mailto:support@spec2jira.com">Support</a>
   </div>
 </footer>
