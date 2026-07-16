@@ -1,4 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Spec2Tickets">
-  <rect width="64" height="64" rx="14" fill="#1B2A4A"/>
-  <text x="32" y="43" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="800" fill="#2684FF" text-anchor="middle">S2</text>
+  <defs>
+    <linearGradient id="s2g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2684FF"/>
+      <stop offset="1" stop-color="#7C5CFC"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#s2g)"/>
+  <text x="32" y="44" font-family="'Segoe UI', system-ui, -apple-system, Arial, sans-serif" font-size="34" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="-1.5">S2</text>
 </svg>

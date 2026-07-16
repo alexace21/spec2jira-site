@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pricing — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Advanced edition (test-case generation) coming soon.">
+<meta name="theme-color" content="#0B1526">
 <link rel="canonical" href="https://spec2jira.com/pricing">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" href="/assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/css/site.css" as="style">
+<link rel="stylesheet" href="/assets/css/site.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Spec2Tickets">
 <meta property="og:title" content="Pricing — Spec2Tickets for Confluence and Jira">
@@ -19,136 +24,126 @@
 <meta name="twitter:title" content="Pricing — Spec2Tickets for Confluence and Jira">
 <meta name="twitter:description" content="Spec2Tickets pricing: a free 30-day trial, then BYOK Pro at $6.70 per user / month (flat $57/month for teams up to 10 users) via the Atlassian Marketplace. Bring your own Anthropic key; AI usage is billed to your own account. Advanced edition (test-case generation) coming soon.">
 <meta name="twitter:image" content="https://spec2jira.com/og-image.png">
-<style>
-  :root {
-    --navy: #1B2A4A;
-    --blue: #2684FF;
-    --blue-light: #4C9AFF;
-    --slate: #505F79;
-    --gray: #6B778C;
-    --bg: #FAFBFC;
-    --white: #FFFFFF;
-    --accent: #8B5CF6;
-    --link: #0B5CD7;
-    --radius: 8px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
-  .skip-link:focus { left: 0; }
-  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--navy); background: var(--bg); line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  nav {
-    display: flex; justify-content: space-between; align-items: center;
-    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
-  }
-  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
-  nav .logo span { color: var(--blue); }
-  nav .links a { color: var(--slate); text-decoration: none; margin-left: 28px; font-size: 15px; font-weight: 500; }
-  nav .links a:hover { color: var(--blue); }
-
-  .page-header { max-width: 720px; margin: 0 auto; padding: 64px 24px 8px; text-align: center; }
-  .page-header h1 { font-size: clamp(30px, 4.5vw, 42px); font-weight: 800; letter-spacing: -0.4px; margin-bottom: 16px; }
-  .page-header p { font-size: 18px; color: var(--slate); line-height: 1.7; }
-
-  .plans {
-    max-width: 980px; margin: 0 auto; padding: 48px 24px 16px;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
-    align-items: stretch;
-  }
-  .plan {
-    background: var(--white); border: 1px solid #E4E7EB; border-radius: var(--radius);
-    padding: 28px 26px; display: flex; flex-direction: column;
-  }
-  .plan.pro { border-color: var(--blue); box-shadow: 0 4px 22px rgba(38,132,255,0.12); }
-  .plan.soon { background: #FBFBFC; border-style: dashed; }
-  .plan .name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray); display: flex; align-items: center; gap: 8px; }
-  .plan .badge { font-size: 10px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--blue); background: #E9F2FF; padding: 2px 8px; border-radius: 20px; }
-  .plan .badge.soon { color: var(--accent); background: #F0EBFF; }
-  .plan .price { font-size: 34px; font-weight: 800; margin: 10px 0 4px; }
-  .plan .price small { font-size: 15px; font-weight: 600; color: var(--slate); }
-  .plan .price.soon { font-size: 22px; color: var(--accent); }
-  .plan .desc { font-size: 15px; color: var(--slate); margin-top: 4px; flex: 1; }
-  .plan .desc strong { color: var(--navy); }
-  .plan .foot { font-size: 13px; color: var(--gray); margin-top: 16px; }
-  .plan .foot a { color: var(--link); text-decoration: none; }
-  .plan .foot a:hover { text-decoration: underline; }
-
-  .billing { max-width: 760px; margin: 0 auto; padding: 56px 24px 16px; }
-  .billing h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 20px; text-align: center; }
-  .billing .qa { border-top: 1px solid #E4E7EB; padding: 18px 0; }
-  .billing .qa h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--navy); }
-  .billing .qa p { font-size: 15px; color: var(--slate); line-height: 1.65; }
-  .billing .qa p a { color: var(--link); }
-
-  .finenote { max-width: 760px; margin: 0 auto; padding: 8px 24px 24px; font-size: 13px; color: var(--gray); text-align: center; line-height: 1.6; }
-
-  .cta-band { background: #F4F8FF; border-top: 1px solid #E4E7EB; border-bottom: 1px solid #E4E7EB; margin-top: 40px; }
-  .cta-band .inner { max-width: 720px; margin: 0 auto; padding: 56px 24px; text-align: center; }
-  .cta-band h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 22px; }
-  .btn { display: inline-block; padding: 14px 32px; border-radius: var(--radius); font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
-  .btn-primary { background: var(--blue); color: var(--white); }
-  .btn-primary:hover { background: var(--blue-light); }
-  .btn-secondary { background: transparent; color: var(--slate); border: 1px solid #D5DAE1; margin-left: 12px; }
-  .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
-
-  footer {
-    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
-    flex-wrap: wrap; gap: 16px;
-  }
-  footer a { color: var(--slate); text-decoration: none; margin-left: 22px; }
-  footer a:hover { color: var(--blue); }
-
-  @media (max-width: 640px) {
-    nav { flex-wrap: wrap; row-gap: 10px; }
-    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
-    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
-    .btn-secondary { margin-left: 0; margin-top: 12px; }
-  }
-</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does the subscription cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The app itself — the generation, the editor, and the push to Jira. Under BYOK Pro, the AI compute is paid separately, directly to Anthropic, using your own API key (typically a few cents per breakdown). There is no vendor markup on AI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the per-user price calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Spec2Tickets is sold as “Paid via Atlassian,” so it's billed per user through the Atlassian Marketplace, in USD. Teams of up to 10 users pay a flat $57/month; above that it's $6.70/user/month, with volume discounts that begin above 100 users. The Marketplace always shows the exact price for your team size before you subscribe."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a free plan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's a full 30-day free trial rather than a permanent free tier — every feature is available while you evaluate. After the trial, an active subscription keeps the app running."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Advanced?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An upcoming edition that adds AI-generated acceptance test cases — BA-grade Gherkin and CSV, ready to import into your test tools — on top of everything in BYOK Pro. Planned at $13.40/user/month. Like BYOK Pro, it uses your own Anthropic key, so your content stays under your own Anthropic agreement — no extra data-processing terms needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I manage or cancel my subscription?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Subscriptions are handled through the Atlassian Marketplace and your Atlassian site administration, alongside your other Atlassian apps."
+      }
+    }
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<nav>
-  <a href="/" class="logo">Spec<span>2JIRA</span></a>
-  <div class="links">
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace</a>
-  </div>
-</nav>
+<!-- ==================================================================
+     NAV  [component 1] — copied byte-identically to every page
+     ================================================================== -->
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <a href="/how-it-works">How it works</a>
+      <a href="/#use-cases">Use cases</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs">Docs</a>
+      <a href="/about">About</a>
+      <a class="btn btn-primary btn-sm" href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Start free trial</a>
+    </div>
+  </nav>
+</header>
 
 <main id="main">
 
-<header class="page-header">
-  <h1>Simple, per-user pricing</h1>
-  <p>Start free for 30 days. The subscription covers the app; you bring your own Anthropic key, so AI usage is billed to your own account — at cost.</p>
-</header>
-
-<section class="plans">
-  <div class="plan">
-    <div class="name">Free trial</div>
-    <div class="price">$0<small> / 30 days</small></div>
-    <p class="desc">Full access to every feature — generate, review, and push to Jira while you evaluate. No charge during the trial.</p>
-    <p class="foot">Provided automatically by the Atlassian Marketplace.</p>
+<!-- ===================== PAGE HEADER ===================== -->
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Pricing</span>
+      <h1>Simple, per-user pricing</h1>
+      <p class="lead mt-3">Start free for 30 days. The subscription covers the app; you bring your own Anthropic key, so AI usage is billed to your own account — at cost.</p>
+    </div>
   </div>
+</section>
 
-  <div class="plan pro">
-    <div class="name">BYOK Pro <span class="badge">Early access</span></div>
-    <div class="price">$6.70<small> / user / month</small></div>
-    <p class="desc"><strong>Unlimited breakdowns</strong> with your own Anthropic key. Teams up to 10 users: a flat <strong>$57/month</strong>. Volume discounts above 100 users.</p>
-    <p class="foot">Billed per user via the Atlassian Marketplace, in USD.</p>
-  </div>
+<!-- ========================= PLANS ========================= -->
+<section class="section section--tight">
+  <div class="container">
+    <div class="grid grid-3">
 
-  <!-- v6 VALUE-SPLIT (2026-06-18): editions pivoted from key-source to VALUE — BOTH editions are now BYOK.
+      <!-- Free trial -->
+      <div class="plan reveal">
+        <div class="plan-name">Free trial</div>
+        <div class="price">$0 <span class="per">/ 30 days</span></div>
+        <p class="plan-desc">Full access to every feature — evaluate on real pages with no charge.</p>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Full access to every feature</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Generate, review, and push to Jira</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>No charge during the trial</li>
+        </ul>
+        <p class="plan-foot">Provided automatically by the Atlassian Marketplace.</p>
+      </div>
+
+      <!-- BYOK Pro — featured -->
+      <div class="plan plan-featured reveal delay-1">
+        <div class="plan-name">BYOK Pro <span class="plan-pill">Early access</span></div>
+        <div class="price">$6.70 <span class="per">/ user / month</span></div>
+        <p class="plan-desc"><strong>Unlimited breakdowns</strong> with your own Anthropic key.</p>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Unlimited breakdowns with your own Anthropic key</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Teams up to 10 users: a flat <strong>$57/month</strong></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Volume discounts above 100 users</li>
+        </ul>
+        <p class="plan-foot">Billed per user via the Atlassian Marketplace, in USD.</p>
+      </div>
+
+      <!-- v6 VALUE-SPLIT (2026-06-18): editions pivoted from key-source to VALUE — BOTH editions are now BYOK.
        The 2nd tier is "Advanced" (BYOK + test-case generation), NOT "Managed" (we-run-the-key), which was
        dropped as a Marketplace edition. The old Managed Pro card is PRESERVED below (commented) for the
        off-Marketplace Managed fallback / future; re-enable only if Managed returns as a Marketplace edition.
@@ -159,68 +154,137 @@
     <p class="foot"><a href="/privacy#managed">How Managed handles your data &rarr;</a></p>
   </div>
   -->
-  <div class="plan soon">
-    <div class="name">Advanced <span class="badge soon">Coming soon</span></div>
-    <div class="price soon">$13.40<small> / user / month</small></div>
-    <p class="desc">Everything in BYOK Pro, plus <strong>AI-generated acceptance test cases</strong> (BA-grade Gherkin / CSV) for every story. Still your own Anthropic key — unlimited.</p>
-    <p class="foot">Same BYOK privacy posture — your content stays under your own Anthropic agreement.</p>
+
+      <!-- Advanced — coming soon -->
+      <div class="plan plan-soon reveal delay-2">
+        <div class="plan-name">Advanced <span class="plan-pill soon">Coming soon</span></div>
+        <div class="price">$13.40 <span class="per">/ user / month</span></div>
+        <p class="plan-desc">Everything in BYOK Pro, plus <strong>AI-generated acceptance test cases</strong>.</p>
+        <ul class="plan-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Everything in BYOK Pro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>AI-generated acceptance test cases (BA-grade Gherkin / CSV) for every story</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Still your own Anthropic key — unlimited</li>
+        </ul>
+        <p class="plan-foot">Same BYOK privacy posture — your content stays under your own Anthropic agreement.</p>
+      </div>
+
+    </div>
   </div>
 </section>
 
-<section class="billing">
-  <h2>How billing works</h2>
-  <div class="qa">
-    <h3>What does the subscription cover?</h3>
-    <p>The app itself — the generation, the editor, and the push to Jira. Under BYOK Pro, the AI compute is paid separately, directly to Anthropic, using your own API key (typically a few cents per breakdown). There is no vendor markup on AI.</p>
-  </div>
-  <div class="qa">
-    <h3>How is the per-user price calculated?</h3>
-    <p>Spec2Tickets is sold as “Paid via Atlassian,” so it's billed per user through the Atlassian Marketplace, in USD. Teams of up to 10 users pay a flat <strong>$57/month</strong>; above that it's <strong>$6.70/user/month</strong>, with volume discounts that begin above 100 users. The Marketplace always shows the exact price for your team size before you subscribe.</p>
-  </div>
-  <div class="qa">
-    <h3>Is there a free plan?</h3>
-    <p>There's a full <strong>30-day free trial</strong> rather than a permanent free tier — every feature is available while you evaluate. After the trial, an active subscription keeps the app running.</p>
-  </div>
-  <!-- v6 VALUE-SPLIT (2026-06-18): the 2nd tier is now "Advanced" (BYOK + test-cases), not "Managed".
+<!-- ==================== HOW BILLING WORKS ==================== -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Billing</span>
+      <h2>How billing works</h2>
+    </div>
+
+    <div class="measure mx-auto">
+      <details class="faq-item">
+        <summary>What does the subscription cover?</summary>
+        <div class="faq-body">The app itself — the generation, the editor, and the push to Jira. Under BYOK Pro, the AI compute is paid separately, directly to Anthropic, using your own API key (typically a few cents per breakdown). There is no vendor markup on AI.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How is the per-user price calculated?</summary>
+        <div class="faq-body">Spec2Tickets is sold as “Paid via Atlassian,” so it's billed per user through the Atlassian Marketplace, in USD. Teams of up to 10 users pay a flat <strong>$57/month</strong>; above that it's <strong>$6.70/user/month</strong>, with volume discounts that begin above 100 users. The Marketplace always shows the exact price for your team size before you subscribe.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is there a free plan?</summary>
+        <div class="faq-body">There's a full <strong>30-day free trial</strong> rather than a permanent free tier — every feature is available while you evaluate. After the trial, an active subscription keeps the app running.</div>
+      </details>
+
+      <!-- v6 VALUE-SPLIT (2026-06-18): the 2nd tier is now "Advanced" (BYOK + test-cases), not "Managed".
        Old "What is Managed Pro?" Q&A PRESERVED below (commented) for the off-Marketplace Managed fallback.
   <div class="qa">
     <h3>What is Managed Pro?</h3>
     <p>An upcoming edition where Spec2Tickets runs Claude for you, so you don't need to bring an Anthropic key — planned at <strong>$13/user/month</strong> with a generous fair-use allowance per user. It uses our own Anthropic account, so a customer <a href="/dpa">data-processing addendum</a> and <a href="/subprocessors">sub-processor disclosure</a> apply; you can also read how it handles your data on our <a href="/privacy#managed">privacy page</a>. BYOK Pro remains the privacy-maximising choice.</p>
   </div>
   -->
-  <div class="qa">
-    <h3>What is Advanced?</h3>
-    <p>An upcoming edition that adds <strong>AI-generated acceptance test cases</strong> — BA-grade Gherkin and CSV, ready to import into your test tools — on top of everything in BYOK Pro. Planned at <strong>$13.40/user/month</strong>. Like BYOK Pro, it uses <strong>your own Anthropic key</strong>, so your content stays under your own Anthropic agreement — no extra data-processing terms needed.</p>
-  </div>
-  <div class="qa">
-    <h3>How do I manage or cancel my subscription?</h3>
-    <p>Subscriptions are handled through the Atlassian Marketplace and your Atlassian site administration, alongside your other Atlassian apps.</p>
+
+      <details class="faq-item">
+        <summary>What is Advanced?</summary>
+        <div class="faq-body">An upcoming edition that adds <strong>AI-generated acceptance test cases</strong> — BA-grade Gherkin and CSV, ready to import into your test tools — on top of everything in BYOK Pro. Planned at <strong>$13.40/user/month</strong>. Like BYOK Pro, it uses <strong>your own Anthropic key</strong>, so your content stays under your own Anthropic agreement — no extra data-processing terms needed.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I manage or cancel my subscription?</summary>
+        <div class="faq-body">Subscriptions are handled through the Atlassian Marketplace and your Atlassian site administration, alongside your other Atlassian apps.</div>
+      </details>
+
+      <p class="muted text-center mt-4"><small>Prices are in USD and set through the Atlassian Marketplace. Early-access pricing — we grandfather early adopters as the product grows. The Advanced edition (coming soon) adds test-case generation at $13.40/user/month and opens when that edition launches.</small></p>
+    </div>
   </div>
 </section>
 
-<p class="finenote">Prices are in USD and set through the Atlassian Marketplace. Early-access pricing — we grandfather early adopters as the product grows. The Advanced edition (coming soon) adds test-case generation at $13.40/user/month and opens when that edition launches.</p>
-
-<section class="cta-band">
-  <div class="inner">
+<!-- ========================= FINAL CTA ======================== -->
+<section class="section cta-final">
+  <div class="container">
+    <span class="eyebrow">Get started</span>
     <h2>Start your free trial</h2>
-    <a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" class="btn btn-primary">Get it on Marketplace</a>
-    <a href="/how-it-works" class="btn btn-secondary">See how it works</a>
+    <p class="lead">Every feature, free for 30 days — then bring your own Anthropic key and keep going.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary btn-lg" href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Get it on Marketplace</a>
+      <a class="btn btn-ghost btn-lg on-dark" href="/how-it-works">See how it works</a>
+    </div>
+    <p class="cta-note">Free 30-day trial &middot; Bring your own Anthropic API key &middot; Managed through the Atlassian Marketplace.</p>
   </div>
 </section>
 
 </main>
 
-<footer>
-  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
-  <div>
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/dpa">DPA</a>
-    <a href="/subprocessors">Sub-processors</a>
-    <a href="mailto:support@spec2jira.com">Support</a>
+<!-- ==================================================================
+     FOOTER  [component 21] — copied byte-identically to every page
+     ================================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+        <p class="footer-tagline">Turn a Confluence page into a sprint-ready Jira backlog — in minutes, reviewed by humans.</p>
+        <p class="footer-meta">
+          Made in Sofia, Bulgaria 🇧🇬
+          <span>Support 11:00–23:00 (Europe/Sofia), 7 days a week.</span>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/#use-cases">Use cases</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/docs">Docs</a></li>
+          <li><a href="/get-api-key">Get your API key</a></li>
+          <li><a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace <span class="ext" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="mailto:support@spec2jira.com">Contact support</a></li>
+          <li><a href="mailto:security@spec2jira.com">security@spec2jira.com</a></li>
+          <li><a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/dpa">DPA</a></li>
+          <li><a href="/subprocessors">Sub-processors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2026</span> Spec2JIRA &middot; All rights reserved.</span>
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
+        <a href="/how-it-works">How it works</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+        <a href="/about">About</a>
+      </nav>
+    </div>
   </div>
 </footer>
 

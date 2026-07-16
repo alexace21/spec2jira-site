@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Documentation — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence pages into Jira breakdowns. No servers, no GPU.">
+<meta name="theme-color" content="#0B1526">
 <link rel="canonical" href="https://spec2jira.com/docs">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" href="/assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/css/site.css" as="style">
+<link rel="stylesheet" href="/assets/css/site.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Spec2Tickets">
 <meta property="og:title" content="Documentation — Spec2Tickets for Confluence and Jira">
@@ -19,284 +24,275 @@
 <meta name="twitter:title" content="Documentation — Spec2Tickets for Confluence and Jira">
 <meta name="twitter:description" content="Setup guide for Spec2Tickets (Spec2JIRA): install from the Atlassian Marketplace, add your own Anthropic API key (BYOK), and turn Confluence pages into Jira breakdowns. No servers, no GPU.">
 <meta name="twitter:image" content="https://spec2jira.com/og-image.png">
+<script src="/assets/js/site.js" defer></script>
 <style>
-  :root {
-    --navy: #1B2A4A;
-    --blue: #2684FF;
-    --blue-light: #4C9AFF;
-    --slate: #505F79;
-    --gray: #6B778C;
-    --bg: #FAFBFC;
-    --white: #FFFFFF;
-    --accent: #8B5CF6;
-    --link: #0B5CD7;
-    --radius: 8px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
-  .skip-link:focus { left: 0; }
-  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--navy); background: var(--bg); line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  nav {
-    display: flex; justify-content: space-between; align-items: center;
-    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
-  }
-  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
-  nav .logo span { color: var(--blue); }
-  nav .links a {
-    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
-  }
-  nav .links a:hover { color: var(--blue); }
-
-  .page { display: flex; max-width: 1080px; margin: 0 auto; padding: 0 24px; gap: 48px; }
-
-  .sidebar {
-    width: 220px; flex-shrink: 0; padding: 32px 0; position: sticky; top: 0;
-    height: fit-content; font-size: 14px;
-  }
-  .sidebar a {
-    display: block; color: var(--slate); text-decoration: none;
-    padding: 6px 12px; border-left: 2px solid transparent;
-    margin-bottom: 2px; border-radius: 0 4px 4px 0;
-  }
-  .sidebar a:hover { color: var(--blue); background: #E9F2FF; border-left-color: var(--blue); }
-  .sidebar .section-title {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.8px; color: var(--gray); padding: 16px 12px 6px;
-  }
-
-  .content {
-    flex: 1; min-width: 0; padding: 32px 0 80px;
-  }
-  .content h1 {
-    font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px;
-  }
-  .content .meta {
-    font-size: 14px; color: var(--gray); margin-bottom: 40px;
-  }
-  .content h2 {
-    font-size: 22px; font-weight: 700; margin: 36px 0 12px;
-    padding-top: 20px; border-top: 1px solid #E4E7EB;
-  }
-  .content h2:first-of-type { border-top: none; padding-top: 0; }
-  .content h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
-  .content p { font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7; }
-  .content ul, .content ol {
-    margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
-  }
-  .content li { margin-bottom: 6px; line-height: 1.6; }
-  .content li ul { margin-top: 6px; }
-  .content strong { color: var(--navy); }
-  .content a { color: var(--link); }
-
-  .callout {
-    background: #E9F2FF; border-left: 4px solid var(--blue);
-    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
-    margin: 24px 0; font-size: 15px; color: var(--navy);
-  }
-  .callout.warn {
-    background: #FFF7E6; border-left-color: #FF991F;
-  }
-
-  pre {
-    background: #1E2A3A; color: #E4E7EB; padding: 20px 24px;
-    border-radius: var(--radius); overflow-x: auto; margin: 16px 0 24px;
-    font-family: "SF Mono", "Fira Code", "Consolas", monospace; font-size: 14px;
-    line-height: 1.6;
-  }
-  code {
-    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-    background: #F0F1F4; padding: 2px 6px; border-radius: 3px; font-size: 14px;
-  }
-  pre code { background: none; padding: 0; }
-  .cmd { color: var(--blue-light); }
-  .comment { color: #6B778C; }
-  .placeholder { color: #FF991F; font-weight: 600; }
-  .placeholder-inline { color: #FF991F; font-weight: 600; background: #FFF7E6; }
-
-  table {
-    width: 100%; border-collapse: collapse; margin: 16px 0 24px;
-    font-size: 15px;
-  }
-  th { text-align: left; padding: 10px 16px; background: #F4F5F7; font-weight: 600; border: 1px solid #E4E7EB; }
-  td { padding: 10px 16px; border: 1px solid #E4E7EB; color: var(--slate); }
-
-  footer {
-    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
-    flex-wrap: wrap; gap: 16px;
-  }
-  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
-  footer a:hover { color: var(--blue); }
-
-  @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .page { padding: 0 24px; }
-    nav { flex-wrap: wrap; row-gap: 10px; }
-    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
-    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
-    .content h1 { font-size: 28px; }
-  }
+  /* Page-scoped (docs) — fills two genuine gaps in the frozen site.css:
+     (1) the mobile docs-accordion body has no link styles of its own;
+     (2) anchor scroll-offset is defined only on ".docs-content > section",
+     but this page uses a single ".prose" flow (so list markers render),
+     so the offset is applied to the heading ids instead. ~7 rule-lines. */
+  .docs-content h2[id], .docs-content h3[id] { scroll-margin-top: 88px; }
+  .docs-accordion nav { padding: 2px 12px 14px; }
+  .docs-accordion .group-label { margin: 12px 0 6px; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-500); }
+  .docs-accordion a { display: block; padding: 7px 8px; border-radius: 6px; color: var(--text-700); font-size: var(--fs-small); }
+  .docs-accordion a:hover { color: var(--blue-600); background: var(--mist-100); text-decoration: none; }
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<nav>
-  <a href="/" class="logo">Spec<span>2JIRA</span></a>
-  <div class="links">
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace</a>
+<!-- ==================================================================
+     NAV  [component 1] — copied byte-identically to every page
+     ================================================================== -->
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <a href="/how-it-works">How it works</a>
+      <a href="/#use-cases">Use cases</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs">Docs</a>
+      <a href="/about">About</a>
+      <a class="btn btn-primary btn-sm" href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Start free trial</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<section class="section">
+  <div class="container">
+    <div class="docs-layout">
+
+      <!-- Mobile: sidebar collapses to this accordion under 860px (site.css §C16) -->
+      <details class="docs-accordion">
+        <summary>On this page <span aria-hidden="true">▾</span></summary>
+        <nav aria-label="Documentation menu">
+          <div class="group-label">Getting Started</div>
+          <a href="#overview">Overview</a>
+          <a href="#requirements">Requirements</a>
+          <div class="group-label">Setup (~5 min)</div>
+          <a href="#step-1">1. Install from Marketplace</a>
+          <a href="#where">Where to open the app</a>
+          <a href="#step-2">2. Get an Anthropic API key</a>
+          <a href="#step-3">3. Configure the app</a>
+          <div class="group-label">Using it</div>
+          <a href="#generate">4. Generate a breakdown</a>
+          <a href="#review">5. Review &amp; edit</a>
+          <a href="#push">6. Push to Jira</a>
+          <div class="group-label">Reference</div>
+          <a href="#pricing">Pricing</a>
+          <a href="#data">Data &amp; privacy</a>
+          <a href="#troubleshooting">Troubleshooting</a>
+          <a href="#support">Support</a>
+        </nav>
+      </details>
+
+      <!-- Desktop: sticky sidebar -->
+      <nav class="docs-sidebar" aria-label="Documentation">
+        <div class="group-label">Getting Started</div>
+        <a href="#overview">Overview</a>
+        <a href="#requirements">Requirements</a>
+        <div class="group-label">Setup (~5 min)</div>
+        <a href="#step-1">1. Install from Marketplace</a>
+        <a href="#where">Where to open the app</a>
+        <a href="#step-2">2. Get an Anthropic API key</a>
+        <a href="#step-3">3. Configure the app</a>
+        <div class="group-label">Using it</div>
+        <a href="#generate">4. Generate a breakdown</a>
+        <a href="#review">5. Review &amp; edit</a>
+        <a href="#push">6. Push to Jira</a>
+        <div class="group-label">Reference</div>
+        <a href="#pricing">Pricing</a>
+        <a href="#data">Data &amp; privacy</a>
+        <a href="#troubleshooting">Troubleshooting</a>
+        <a href="#support">Support</a>
+      </nav>
+
+      <!-- Content -->
+      <div class="docs-content prose">
+        <header>
+          <h1>Documentation</h1>
+          <p class="lead">Setup &amp; usage guide for Spec2Tickets</p>
+        </header>
+
+        <div class="callout">
+          <p><strong><span aria-hidden="true">ℹ</span> Two names, one product</strong> — the app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>. <strong>Spec2JIRA</strong> is the vendor name and this site's domain. They are the same product.</p>
+        </div>
+
+        <h2 id="overview">Overview</h2>
+        <p>Spec2Tickets turns a Confluence page into a structured Jira breakdown — one Epic, Stories, Subtasks, cross-feature dependency links, and quality signals — using <strong>Anthropic's Claude Sonnet 4.6</strong>.</p>
+        <p>It runs entirely on <strong>Atlassian Forge</strong>. There is no server to host, no GPU, and no Docker. The app uses <strong>your own Anthropic API key</strong> (Bring Your Own Key), so AI processing happens under your own Anthropic account.</p>
+
+        <h2 id="requirements">Requirements</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <tbody>
+              <tr><td><strong>Atlassian</strong></td><td>A Confluence Cloud + Jira Cloud site, with admin rights to install and configure an app.</td></tr>
+              <tr><td><strong>Anthropic API key</strong></td><td>An API key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> with billing/credits enabled. Cost is typically a few cents per breakdown, billed to your Anthropic account.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>That's it — no infrastructure, drivers, or downloads.</p>
+
+        <h2 id="step-1">Step 1 — Install from the Atlassian Marketplace</h2>
+        <p>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the Atlassian Marketplace into your site. It installs into <strong>Confluence</strong> and connects to <strong>Jira</strong>, so you'll approve it for <strong>both products</strong>.</p>
+        <div class="callout">
+          <p><strong><span aria-hidden="true">ℹ</span> You use Spec2Tickets entirely in Confluence; Jira is simply where the issues are created.</strong> There is <strong>no separate app screen on Jira</strong> — if you set the app up from Jira and went looking for it there, you won't find a screen to open. The Jira connection just lets the app create the Epic, Stories, and Subtasks in your Jira project. Everything you do — picking a page, generating, reviewing, and pushing — happens on the Confluence side.</p>
+        </div>
+        <div class="callout">
+          <p><strong>Seeing two entries in <em>Manage Apps</em> is expected.</strong> Because Spec2Tickets works across both Confluence and Jira, it registers once for each product — that's normal for a cross-product app, and the permissions it requests explain why.</p>
+        </div>
+
+        <h3 id="where">Where to open the app in Confluence</h3>
+        <p>There are two ways to open Spec2Tickets, both in Confluence:</p>
+        <ul>
+          <li><strong>From the top navigation:</strong> in Confluence, go to <strong>Apps → Spec2Tickets</strong>. This opens the app, where you pick the page you want to convert.</li>
+          <li><strong>From a page:</strong> on any Confluence page, click the <strong>••• (more actions)</strong> button at the top right and choose <strong>“Generate Breakdown with Spec2Tickets”</strong> — this opens the app with that page already selected.</li>
+        </ul>
+
+        <h2 id="step-2">Step 2 — Get an Anthropic API key</h2>
+        <ol>
+          <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (or create an account).</li>
+          <li>Open <strong>Settings → API Keys → Create Key</strong> and copy the key (it looks like <code>sk-ant-api03-…</code>).</li>
+          <li>Make sure your Anthropic account has billing or credits set up under <strong>Billing</strong>.</li>
+        </ol>
+        <div class="callout">
+          <p><strong><span aria-hidden="true">ℹ</span> Not technical?</strong> Follow the plain-English, step-by-step walkthrough — no background needed — at <a href="/get-api-key">Get your Anthropic API key</a> (it covers the easy-to-miss billing step too).</p>
+        </div>
+        <div class="callout">
+          <p>Your key stays yours. Spec2Tickets stores it in Atlassian's encrypted Forge secret storage and uses it only to call Anthropic on your behalf — see <a href="#data">Data &amp; privacy</a>.</p>
+        </div>
+
+        <h2 id="step-3">Step 3 — Configure the app</h2>
+        <ol>
+          <li>Open Spec2Tickets in Confluence (<strong>Apps → Spec2Tickets</strong>, or the <strong>••• → “Generate Breakdown with Spec2Tickets”</strong> action on a page — see <a href="#where">Where to open the app</a>). The first time, click <strong>Settings</strong> (top-right of the app) to open its configuration screen.</li>
+          <li>Paste your <strong>Anthropic API key</strong>.</li>
+          <li>Set a <strong>default Jira project key</strong> (e.g. <code>SCRUM</code>) — the project where issues will be created — then <strong>Test &amp; Save</strong>.</li>
+          <li><em>(Optional)</em> If your Jira project requires custom fields on create, add them under <strong>Advanced</strong>.</li>
+        </ol>
+
+        <h2 id="generate">Step 4 — Generate a breakdown</h2>
+        <ol>
+          <li>Open Spec2Tickets in Confluence (see <a href="#where">Where to open the app</a>) and pick the Confluence page you want to convert. If you opened it from a page via the <strong>•••</strong> action, that page is already selected.</li>
+          <li>Click <strong>Generate AI Breakdown</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large pages or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
+        </ol>
+
+        <h2 id="review">Step 5 — Review &amp; edit</h2>
+        <p>Review the breakdown before anything is written to Jira. You can edit:</p>
+        <ul>
+          <li>Feature names, user stories, descriptions, and acceptance criteria.</li>
+          <li><strong>Priority</strong>, <strong>story points</strong> (suggested), and a <strong>complexity</strong> signal per Story.</li>
+          <li><strong>Labels</strong> on the Epic and on each Story.</li>
+          <li>Shared (cross-cutting) acceptance criteria — assign them to the right Story.</li>
+        </ul>
+        <p>The review screen also surfaces quality signals — confidence per feature, risks, ambiguities, and any circular dependencies it auto-resolved.</p>
+
+        <h2 id="push">Step 6 — Push to Jira</h2>
+        <p>Click <strong>Push to Jira</strong>. Spec2Tickets creates, in your project:</p>
+        <ul>
+          <li>One <strong>Epic</strong> for the page.</li>
+          <li>A <strong>Story</strong> per feature (with priority, story points, and labels).</li>
+          <li><strong>Subtasks</strong> under each Story.</li>
+          <li><strong>“blocks / is blocked by” links</strong> for cross-feature dependencies.</li>
+        </ul>
+        <p>Issues are created with your own Atlassian permissions — you'll see links to the new Epic and Stories when it's done.</p>
+
+        <h2 id="pricing">Pricing</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th scope="col">Plan</th><th scope="col">Price</th><th scope="col">Breakdowns</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Free trial</strong></td><td>$0 &middot; 30 days</td><td>Unlimited during the trial</td></tr>
+              <tr><td><strong>BYOK Pro</strong></td><td>$6.70<small> / user / month</small>*</td><td>Unlimited</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>*Billed per user through the Atlassian Marketplace (Paid via Atlassian), in USD. Teams of up to 10 users pay a flat <strong>$57/month</strong>; volume discounts apply above 100 users, and the Marketplace shows the exact price for your team size. Every plan is Bring Your Own Key — you add your own Anthropic API key, so AI usage is billed to your Anthropic account separately, and the subscription covers only the app itself.</p>
+
+        <h2 id="data">Data &amp; privacy</h2>
+        <p>Spec2Tickets operates no backend. Your page content is sent to <strong>Anthropic</strong> using <strong>your own API key</strong>, governed by your agreement with Anthropic — by default Anthropic does not train on API data and retains it only briefly. Page content and breakdowns are stored transiently in Atlassian Forge storage and removed after you push. Full details are in the <a href="/privacy">Privacy Policy</a>.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <tbody>
+              <tr><td><strong>“API key not configured”</strong></td><td>Add your Anthropic API key under Settings (Step 3).</td></tr>
+              <tr><td><strong>Anthropic rate limit / credits</strong></td><td>Check your usage tier and billing at console.anthropic.com.</td></tr>
+              <tr><td><strong>Subtasks created as a checklist</strong></td><td>Your Jira project has no Subtask issue type — enable it in project settings, or contact support.</td></tr>
+              <tr><td><strong>“Subscription required”</strong></td><td>Your 30-day trial has ended, or there's no active subscription. Subscribe to Spec2Tickets from the Atlassian Marketplace (or ask your Atlassian site admin) to keep generating.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="support">Support</h2>
+        <p>Questions or issues? Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
+
+      </div>
+    </div>
   </div>
-</nav>
-
-<div class="page">
-<aside class="sidebar">
-  <div class="section-title">Getting Started</div>
-  <a href="#overview">Overview</a>
-  <a href="#requirements">Requirements</a>
-  <div class="section-title">Setup (~5 min)</div>
-  <a href="#step-1">1. Install from Marketplace</a>
-  <a href="#where">Where to open the app</a>
-  <a href="#step-2">2. Get an Anthropic API key</a>
-  <a href="#step-3">3. Configure the app</a>
-  <div class="section-title">Using it</div>
-  <a href="#generate">4. Generate a breakdown</a>
-  <a href="#review">5. Review &amp; edit</a>
-  <a href="#push">6. Push to Jira</a>
-  <div class="section-title">Reference</div>
-  <a href="#pricing">Pricing</a>
-  <a href="#data">Data &amp; privacy</a>
-  <a href="#troubleshooting">Troubleshooting</a>
-  <a href="#support">Support</a>
-</aside>
-
-<main class="content" id="main">
-<h1>Documentation</h1>
-<p class="meta">Setup &amp; usage guide for Spec2Tickets</p>
-
-<div class="callout">
-  <strong><span aria-hidden="true">ℹ</span> Two names, one product</strong> — the app is published on the Atlassian Marketplace as <strong>Spec2Tickets</strong>. <strong>Spec2JIRA</strong> is the vendor name and this site's domain. They are the same product.
-</div>
-
-<h2 id="overview">Overview</h2>
-<p>Spec2Tickets turns a Confluence page into a structured Jira breakdown — one Epic, Stories, Subtasks, cross-feature dependency links, and quality signals — using <strong>Anthropic's Claude Sonnet 4.6</strong>.</p>
-<p>It runs entirely on <strong>Atlassian Forge</strong>. There is no server to host, no GPU, and no Docker. The app uses <strong>your own Anthropic API key</strong> (Bring Your Own Key), so AI processing happens under your own Anthropic account.</p>
-
-<h2 id="requirements">Requirements</h2>
-<table>
-  <tr><td><strong>Atlassian</strong></td><td>A Confluence Cloud + Jira Cloud site, with admin rights to install and configure an app.</td></tr>
-  <tr><td><strong>Anthropic API key</strong></td><td>An API key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> with billing/credits enabled. Cost is typically a few cents per breakdown, billed to your Anthropic account.</td></tr>
-</table>
-<p>That's it — no infrastructure, drivers, or downloads.</p>
-
-<h2 id="step-1">Step 1 — Install from the Atlassian Marketplace</h2>
-<p>Install <strong>Spec2Tickets for Confluence and Jira</strong> from the Atlassian Marketplace into your site. It installs into <strong>Confluence</strong> and connects to <strong>Jira</strong>, so you'll approve it for <strong>both products</strong>.</p>
-<div class="callout">
-  <strong><span aria-hidden="true">ℹ</span> You use Spec2Tickets entirely in Confluence; Jira is simply where the issues are created.</strong> There is <strong>no separate app screen on Jira</strong> — if you set the app up from Jira and went looking for it there, you won't find a screen to open. The Jira connection just lets the app create the Epic, Stories, and Subtasks in your Jira project. Everything you do — picking a page, generating, reviewing, and pushing — happens on the Confluence side.
-</div>
-<div class="callout">
-  <strong>Seeing two entries in <em>Manage Apps</em> is expected.</strong> Because Spec2Tickets works across both Confluence and Jira, it registers once for each product — that's normal for a cross-product app, and the permissions it requests explain why.
-</div>
-
-<h3 id="where">Where to open the app in Confluence</h3>
-<p>There are two ways to open Spec2Tickets, both in Confluence:</p>
-<ul>
-  <li><strong>From the top navigation:</strong> in Confluence, go to <strong>Apps → Spec2Tickets</strong>. This opens the app, where you pick the page you want to convert.</li>
-  <li><strong>From a page:</strong> on any Confluence page, click the <strong>••• (more actions)</strong> button at the top right and choose <strong>“Generate Breakdown with Spec2Tickets”</strong> — this opens the app with that page already selected.</li>
-</ul>
-
-<h2 id="step-2">Step 2 — Get an Anthropic API key</h2>
-<ol>
-  <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (or create an account).</li>
-  <li>Open <strong>Settings → API Keys → Create Key</strong> and copy the key (it looks like <code>sk-ant-api03-…</code>).</li>
-  <li>Make sure your Anthropic account has billing or credits set up under <strong>Billing</strong>.</li>
-</ol>
-<div class="callout">
-  <strong><span aria-hidden="true">ℹ</span> Not technical?</strong> Follow the plain-English, step-by-step walkthrough — no background needed — at <a href="/get-api-key">Get your Anthropic API key</a> (it covers the easy-to-miss billing step too).
-</div>
-<div class="callout">
-  Your key stays yours. Spec2Tickets stores it in Atlassian's encrypted Forge secret storage and uses it only to call Anthropic on your behalf — see <a href="#data">Data &amp; privacy</a>.
-</div>
-
-<h2 id="step-3">Step 3 — Configure the app</h2>
-<ol>
-  <li>Open Spec2Tickets in Confluence (<strong>Apps → Spec2Tickets</strong>, or the <strong>••• → “Generate Breakdown with Spec2Tickets”</strong> action on a page — see <a href="#where">Where to open the app</a>). The first time, click <strong>Settings</strong> (top-right of the app) to open its configuration screen.</li>
-  <li>Paste your <strong>Anthropic API key</strong>.</li>
-  <li>Set a <strong>default Jira project key</strong> (e.g. <code>SCRUM</code>) — the project where issues will be created — then <strong>Test &amp; Save</strong>.</li>
-  <li><em>(Optional)</em> If your Jira project requires custom fields on create, add them under <strong>Advanced</strong>.</li>
-</ol>
-
-<h2 id="generate">Step 4 — Generate a breakdown</h2>
-<ol>
-  <li>Open Spec2Tickets in Confluence (see <a href="#where">Where to open the app</a>) and pick the Confluence page you want to convert. If you opened it from a page via the <strong>•••</strong> action, that page is already selected.</li>
-  <li>Click <strong>Generate AI Breakdown</strong>. Claude analyzes the page and produces the breakdown — typically <strong>a few minutes</strong> (longer for large pages or under heavy Anthropic load). You can leave the page and reconnect later; generation keeps running.</li>
-</ol>
-
-<h2 id="review">Step 5 — Review &amp; edit</h2>
-<p>Review the breakdown before anything is written to Jira. You can edit:</p>
-<ul>
-  <li>Feature names, user stories, descriptions, and acceptance criteria.</li>
-  <li><strong>Priority</strong>, <strong>story points</strong> (suggested), and a <strong>complexity</strong> signal per Story.</li>
-  <li><strong>Labels</strong> on the Epic and on each Story.</li>
-  <li>Shared (cross-cutting) acceptance criteria — assign them to the right Story.</li>
-</ul>
-<p>The review screen also surfaces quality signals — confidence per feature, risks, ambiguities, and any circular dependencies it auto-resolved.</p>
-
-<h2 id="push">Step 6 — Push to Jira</h2>
-<p>Click <strong>Push to Jira</strong>. Spec2Tickets creates, in your project:</p>
-<ul>
-  <li>One <strong>Epic</strong> for the page.</li>
-  <li>A <strong>Story</strong> per feature (with priority, story points, and labels).</li>
-  <li><strong>Subtasks</strong> under each Story.</li>
-  <li><strong>“blocks / is blocked by” links</strong> for cross-feature dependencies.</li>
-</ul>
-<p>Issues are created with your own Atlassian permissions — you'll see links to the new Epic and Stories when it's done.</p>
-
-<h2 id="pricing">Pricing</h2>
-<table>
-  <tr><th>Plan</th><th>Price</th><th>Breakdowns</th></tr>
-  <tr><td><strong>Free trial</strong></td><td>$0 &middot; 30 days</td><td>Unlimited during the trial</td></tr>
-  <tr><td><strong>BYOK Pro</strong></td><td>$6.70<small> / user / month</small>*</td><td>Unlimited</td></tr>
-</table>
-<p>*Billed per user through the Atlassian Marketplace (Paid via Atlassian), in USD. Teams of up to 10 users pay a flat <strong>$57/month</strong>; volume discounts apply above 100 users, and the Marketplace shows the exact price for your team size. Every plan is Bring Your Own Key — you add your own Anthropic API key, so AI usage is billed to your Anthropic account separately, and the subscription covers only the app itself.</p>
-
-<h2 id="data">Data &amp; privacy</h2>
-<p>Spec2Tickets operates no backend. Your page content is sent to <strong>Anthropic</strong> using <strong>your own API key</strong>, governed by your agreement with Anthropic — by default Anthropic does not train on API data and retains it only briefly. Page content and breakdowns are stored transiently in Atlassian Forge storage and removed after you push. Full details are in the <a href="/privacy">Privacy Policy</a>.</p>
-
-<h2 id="troubleshooting">Troubleshooting</h2>
-<table>
-  <tr><td><strong>“API key not configured”</strong></td><td>Add your Anthropic API key under Settings (Step 3).</td></tr>
-  <tr><td><strong>Anthropic rate limit / credits</strong></td><td>Check your usage tier and billing at console.anthropic.com.</td></tr>
-  <tr><td><strong>Subtasks created as a checklist</strong></td><td>Your Jira project has no Subtask issue type — enable it in project settings, or contact support.</td></tr>
-  <tr><td><strong>“Subscription required”</strong></td><td>Your 30-day trial has ended, or there's no active subscription. Subscribe to Spec2Tickets from the Atlassian Marketplace (or ask your Atlassian site admin) to keep generating.</td></tr>
-</table>
-
-<h2 id="support">Support</h2>
-<p>Questions or issues? Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a>.</p>
-
+</section>
 </main>
-</div>
 
-<footer>
-  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
-  <div>
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/dpa">DPA</a>
-    <a href="/subprocessors">Sub-processors</a>
-    <a href="mailto:support@spec2jira.com">Support</a>
+<!-- ==================================================================
+     FOOTER  [component 21] — copied byte-identically to every page
+     ================================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+        <p class="footer-tagline">Turn a Confluence page into a sprint-ready Jira backlog — in minutes, reviewed by humans.</p>
+        <p class="footer-meta">
+          Made in Sofia, Bulgaria 🇧🇬
+          <span>Support 11:00–23:00 (Europe/Sofia), 7 days a week.</span>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/#use-cases">Use cases</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/docs">Docs</a></li>
+          <li><a href="/get-api-key">Get your API key</a></li>
+          <li><a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace <span class="ext" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="mailto:support@spec2jira.com">Contact support</a></li>
+          <li><a href="mailto:security@spec2jira.com">security@spec2jira.com</a></li>
+          <li><a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/dpa">DPA</a></li>
+          <li><a href="/subprocessors">Sub-processors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2026</span> Spec2JIRA &middot; All rights reserved.</span>
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
+        <a href="/how-it-works">How it works</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+        <a href="/about">About</a>
+      </nav>
+    </div>
   </div>
 </footer>
 

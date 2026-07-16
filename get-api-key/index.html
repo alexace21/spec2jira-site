@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get your Anthropic API key — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="A plain-English, step-by-step guide to creating your Anthropic API key for Spec2Tickets — no technical background needed. Create an account, add billing, copy the key, paste it into the app.">
+<meta name="theme-color" content="#0B1526">
 <link rel="canonical" href="https://spec2jira.com/get-api-key">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" href="/assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/css/site.css" as="style">
+<link rel="stylesheet" href="/assets/css/site.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Spec2Tickets">
 <meta property="og:title" content="Get your Anthropic API key — step by step">
@@ -19,220 +24,221 @@
 <meta name="twitter:title" content="Get your Anthropic API key — step by step">
 <meta name="twitter:description" content="A plain-English, no-jargon walkthrough to set up your own Anthropic API key for Spec2Tickets, in about 5 minutes.">
 <meta name="twitter:image" content="https://spec2jira.com/og-image.png">
-<style>
-  :root {
-    --navy: #1B2A4A;
-    --blue: #2684FF;
-    --blue-light: #4C9AFF;
-    --slate: #505F79;
-    --gray: #6B778C;
-    --bg: #FAFBFC;
-    --white: #FFFFFF;
-    --accent: #8B5CF6;
-    --link: #0B5CD7;
-    --radius: 8px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
-  .skip-link:focus { left: 0; }
-  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--navy); background: var(--bg); line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  nav {
-    display: flex; justify-content: space-between; align-items: center;
-    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
-  }
-  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
-  nav .logo span { color: var(--blue); }
-  nav .links a {
-    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
-  }
-  nav .links a:hover { color: var(--blue); }
-
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
-  .content { padding: 32px 0 80px; }
-  .content h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px; }
-  .content .meta { font-size: 15px; color: var(--gray); margin-bottom: 32px; }
-  .content h2 { font-size: 22px; font-weight: 700; margin: 36px 0 12px; padding-top: 20px; border-top: 1px solid #E4E7EB; }
-  .content h2:first-of-type { border-top: none; padding-top: 0; }
-  .content h3 { font-size: 17px; font-weight: 600; margin: 24px 0 8px; }
-  .content p { font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7; }
-  .content ul, .content ol { margin: 0 0 16px 24px; color: var(--slate); font-size: 16px; }
-  .content li { margin-bottom: 8px; line-height: 1.6; }
-  .content strong { color: var(--navy); }
-  .content a { color: var(--link); }
-
-  .step {
-    display: flex; gap: 16px; align-items: flex-start;
-    padding: 20px 0; border-top: 1px solid #E4E7EB;
-  }
-  .step:first-of-type { border-top: none; }
-  .step .num {
-    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
-    background: var(--blue); color: #fff; font-weight: 700; font-size: 16px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .step .body { flex: 1; min-width: 0; }
-  .step .body h3 { margin-top: 2px; }
-  .step .body p:last-child { margin-bottom: 0; }
-
-  .callout {
-    background: #E9F2FF; border-left: 4px solid var(--blue);
-    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
-    margin: 20px 0; font-size: 15px; color: var(--navy);
-  }
-  .callout.warn { background: #FFF7E6; border-left-color: #FF991F; }
-  .callout.ok { background: #E3FCEF; border-left-color: #00875A; }
-
-  code {
-    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-    background: #F0F1F4; padding: 2px 6px; border-radius: 3px; font-size: 14px;
-  }
-  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 15px; }
-  th { text-align: left; padding: 10px 16px; background: #F4F5F7; font-weight: 600; border: 1px solid #E4E7EB; }
-  td { padding: 10px 16px; border: 1px solid #E4E7EB; color: var(--slate); }
-
-  .btn {
-    display: inline-block; background: var(--blue); color: #fff; text-decoration: none;
-    padding: 12px 22px; border-radius: var(--radius); font-weight: 600; font-size: 15px;
-    margin: 8px 0;
-  }
-  .btn:hover { background: #0065FF; }
-
-  footer {
-    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
-    flex-wrap: wrap; gap: 16px;
-  }
-  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
-  footer a:hover { color: var(--blue); }
-
-  @media (max-width: 768px) {
-    nav { flex-wrap: wrap; row-gap: 10px; }
-    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
-    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
-    .content h1 { font-size: 28px; }
-  }
-</style>
+<script src="/assets/js/site.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<nav>
-  <a href="/" class="logo">Spec<span>2JIRA</span></a>
-  <div class="links">
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace</a>
-  </div>
-</nav>
+<!-- ==================================================================
+     NAV  [component 1] — copied byte-identically to every page
+     ================================================================== -->
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <a href="/how-it-works">How it works</a>
+      <a href="/#use-cases">Use cases</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs">Docs</a>
+      <a href="/about">About</a>
+      <a class="btn btn-primary btn-sm" href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Start free trial</a>
+    </div>
+  </nav>
+</header>
 
-<div class="wrap">
-<main class="content" id="main">
-<h1>Get your Anthropic API key</h1>
-<p class="meta">A plain-English, no-jargon setup — about 5 minutes, one time. No technical background needed.</p>
+<main id="main">
 
-<p>Spec2Tickets uses <strong>Anthropic's Claude</strong> AI to turn your Confluence pages into Jira backlogs. To do that, it connects to <strong>your own Anthropic account</strong> using a short text “key”. You create that key once, paste it into Spec2Tickets, and you're done — the AI then runs under your own account.</p>
-
-<div class="callout">
-  <strong><span aria-hidden="true">ℹ</span> Why your own key?</strong> It keeps you in control: your content is processed under <em>your</em> Anthropic agreement, and you pay Anthropic directly for AI usage (a few cents per breakdown) with <strong>no markup from us</strong>. We never see or store your key in readable form.
-</div>
-
-<div class="callout warn">
-  <strong><span aria-hidden="true">⚠</span> Not the technical type? That's fine.</strong> Every step below is just clicking and copying — but one step needs a <strong>payment method</strong> (a company card or credits) on the Anthropic account. If someone on your team handles tool subscriptions or billing, this is a nice 5 minutes to do together. Send them this page.
-</div>
-
-<h2>What you'll need</h2>
-<table>
-  <tr><td><strong>An email address</strong></td><td>To create the Anthropic account (or use one your team already has).</td></tr>
-  <tr><td><strong>A payment method</strong></td><td>A credit card or pre-purchased credits on the Anthropic account. A small amount (≈ $5–10) is plenty to start.</td></tr>
-  <tr><td><strong>~5 minutes</strong></td><td>One time. After this, Spec2Tickets just works.</td></tr>
-</table>
-
-<h2>The 4 steps</h2>
-
-<div class="step">
-  <div class="num">1</div>
-  <div class="body">
-    <h3>Create your Anthropic account</h3>
-    <p>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign up (or sign in if your team already has an account). Confirm your email if asked. This is Anthropic's “Console” — the dashboard for the company that makes Claude.</p>
-  </div>
-</div>
-
-<div class="step">
-  <div class="num">2</div>
-  <div class="body">
-    <h3>Add billing or credits</h3>
-    <p>In the Console, open <strong>Settings → Billing</strong> (or “Plans &amp; Billing”) and add a payment method, or buy a small amount of credits. You don't pre-pay for Spec2Tickets here — you're just enabling the Anthropic account to run AI when you use it.</p>
-    <div class="callout warn">
-      <strong>This is the step people skip — don't.</strong> Without billing or credits set up, your key will exist but <em>won't work</em>, and Spec2Tickets will show a “billing not enabled” message when you try to generate. Adding a card (or ~$5 of credits) now avoids that.
+<!-- ===================== PAGE HEADER ===================== -->
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Setup</span>
+      <h1>Get your Anthropic API key</h1>
+      <p class="lead mt-3">A plain-English, no-jargon setup — about 5 minutes, one time. No technical background needed.</p>
     </div>
   </div>
-</div>
+</section>
 
-<div class="step">
-  <div class="num">3</div>
-  <div class="body">
-    <h3>Create the key and copy it</h3>
-    <p>Open <strong>Settings → API Keys → Create Key</strong>. Give it a name you'll recognise later, like <code>Spec2Tickets</code>, and create it. Anthropic shows the key — a long string that starts with <code>sk-ant-api03-…</code>.</p>
-    <div class="callout warn">
-      <strong>Copy it right away.</strong> Anthropic shows the full key <em>only once</em>. Copy it to your clipboard now (you'll paste it in the next step). If you lose it, no problem — just create another one.
+<!-- ===================== INTRO + WHAT YOU'LL NEED ===================== -->
+<section class="section section--tight section--alt">
+  <div class="container">
+    <div class="measure mx-auto">
+      <p>Spec2Tickets uses <strong>Anthropic's Claude</strong> AI to turn your Confluence pages into Jira backlogs. To do that, it connects to <strong>your own Anthropic account</strong> using a short text “key”. You create that key once, paste it into Spec2Tickets, and you're done — the AI then runs under your own account.</p>
+
+      <div class="callout mt-4">
+        <strong class="callout-title"><span aria-hidden="true">ℹ</span> Why your own key?</strong>
+        <p>It keeps you in control: your content is processed under <em>your</em> Anthropic agreement, and you pay Anthropic directly for AI usage (a few cents per breakdown) with <strong>no markup from us</strong>. We never see or store your key in readable form.</p>
+      </div>
+
+      <div class="callout warn mt-3">
+        <strong class="callout-title"><span aria-hidden="true">⚠</span> Not the technical type? That's fine.</strong>
+        <p>Every step below is just clicking and copying — but one step needs a <strong>payment method</strong> (a company card or credits) on the Anthropic account. If someone on your team handles tool subscriptions or billing, this is a nice 5 minutes to do together. Send them this page.</p>
+      </div>
+    </div>
+
+    <div class="section-head center mt-5">
+      <span class="eyebrow">Before you start</span>
+      <h2>What you'll need</h2>
+    </div>
+    <div class="measure mx-auto">
+      <div class="table-wrap">
+        <table class="table">
+          <tbody>
+            <tr><th scope="row">An email address</th><td>To create the Anthropic account (or use one your team already has).</td></tr>
+            <tr><th scope="row">A payment method</th><td>A credit card or pre-purchased credits on the Anthropic account. A small amount (≈ $5–10) is plenty to start.</td></tr>
+            <tr><th scope="row">~5 minutes</th><td>One time. After this, Spec2Tickets just works.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="step">
-  <div class="num">4</div>
-  <div class="body">
-    <h3>Paste it into Spec2Tickets</h3>
-    <p>In Confluence, open <strong>Apps → Spec2Tickets</strong>, then click <strong>Settings</strong> (top-right of the app). Paste your key into the <strong>Anthropic API Key</strong> field, set your default <strong>Jira project key</strong>, and click <strong>Test &amp; Save</strong>. A green confirmation means you're connected.</p>
-    <div class="callout ok">
-      <strong><span aria-hidden="true">✓</span> That's it.</strong> Your key is stored in Atlassian's encrypted Forge secret storage — it's never shown back in the app and never sent to Spec2Tickets' own servers (we don't run any). You're ready to generate your first breakdown.
+<!-- ===================== THE 4 STEPS ===================== -->
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Step by step</span>
+      <h2>The 4 steps</h2>
+    </div>
+    <div class="measure mx-auto">
+      <div class="grid">
+        <div class="step-card reveal">
+          <div class="step-num">1</div>
+          <h3>Create your Anthropic account</h3>
+          <p>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign up (or sign in if your team already has an account). Confirm your email if asked. This is Anthropic's “Console” — the dashboard for the company that makes Claude.</p>
+        </div>
+
+        <div class="step-card reveal">
+          <div class="step-num">2</div>
+          <h3>Add billing or credits</h3>
+          <p>In <a href="https://console.anthropic.com" target="_blank" rel="noopener">the Console</a>, open <strong>Settings → Billing</strong> (or “Plans &amp; Billing”) and add a payment method, or buy a small amount of credits. You don't pre-pay for Spec2Tickets here — you're just enabling the Anthropic account to run AI when you use it.</p>
+          <div class="callout warn mt-3">
+            <p><strong>This is the step people skip — don't.</strong> Without billing or credits set up, your key will exist but <em>won't work</em>, and Spec2Tickets will show a “billing not enabled” message when you try to generate. Adding a card (or ~$5 of credits) now avoids that.</p>
+          </div>
+        </div>
+
+        <div class="step-card reveal">
+          <div class="step-num">3</div>
+          <h3>Create the key and copy it</h3>
+          <p>Open <strong>Settings → API Keys → Create Key</strong>. Give it a name you'll recognise later, like <code>Spec2Tickets</code>, and create it. Anthropic shows the key — a long string that starts with <code>sk-ant-api03-…</code>.</p>
+          <div class="callout warn mt-3">
+            <p><strong>Copy it right away.</strong> Anthropic shows the full key <em>only once</em>. Copy it to your clipboard now (you'll paste it in the next step). If you lose it, no problem — just create another one.</p>
+          </div>
+        </div>
+
+        <div class="step-card reveal">
+          <div class="step-num">4</div>
+          <h3>Paste it into Spec2Tickets</h3>
+          <p>In Confluence, open <strong>Apps → Spec2Tickets</strong>, then click <strong>Settings</strong> (top-right of the app). Paste your key into the <strong>Anthropic API Key</strong> field, set your default <strong>Jira project key</strong>, and click <strong>Test &amp; Save</strong>. A green confirmation means you're connected.</p>
+          <div class="callout ok mt-3">
+            <p><strong><span aria-hidden="true">✓</span> That's it.</strong> Your key is stored in Atlassian's encrypted Forge secret storage — it's never shown back in the app and never sent to Spec2Tickets' own servers (we don't run any). You're ready to generate your first breakdown.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<h2>What does it cost?</h2>
-<p>You're billed by <strong>Anthropic</strong> for the AI usage, directly, with no markup from us. In practice:</p>
-<ul>
-  <li>A typical <strong>breakdown</strong> costs a <strong>few US cents</strong>.</li>
-  <li><strong>Test-case generation</strong> (an Advanced-edition feature) costs more — usually <strong>under a dollar</strong> per run.</li>
-  <li>Spec2Tickets always shows you an <strong>estimate before you run</strong> a paid action, and the <strong>exact amount after</strong> — so there are no surprises.</li>
-</ul>
-<p>The Spec2Tickets subscription itself (from the Atlassian Marketplace) is separate and covers the app; see <a href="/pricing">Pricing</a>.</p>
+<!-- ===================== COST + TROUBLESHOOTING ===================== -->
+<section class="section section--tight section--alt">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Cost</span>
+      <h2>What does it cost?</h2>
+    </div>
+    <div class="prose mx-auto">
+      <p>You're billed by <strong>Anthropic</strong> for the AI usage, directly, with no markup from us. In practice:</p>
+      <ul>
+        <li>A typical <strong>breakdown</strong> costs a <strong>few US cents</strong>.</li>
+        <li><strong>Test-case generation</strong> (an Advanced-edition feature) costs more — usually <strong>under a dollar</strong> per run.</li>
+        <li>Spec2Tickets always shows you an <strong>estimate before you run</strong> a paid action, and the <strong>exact amount after</strong> — so there are no surprises.</li>
+      </ul>
+      <p>The Spec2Tickets subscription itself (from the Atlassian Marketplace) is separate and covers the app; see <a href="/pricing">Pricing</a>.</p>
+    </div>
 
-<h2>If something goes wrong</h2>
-<table>
-  <tr><td><strong>“API key not configured”</strong></td><td>The key isn't saved yet — repeat Step 4 in the app's Settings.</td></tr>
-  <tr><td><strong>A billing / credits error</strong></td><td>The key is valid but the Anthropic account has no active billing — go back to Step 2 in the Console.</td></tr>
-  <tr><td><strong>“Invalid / rejected key”</strong></td><td>The key was mistyped or revoked — create a fresh one (Step 3) and paste it again.</td></tr>
-  <tr><td><strong>Lost the key</strong></td><td>You can't view an old key again, but you can create a new one any time in the Console (Step 3).</td></tr>
-</table>
+    <div class="section-head center mt-5">
+      <span class="eyebrow">Troubleshooting</span>
+      <h2>If something goes wrong</h2>
+    </div>
+    <div class="measure mx-auto">
+      <div class="table-wrap">
+        <table class="table">
+          <tbody>
+            <tr><th scope="row">“API key not configured”</th><td>The key isn't saved yet — repeat Step 4 in the app's Settings.</td></tr>
+            <tr><th scope="row">A billing / credits error</th><td>The key is valid but the Anthropic account has no active billing — go back to Step 2 in the Console.</td></tr>
+            <tr><th scope="row">“Invalid / rejected key”</th><td>The key was mistyped or revoked — create a fresh one (Step 3) and paste it again.</td></tr>
+            <tr><th scope="row">Lost the key</th><td>You can't view an old key again, but you can create a new one any time in the Console (Step 3).</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-<p>Still stuck? Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a> — we're happy to walk you through it.</p>
-
-<p style="margin-top:28px;"><a class="btn" href="https://console.anthropic.com" target="_blank" rel="noopener">Open the Anthropic Console →</a></p>
+      <p class="mt-4">Still stuck? Email <a href="mailto:support@spec2jira.com">support@spec2jira.com</a> — we're happy to walk you through it.</p>
+      <p class="mt-3"><a class="btn btn-primary btn-lg" href="https://console.anthropic.com" target="_blank" rel="noopener">Open the Anthropic Console <span aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
 
 </main>
-</div>
 
-<footer>
-  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
-  <div>
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/dpa">DPA</a>
-    <a href="/subprocessors">Sub-processors</a>
-    <a href="mailto:support@spec2jira.com">Support</a>
+<!-- ==================================================================
+     FOOTER  [component 21] — copied byte-identically to every page
+     ================================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+        <p class="footer-tagline">Turn a Confluence page into a sprint-ready Jira backlog — in minutes, reviewed by humans.</p>
+        <p class="footer-meta">
+          Made in Sofia, Bulgaria 🇧🇬
+          <span>Support 11:00–23:00 (Europe/Sofia), 7 days a week.</span>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/#use-cases">Use cases</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/docs">Docs</a></li>
+          <li><a href="/get-api-key">Get your API key</a></li>
+          <li><a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace <span class="ext" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="mailto:support@spec2jira.com">Contact support</a></li>
+          <li><a href="mailto:security@spec2jira.com">security@spec2jira.com</a></li>
+          <li><a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/dpa">DPA</a></li>
+          <li><a href="/subprocessors">Sub-processors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2026</span> Spec2JIRA &middot; All rights reserved.</span>
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
+        <a href="/how-it-works">How it works</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+        <a href="/about">About</a>
+      </nav>
+    </div>
   </div>
 </footer>
 

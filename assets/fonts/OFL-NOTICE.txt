@@ -1,0 +1,17 @@
+Self-hosted webfonts for spec2jira.com
+=======================================
+
+inter-var-latin.woff2
+  Inter — Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+  Licensed under the SIL Open Font License, Version 1.1
+
+space-grotesk-var-latin.woff2
+  Space Grotesk — Copyright 2020 The Space Grotesk Project Authors
+  (https://github.com/floriankarsten/space-grotesk)
+  Licensed under the SIL Open Font License, Version 1.1
+
+The SIL Open Font License, Version 1.1 is available with an FAQ at:
+https://openfontlicense.org
+
+Both files are the "latin" variable-font subsets as served by Google Fonts
+(fonts.gstatic.com), self-hosted here so the site makes no third-party requests.

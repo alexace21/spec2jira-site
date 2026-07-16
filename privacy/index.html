@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy — Spec2Tickets for Confluence and Jira</title>
 <meta name="description" content="Privacy Policy for Spec2Tickets (Spec2JIRA). A Forge app that uses your own Anthropic API key (BYOK) — Spec2JIRA operates no backend and never sees your data on its own servers.">
+<meta name="theme-color" content="#0B1526">
 <link rel="canonical" href="https://spec2jira.com/privacy">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" href="/assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/css/site.css" as="style">
+<link rel="stylesheet" href="/assets/css/site.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Spec2Tickets">
 <meta property="og:title" content="Privacy Policy — Spec2Tickets for Confluence and Jira">
@@ -19,106 +24,40 @@
 <meta name="twitter:title" content="Privacy Policy — Spec2Tickets for Confluence and Jira">
 <meta name="twitter:description" content="Privacy Policy for Spec2Tickets (Spec2JIRA). A Forge app that uses your own Anthropic API key (BYOK) — Spec2JIRA operates no backend and never sees your data on its own servers.">
 <meta name="twitter:image" content="https://spec2jira.com/og-image.png">
-<style>
-  :root {
-    --navy: #1B2A4A;
-    --blue: #2684FF;
-    --blue-light: #4C9AFF;
-    --slate: #505F79;
-    --gray: #6B778C;
-    --bg: #FAFBFC;
-    --white: #FFFFFF;
-    --link: #0B5CD7;
-    --radius: 8px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 14px; z-index: 100; border-radius: 0 0 6px 0; }
-  .skip-link:focus { left: 0; }
-  a:focus-visible, .btn:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--navy); background: var(--bg); line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  nav {
-    display: flex; justify-content: space-between; align-items: center;
-    max-width: 1080px; margin: 0 auto; padding: 20px 24px;
-  }
-  nav .logo { font-size: 20px; font-weight: 700; color: var(--navy); text-decoration: none; }
-  nav .logo span { color: var(--blue); }
-  nav .links a {
-    color: var(--slate); text-decoration: none; margin-left: 32px; font-size: 15px; font-weight: 500;
-  }
-  nav .links a:hover { color: var(--blue); }
-
-  .content {
-    max-width: 740px; margin: 0 auto; padding: 48px 24px 80px;
-  }
-  .content h1 {
-    font-size: 36px; font-weight: 800; margin-bottom: 8px;
-    letter-spacing: -0.3px;
-  }
-  .content .meta {
-    font-size: 14px; color: var(--gray); margin-bottom: 40px;
-  }
-  .content h2 {
-    font-size: 22px; font-weight: 700; margin: 36px 0 12px;
-    padding-top: 20px; border-top: 1px solid #E4E7EB;
-  }
-  .content h2:first-of-type { border-top: none; padding-top: 0; }
-  .content h3 {
-    font-size: 17px; font-weight: 600; margin: 24px 0 8px;
-  }
-  .content p {
-    font-size: 16px; color: var(--slate); margin-bottom: 16px; line-height: 1.7;
-  }
-  .content ul {
-    margin: 0 0 16px 24px; color: var(--slate); font-size: 16px;
-  }
-  .content ul li { margin-bottom: 6px; line-height: 1.6; }
-  .content strong { color: var(--navy); }
-  .content a { color: var(--link); }
-  .callout {
-    background: #E9F2FF; border-left: 4px solid var(--blue);
-    padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0;
-    margin: 24px 0; font-size: 15px; color: var(--navy);
-  }
-
-  footer {
-    max-width: 1080px; margin: 0 auto; padding: 40px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid #E4E7EB; font-size: 14px; color: var(--gray);
-    flex-wrap: wrap; gap: 16px;
-  }
-  footer a { color: var(--slate); text-decoration: none; margin-left: 24px; }
-  footer a:hover { color: var(--blue); }
-
-  @media (max-width: 640px) {
-    nav { flex-wrap: wrap; row-gap: 10px; }
-    nav .links { display: flex; flex-wrap: wrap; row-gap: 6px; }
-    nav .links a { margin-left: 0; margin-right: 18px; font-size: 14px; }
-    .content h1 { font-size: 28px; }
-  }
-</style>
+<script src="/assets/js/site.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<nav>
-  <a href="/" class="logo">Spec<span>2JIRA</span></a>
-  <div class="links">
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace</a>
-  </div>
-</nav>
+<!-- ==================================================================
+     NAV  [component 1] — copied byte-identically to every page
+     ================================================================== -->
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <a href="/how-it-works">How it works</a>
+      <a href="/#use-cases">Use cases</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs">Docs</a>
+      <a href="/about">About</a>
+      <a class="btn btn-primary btn-sm" href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Start free trial</a>
+    </div>
+  </nav>
+</header>
 
-<main class="content" id="main">
+<main id="main">
+<section class="section">
+  <div class="container">
+    <article class="prose prose-legal">
 
 <h1>Privacy Policy</h1>
-<p class="meta">Effective Date: May 30, 2026 &middot; Last Updated: June 4, 2026</p>
+<p class="meta muted">Effective Date: May 30, 2026 &middot; Last Updated: June 4, 2026</p>
 
 <div class="callout">
   <strong>In one line:</strong> Spec2Tickets is a Forge app that runs entirely on Atlassian's platform and, once configured, uses <strong>your own Anthropic API key</strong> (Bring Your Own Key). In this BYOK model, AI processing happens under <em>your</em> agreement with Anthropic, and Spec2JIRA operates no backend and never receives your data on its own servers. <em>During your free trial</em>, you can start on <em>our</em> Anthropic key — a small welcome credit — before adding your own; see <a href="#managed">Managed AI processing</a> for how we handle your data then.
@@ -229,19 +168,64 @@
   <li><strong>Website:</strong> <a href="https://spec2jira.com">spec2jira.com</a></li>
 </ul>
 
+    </article>
+  </div>
+</section>
 </main>
 
-<footer>
-  <span>&copy; 2026 Spec2JIRA. All rights reserved.</span>
-  <div>
-    <a href="/how-it-works">How it works</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/about">About</a>
-    <a href="/docs">Docs</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/dpa">DPA</a>
-    <a href="/subprocessors">Sub-processors</a>
-    <a href="mailto:support@spec2jira.com">Support</a>
+<!-- ==================================================================
+     FOOTER  [component 21] — copied byte-identically to every page
+     ================================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Spec2JIRA home">Spec<span class="l2">2</span><span class="ljira">JIRA</span></a>
+        <p class="footer-tagline">Turn a Confluence page into a sprint-ready Jira backlog — in minutes, reviewed by humans.</p>
+        <p class="footer-meta">
+          Made in Sofia, Bulgaria 🇧🇬
+          <span>Support 11:00–23:00 (Europe/Sofia), 7 days a week.</span>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/#use-cases">Use cases</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/docs">Docs</a></li>
+          <li><a href="/get-api-key">Get your API key</a></li>
+          <li><a href="https://marketplace.atlassian.com/apps/1475765564/spec2tickets-for-confluence-and-jira" target="_blank" rel="noopener">Marketplace <span class="ext" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="mailto:support@spec2jira.com">Contact support</a></li>
+          <li><a href="mailto:security@spec2jira.com">security@spec2jira.com</a></li>
+          <li><a href="mailto:privacy@spec2jira.com">privacy@spec2jira.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/dpa">DPA</a></li>
+          <li><a href="/subprocessors">Sub-processors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year">2026</span> Spec2JIRA &middot; All rights reserved.</span>
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
+        <a href="/how-it-works">How it works</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+        <a href="/about">About</a>
+      </nav>
+    </div>
   </div>
 </footer>
 
